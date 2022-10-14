@@ -1,0 +1,762 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="VeterinariaModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Mascota">
+          <Key>
+            <PropertyRef Name="id_Mascota" />
+          </Key>
+          <Property Name="id_Mascota" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="id_Usuario" Type="int" Nullable="false" />
+          <Property Name="id_Tipo" Type="int" Nullable="false" />
+          <Property Name="id_Raza" Type="int" Nullable="false" />
+          <Property Name="nombre_Completo" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="sexo" Type="varchar" MaxLength="9" Nullable="false" />
+          <Property Name="peso" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="foto" Type="varbinary(max)" Nullable="false" />
+          <Property Name="fecha_Ingreso" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="fecha_Modificacion" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="RazaMascota">
+          <Key>
+            <PropertyRef Name="id_Raza" />
+          </Key>
+          <Property Name="id_Raza" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="raza" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Rol">
+          <Key>
+            <PropertyRef Name="id_Rol" />
+          </Key>
+          <Property Name="id_Rol" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nombre" Type="varchar" MaxLength="30" Nullable="false" />
+        </EntityType>
+        <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'Veterinaria.dbo.Rol_Usuario' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+        <EntityType Name="Rol_Usuario">
+          <Key>
+            <PropertyRef Name="id_Rol" />
+            <PropertyRef Name="id_Usuario" />
+          </Key>
+          <Property Name="id_Rol" Type="int" Nullable="false" />
+          <Property Name="id_Usuario" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TipoMascota">
+          <Key>
+            <PropertyRef Name="id_Tipo" />
+          </Key>
+          <Property Name="id_Tipo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="tipo" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Usuario">
+          <Key>
+            <PropertyRef Name="id_Usuario" />
+          </Key>
+          <Property Name="id_Usuario" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nombre_Completo" Type="varchar" MaxLength="150" Nullable="false" />
+          <Property Name="direccion" Type="varchar" MaxLength="150" Nullable="false" />
+          <Property Name="ciudad" Type="varchar" MaxLength="150" Nullable="false" />
+          <Property Name="telefono" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="email" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="password" Type="varchar" MaxLength="100" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Mascota_RazaMascota_id_Raza">
+          <End Role="RazaMascota" Type="Self.RazaMascota" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Mascota" Type="Self.Mascota" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RazaMascota">
+              <PropertyRef Name="id_Raza" />
+            </Principal>
+            <Dependent Role="Mascota">
+              <PropertyRef Name="id_Raza" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Mascota_TipoMascota_id_Tipo">
+          <End Role="TipoMascota" Type="Self.TipoMascota" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Mascota" Type="Self.Mascota" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TipoMascota">
+              <PropertyRef Name="id_Tipo" />
+            </Principal>
+            <Dependent Role="Mascota">
+              <PropertyRef Name="id_Tipo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Mascota_Usuario_id_Usuario">
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Mascota" Type="Self.Mascota" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="id_Usuario" />
+            </Principal>
+            <Dependent Role="Mascota">
+              <PropertyRef Name="id_Usuario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Rol_Usuario_Rol_id_Rol">
+          <End Role="Rol" Type="Self.Rol" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Rol_Usuario" Type="Self.Rol_Usuario" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Rol">
+              <PropertyRef Name="id_Rol" />
+            </Principal>
+            <Dependent Role="Rol_Usuario">
+              <PropertyRef Name="id_Rol" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Rol_Usuario_Usuario_id_Usuario">
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Rol_Usuario" Type="Self.Rol_Usuario" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="id_Usuario" />
+            </Principal>
+            <Dependent Role="Rol_Usuario">
+              <PropertyRef Name="id_Usuario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="Proc_actualizarMascota" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="id_Mascota" Type="int" Mode="In" />
+          <Parameter Name="id_Usuario" Type="int" Mode="In" />
+          <Parameter Name="id_Tipo" Type="int" Mode="In" />
+          <Parameter Name="id_Raza" Type="int" Mode="In" />
+          <Parameter Name="nombre_Completo" Type="varchar" Mode="In" />
+          <Parameter Name="sexo" Type="varchar" Mode="In" />
+          <Parameter Name="peso" Type="varchar" Mode="In" />
+          <Parameter Name="foto" Type="varbinary(max)" Mode="In" />
+          <Parameter Name="fecha_Ingreso" Type="varchar" Mode="In" />
+          <Parameter Name="fecha_Modificacion" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="Proc_actualizarRazaMascota" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="id_raza" Type="int" Mode="In" />
+          <Parameter Name="raza" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="Proc_actualizarTipoMascota" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="id_Tipo" Type="int" Mode="In" />
+          <Parameter Name="tipo" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="Proc_actualizarUsuario" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="id_Usuario" Type="int" Mode="In" />
+          <Parameter Name="nombre_Completo" Type="varchar" Mode="In" />
+          <Parameter Name="direccion" Type="varchar" Mode="In" />
+          <Parameter Name="ciudad" Type="varchar" Mode="In" />
+          <Parameter Name="telefono" Type="varchar" Mode="In" />
+          <Parameter Name="email" Type="varchar" Mode="In" />
+          <Parameter Name="password" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="Proc_crearMascota" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="id_Usuario" Type="int" Mode="In" />
+          <Parameter Name="id_Tipo" Type="int" Mode="In" />
+          <Parameter Name="id_Raza" Type="int" Mode="In" />
+          <Parameter Name="nombre_Completo" Type="varchar" Mode="In" />
+          <Parameter Name="sexo" Type="varchar" Mode="In" />
+          <Parameter Name="peso" Type="varchar" Mode="In" />
+          <Parameter Name="foto" Type="varbinary(max)" Mode="In" />
+          <Parameter Name="fecha_Ingreso" Type="varchar" Mode="In" />
+          <Parameter Name="fecha_Modificacion" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="Proc_crearRazaMascota" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="raza" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="Proc_crearRol" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="nombre" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="Proc_crearRol_Usuario" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="id_Rol" Type="int" Mode="In" />
+          <Parameter Name="id_Usuario" Type="int" Mode="In" />
+        </Function>
+        <Function Name="Proc_crearTipoMascota" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="tipo" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="Proc_crearUsuario" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="nombre_Completo" Type="varchar" Mode="In" />
+          <Parameter Name="direccion" Type="varchar" Mode="In" />
+          <Parameter Name="ciudad" Type="varchar" Mode="In" />
+          <Parameter Name="telefono" Type="varchar" Mode="In" />
+          <Parameter Name="email" Type="varchar" Mode="In" />
+          <Parameter Name="password" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="Proc_eliminarMascota" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="id_Mascota" Type="int" Mode="In" />
+        </Function>
+        <Function Name="Proc_eliminarRazaMascota" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="id_raza" Type="int" Mode="In" />
+        </Function>
+        <Function Name="Proc_eliminarTipoMascota" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="id_Tipo" Type="int" Mode="In" />
+        </Function>
+        <Function Name="Proc_eliminarUsuario" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="id_Uusuario" Type="int" Mode="In" />
+        </Function>
+        <Function Name="Proc_listarid_RolPorid_Usuario" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="id_Usuario" Type="int" Mode="In" />
+        </Function>
+        <Function Name="Proc_listarid_UsuarioPorEmail" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="email" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="Proc_listarMascota" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="Proc_listarMascotaPorid_Mascota" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="id_Mascota" Type="int" Mode="In" />
+        </Function>
+        <Function Name="Proc_listarRazaMascota" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="Proc_listarRazaMascotaPorid_Raza" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="id_Raza" Type="int" Mode="In" />
+        </Function>
+        <Function Name="Proc_listarTipoMascota" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="Proc_listarTipoMascotaPorid_Tipo" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="id_Tipo" Type="int" Mode="In" />
+        </Function>
+        <Function Name="Proc_listarUsuario" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="Proc_listarUsuarioPorid_Usuario" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="id_Usuario" Type="int" Mode="In" />
+        </Function>
+        <Function Name="Proc_loguearse" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="email" Type="varchar" Mode="In" />
+          <Parameter Name="password" Type="varchar" Mode="In" />
+        </Function>
+        <EntityContainer Name="VeterinariaModelStoreContainer">
+          <EntitySet Name="Mascota" EntityType="Self.Mascota" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="RazaMascota" EntityType="Self.RazaMascota" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Rol" EntityType="Self.Rol" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TipoMascota" EntityType="Self.TipoMascota" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Usuario" EntityType="Self.Usuario" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Rol_Usuario" EntityType="Self.Rol_Usuario" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [Rol_Usuario].[id_Rol] AS [id_Rol], 
+    [Rol_Usuario].[id_Usuario] AS [id_Usuario]
+    FROM [dbo].[Rol_Usuario] AS [Rol_Usuario]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK_Mascota_RazaMascota_id_Raza" Association="Self.FK_Mascota_RazaMascota_id_Raza">
+            <End Role="RazaMascota" EntitySet="RazaMascota" />
+            <End Role="Mascota" EntitySet="Mascota" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Mascota_TipoMascota_id_Tipo" Association="Self.FK_Mascota_TipoMascota_id_Tipo">
+            <End Role="TipoMascota" EntitySet="TipoMascota" />
+            <End Role="Mascota" EntitySet="Mascota" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Mascota_Usuario_id_Usuario" Association="Self.FK_Mascota_Usuario_id_Usuario">
+            <End Role="Usuario" EntitySet="Usuario" />
+            <End Role="Mascota" EntitySet="Mascota" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Rol_Usuario_Rol_id_Rol" Association="Self.FK_Rol_Usuario_Rol_id_Rol">
+            <End Role="Rol" EntitySet="Rol" />
+            <End Role="Rol_Usuario" EntitySet="Rol_Usuario" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Rol_Usuario_Usuario_id_Usuario" Association="Self.FK_Rol_Usuario_Usuario_id_Usuario">
+            <End Role="Usuario" EntitySet="Usuario" />
+            <End Role="Rol_Usuario" EntitySet="Rol_Usuario" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="VeterinariaModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="VeterinariaEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Rol" EntityType="VeterinariaModel.Rol" />
+          <EntitySet Name="Usuario" EntityType="VeterinariaModel.Usuario" />
+          <AssociationSet Name="Rol_Usuario" Association="VeterinariaModel.Rol_Usuario">
+            <End Role="Rol" EntitySet="Rol" />
+            <End Role="Usuario" EntitySet="Usuario" />
+          </AssociationSet>
+          <FunctionImport Name="Proc_actualizarUsuario">
+            <Parameter Name="id_Usuario" Mode="In" Type="Int32" />
+            <Parameter Name="nombre_Completo" Mode="In" Type="String" />
+            <Parameter Name="direccion" Mode="In" Type="String" />
+            <Parameter Name="ciudad" Mode="In" Type="String" />
+            <Parameter Name="telefono" Mode="In" Type="String" />
+            <Parameter Name="email" Mode="In" Type="String" />
+            <Parameter Name="password" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="Proc_crearRol">
+          <Parameter Name="nombre" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="Proc_crearRol_Usuario">
+            <Parameter Name="id_Rol" Mode="In" Type="Int32" />
+            <Parameter Name="id_Usuario" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="Proc_crearUsuario">
+            <Parameter Name="nombre_Completo" Mode="In" Type="String" />
+            <Parameter Name="direccion" Mode="In" Type="String" />
+            <Parameter Name="ciudad" Mode="In" Type="String" />
+            <Parameter Name="telefono" Mode="In" Type="String" />
+            <Parameter Name="email" Mode="In" Type="String" />
+            <Parameter Name="password" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="Proc_eliminarUsuario">
+          <Parameter Name="id_Uusuario" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="Proc_listarid_RolPorid_Usuario" ReturnType="Collection(Int32)">
+          <Parameter Name="id_Usuario" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="Proc_listarid_UsuarioPorEmail" ReturnType="Collection(Int32)">
+          <Parameter Name="email" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="Proc_listarUsuario" ReturnType="Collection(VeterinariaModel.Proc_listarUsuario_Result)" />
+          <FunctionImport Name="Proc_listarUsuarioPorid_Usuario" ReturnType="Collection(VeterinariaModel.Proc_listarUsuarioPorid_Usuario_Result)">
+          <Parameter Name="id_Usuario" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="Proc_loguearse" ReturnType="Collection(VeterinariaModel.Proc_loguearse_Result)">
+            <Parameter Name="email" Mode="In" Type="String" />
+            <Parameter Name="password" Mode="In" Type="String" />
+          </FunctionImport>
+          <EntitySet Name="Mascota" EntityType="VeterinariaModel.Mascota" />
+          <EntitySet Name="RazaMascota" EntityType="VeterinariaModel.RazaMascota" />
+          <EntitySet Name="TipoMascota" EntityType="VeterinariaModel.TipoMascota" />
+          <AssociationSet Name="FK_Mascota_RazaMascota_id_Raza" Association="VeterinariaModel.FK_Mascota_RazaMascota_id_Raza">
+            <End Role="RazaMascota" EntitySet="RazaMascota" />
+            <End Role="Mascota" EntitySet="Mascota" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Mascota_TipoMascota_id_Tipo" Association="VeterinariaModel.FK_Mascota_TipoMascota_id_Tipo">
+            <End Role="TipoMascota" EntitySet="TipoMascota" />
+            <End Role="Mascota" EntitySet="Mascota" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Mascota_Usuario_id_Usuario" Association="VeterinariaModel.FK_Mascota_Usuario_id_Usuario">
+            <End Role="Usuario" EntitySet="Usuario" />
+            <End Role="Mascota" EntitySet="Mascota" />
+          </AssociationSet>
+          <FunctionImport Name="Proc_actualizarMascota">
+            <Parameter Name="id_Mascota" Mode="In" Type="Int32" />
+            <Parameter Name="id_Usuario" Mode="In" Type="Int32" />
+            <Parameter Name="id_Tipo" Mode="In" Type="Int32" />
+            <Parameter Name="id_Raza" Mode="In" Type="Int32" />
+            <Parameter Name="nombre_Completo" Mode="In" Type="String" />
+            <Parameter Name="sexo" Mode="In" Type="String" />
+            <Parameter Name="peso" Mode="In" Type="String" />
+            <Parameter Name="foto" Mode="In" Type="Binary" />
+            <Parameter Name="fecha_Ingreso" Mode="In" Type="String" />
+            <Parameter Name="fecha_Modificacion" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="Proc_actualizarTipoMascota">
+            <Parameter Name="id_Tipo" Mode="In" Type="Int32" />
+            <Parameter Name="tipo" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="Proc_crearMascota">
+            <Parameter Name="id_Usuario" Mode="In" Type="Int32" />
+            <Parameter Name="id_Tipo" Mode="In" Type="Int32" />
+            <Parameter Name="id_Raza" Mode="In" Type="Int32" />
+            <Parameter Name="nombre_Completo" Mode="In" Type="String" />
+            <Parameter Name="sexo" Mode="In" Type="String" />
+            <Parameter Name="peso" Mode="In" Type="String" />
+            <Parameter Name="foto" Mode="In" Type="Binary" />
+            <Parameter Name="fecha_Ingreso" Mode="In" Type="String" />
+            <Parameter Name="fecha_Modificacion" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="Proc_crearRazaMascota">
+          <Parameter Name="raza" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="Proc_crearTipoMascota">
+          <Parameter Name="tipo" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="Proc_eliminarMascota">
+          <Parameter Name="id_Mascota" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="Proc_eliminarRazaMascota">
+          <Parameter Name="id_raza" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="Proc_eliminarTipoMascota">
+          <Parameter Name="id_Tipo" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="Proc_listarMascota" ReturnType="Collection(VeterinariaModel.Proc_listarMascota_Result)" />
+          <FunctionImport Name="Proc_listarMascotaPorid_Mascota" ReturnType="Collection(VeterinariaModel.Proc_listarMascotaPorid_Mascota_Result)">
+          <Parameter Name="id_Mascota" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="Proc_listarRazaMascota" ReturnType="Collection(VeterinariaModel.Proc_listarRazaMascota_Result)" />
+          <FunctionImport Name="Proc_listarRazaMascotaPorid_Raza" ReturnType="Collection(VeterinariaModel.Proc_listarRazaMascotaPorid_Raza_Result)">
+          <Parameter Name="id_Raza" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="Proc_listarTipoMascota" ReturnType="Collection(VeterinariaModel.Proc_listarTipoMascota_Result)" />
+          <FunctionImport Name="Proc_listarTipoMascotaPorid_Tipo" ReturnType="Collection(VeterinariaModel.Proc_listarTipoMascotaPorid_Tipo_Result)">
+          <Parameter Name="id_Tipo" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="Proc_actualizarRazaMascota">
+            <Parameter Name="id_raza" Mode="In" Type="Int32" />
+            <Parameter Name="raza" Mode="In" Type="String" />
+          </FunctionImport>
+        </EntityContainer>
+        <EntityType Name="Rol">
+          <Key>
+            <PropertyRef Name="id_Rol" />
+          </Key>
+          <Property Name="id_Rol" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="nombre" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Usuario" Relationship="VeterinariaModel.Rol_Usuario" FromRole="Rol" ToRole="Usuario" />
+        </EntityType>
+        <EntityType Name="Usuario">
+          <Key>
+            <PropertyRef Name="id_Usuario" />
+          </Key>
+          <Property Name="id_Usuario" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="nombre_Completo" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="direccion" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="ciudad" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="telefono" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="email" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="password" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Rol" Relationship="VeterinariaModel.Rol_Usuario" FromRole="Usuario" ToRole="Rol" />
+          <NavigationProperty Name="Mascota" Relationship="VeterinariaModel.FK_Mascota_Usuario_id_Usuario" FromRole="Usuario" ToRole="Mascota" />
+        </EntityType>
+        <Association Name="Rol_Usuario">
+          <End Type="VeterinariaModel.Rol" Role="Rol" Multiplicity="*" />
+          <End Type="VeterinariaModel.Usuario" Role="Usuario" Multiplicity="*" />
+        </Association>
+        <ComplexType Name="Proc_listarUsuario_Result">
+          <Property Type="Int32" Name="id_Usuario" Nullable="false" />
+          <Property Type="String" Name="nombre_Completo" Nullable="false" MaxLength="150" />
+          <Property Type="String" Name="direccion" Nullable="false" MaxLength="150" />
+          <Property Type="String" Name="ciudad" Nullable="false" MaxLength="150" />
+          <Property Type="String" Name="telefono" Nullable="false" MaxLength="10" />
+          <Property Type="String" Name="email" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="password" Nullable="false" MaxLength="100" />
+        </ComplexType>
+        <ComplexType Name="Proc_listarUsuarioPorid_Usuario_Result">
+          <Property Type="Int32" Name="id_Usuario" Nullable="false" />
+          <Property Type="String" Name="nombre_Completo" Nullable="false" MaxLength="150" />
+          <Property Type="String" Name="direccion" Nullable="false" MaxLength="150" />
+          <Property Type="String" Name="ciudad" Nullable="false" MaxLength="150" />
+          <Property Type="String" Name="telefono" Nullable="false" MaxLength="10" />
+          <Property Type="String" Name="email" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="password" Nullable="false" MaxLength="100" />
+        </ComplexType>
+        <ComplexType Name="Proc_loguearse_Result">
+          <Property Type="String" Name="email" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="password" Nullable="false" MaxLength="100" />
+        </ComplexType>
+        <EntityType Name="Mascota">
+          <Key>
+            <PropertyRef Name="id_Mascota" />
+          </Key>
+          <Property Name="id_Mascota" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="id_Usuario" Type="Int32" Nullable="false" />
+          <Property Name="id_Tipo" Type="Int32" Nullable="false" />
+          <Property Name="id_Raza" Type="Int32" Nullable="false" />
+          <Property Name="nombre_Completo" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="sexo" Type="String" Nullable="false" MaxLength="9" FixedLength="false" Unicode="false" />
+          <Property Name="peso" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="foto" Type="Binary" Nullable="false" MaxLength="Max" FixedLength="false" />
+          <Property Name="fecha_Ingreso" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="fecha_Modificacion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="RazaMascota" Relationship="VeterinariaModel.FK_Mascota_RazaMascota_id_Raza" FromRole="Mascota" ToRole="RazaMascota" />
+          <NavigationProperty Name="TipoMascota" Relationship="VeterinariaModel.FK_Mascota_TipoMascota_id_Tipo" FromRole="Mascota" ToRole="TipoMascota" />
+          <NavigationProperty Name="Usuario" Relationship="VeterinariaModel.FK_Mascota_Usuario_id_Usuario" FromRole="Mascota" ToRole="Usuario" />
+        </EntityType>
+        <EntityType Name="RazaMascota">
+          <Key>
+            <PropertyRef Name="id_Raza" />
+          </Key>
+          <Property Name="id_Raza" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="raza" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Mascota" Relationship="VeterinariaModel.FK_Mascota_RazaMascota_id_Raza" FromRole="RazaMascota" ToRole="Mascota" />
+        </EntityType>
+        <EntityType Name="TipoMascota">
+          <Key>
+            <PropertyRef Name="id_Tipo" />
+          </Key>
+          <Property Name="id_Tipo" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="tipo" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Mascota" Relationship="VeterinariaModel.FK_Mascota_TipoMascota_id_Tipo" FromRole="TipoMascota" ToRole="Mascota" />
+        </EntityType>
+        <Association Name="FK_Mascota_RazaMascota_id_Raza">
+          <End Type="VeterinariaModel.RazaMascota" Role="RazaMascota" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="VeterinariaModel.Mascota" Role="Mascota" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RazaMascota">
+              <PropertyRef Name="id_Raza" />
+            </Principal>
+            <Dependent Role="Mascota">
+              <PropertyRef Name="id_Raza" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Mascota_TipoMascota_id_Tipo">
+          <End Type="VeterinariaModel.TipoMascota" Role="TipoMascota" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="VeterinariaModel.Mascota" Role="Mascota" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TipoMascota">
+              <PropertyRef Name="id_Tipo" />
+            </Principal>
+            <Dependent Role="Mascota">
+              <PropertyRef Name="id_Tipo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Mascota_Usuario_id_Usuario">
+          <End Type="VeterinariaModel.Usuario" Role="Usuario" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="VeterinariaModel.Mascota" Role="Mascota" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="id_Usuario" />
+            </Principal>
+            <Dependent Role="Mascota">
+              <PropertyRef Name="id_Usuario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <ComplexType Name="Proc_listarMascota_Result">
+          <Property Type="Int32" Name="id_Mascota" Nullable="false" />
+          <Property Type="Int32" Name="id_Usuario" Nullable="false" />
+          <Property Type="Int32" Name="id_Tipo" Nullable="false" />
+          <Property Type="Int32" Name="id_Raza" Nullable="false" />
+          <Property Type="String" Name="nombre_Completo" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="sexo" Nullable="false" MaxLength="9" />
+          <Property Type="String" Name="peso" Nullable="false" MaxLength="50" />
+          <Property Type="Binary" Name="foto" Nullable="false" />
+          <Property Type="String" Name="fecha_Ingreso" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="fecha_Modificacion" Nullable="true" MaxLength="50" />
+        </ComplexType>
+        <ComplexType Name="Proc_listarMascotaPorid_Mascota_Result">
+          <Property Type="Int32" Name="id_Mascota" Nullable="false" />
+          <Property Type="Int32" Name="id_Usuario" Nullable="false" />
+          <Property Type="Int32" Name="id_Tipo" Nullable="false" />
+          <Property Type="Int32" Name="id_Raza" Nullable="false" />
+          <Property Type="String" Name="nombre_Completo" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="sexo" Nullable="false" MaxLength="9" />
+          <Property Type="String" Name="peso" Nullable="false" MaxLength="50" />
+          <Property Type="Binary" Name="foto" Nullable="false" />
+          <Property Type="String" Name="fecha_Ingreso" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="fecha_Modificacion" Nullable="true" MaxLength="50" />
+        </ComplexType>
+        <ComplexType Name="Proc_listarRazaMascota_Result">
+          <Property Type="Int32" Name="id_Raza" Nullable="false" />
+          <Property Type="String" Name="raza" Nullable="false" MaxLength="50" />
+        </ComplexType>
+        <ComplexType Name="Proc_listarRazaMascotaPorid_Raza_Result">
+          <Property Type="Int32" Name="id_Raza" Nullable="false" />
+          <Property Type="String" Name="raza" Nullable="false" MaxLength="50" />
+        </ComplexType>
+        <ComplexType Name="Proc_listarTipoMascota_Result">
+          <Property Type="Int32" Name="id_Tipo" Nullable="false" />
+          <Property Type="String" Name="tipo" Nullable="false" MaxLength="50" />
+        </ComplexType>
+        <ComplexType Name="Proc_listarTipoMascotaPorid_Tipo_Result">
+          <Property Type="Int32" Name="id_Tipo" Nullable="false" />
+          <Property Type="String" Name="tipo" Nullable="false" MaxLength="50" />
+        </ComplexType>
+        </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="VeterinariaModelStoreContainer" CdmEntityContainer="VeterinariaEntities">
+          <EntitySetMapping Name="Rol">
+            <EntityTypeMapping TypeName="VeterinariaModel.Rol">
+              <MappingFragment StoreEntitySet="Rol">
+                <ScalarProperty Name="nombre" ColumnName="nombre" />
+                <ScalarProperty Name="id_Rol" ColumnName="id_Rol" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Usuario">
+            <EntityTypeMapping TypeName="VeterinariaModel.Usuario">
+              <MappingFragment StoreEntitySet="Usuario">
+                <ScalarProperty Name="password" ColumnName="password" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="telefono" ColumnName="telefono" />
+                <ScalarProperty Name="ciudad" ColumnName="ciudad" />
+                <ScalarProperty Name="direccion" ColumnName="direccion" />
+                <ScalarProperty Name="nombre_Completo" ColumnName="nombre_Completo" />
+                <ScalarProperty Name="id_Usuario" ColumnName="id_Usuario" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="Rol_Usuario" TypeName="VeterinariaModel.Rol_Usuario" StoreEntitySet="Rol_Usuario">
+            <EndProperty Name="Usuario">
+              <ScalarProperty Name="id_Usuario" ColumnName="id_Usuario" />
+            </EndProperty>
+            <EndProperty Name="Rol">
+              <ScalarProperty Name="id_Rol" ColumnName="id_Rol" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <FunctionImportMapping FunctionImportName="Proc_actualizarUsuario" FunctionName="VeterinariaModel.Store.Proc_actualizarUsuario" />
+          <FunctionImportMapping FunctionImportName="Proc_crearRol" FunctionName="VeterinariaModel.Store.Proc_crearRol" />
+          <FunctionImportMapping FunctionImportName="Proc_crearRol_Usuario" FunctionName="VeterinariaModel.Store.Proc_crearRol_Usuario" />
+          <FunctionImportMapping FunctionImportName="Proc_crearUsuario" FunctionName="VeterinariaModel.Store.Proc_crearUsuario" />
+          <FunctionImportMapping FunctionImportName="Proc_eliminarUsuario" FunctionName="VeterinariaModel.Store.Proc_eliminarUsuario" />
+          <FunctionImportMapping FunctionImportName="Proc_listarid_RolPorid_Usuario" FunctionName="VeterinariaModel.Store.Proc_listarid_RolPorid_Usuario" />
+          <FunctionImportMapping FunctionImportName="Proc_listarid_UsuarioPorEmail" FunctionName="VeterinariaModel.Store.Proc_listarid_UsuarioPorEmail" />
+          <FunctionImportMapping FunctionImportName="Proc_listarUsuario" FunctionName="VeterinariaModel.Store.Proc_listarUsuario">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="VeterinariaModel.Proc_listarUsuario_Result">
+                <ScalarProperty Name="id_Usuario" ColumnName="id_Usuario" />
+                <ScalarProperty Name="nombre_Completo" ColumnName="nombre_Completo" />
+                <ScalarProperty Name="direccion" ColumnName="direccion" />
+                <ScalarProperty Name="ciudad" ColumnName="ciudad" />
+                <ScalarProperty Name="telefono" ColumnName="telefono" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="password" ColumnName="password" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="Proc_listarUsuarioPorid_Usuario" FunctionName="VeterinariaModel.Store.Proc_listarUsuarioPorid_Usuario">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="VeterinariaModel.Proc_listarUsuarioPorid_Usuario_Result">
+                <ScalarProperty Name="id_Usuario" ColumnName="id_Usuario" />
+                <ScalarProperty Name="nombre_Completo" ColumnName="nombre_Completo" />
+                <ScalarProperty Name="direccion" ColumnName="direccion" />
+                <ScalarProperty Name="ciudad" ColumnName="ciudad" />
+                <ScalarProperty Name="telefono" ColumnName="telefono" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="password" ColumnName="password" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="Proc_loguearse" FunctionName="VeterinariaModel.Store.Proc_loguearse">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="VeterinariaModel.Proc_loguearse_Result">
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="password" ColumnName="password" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <EntitySetMapping Name="Mascota">
+            <EntityTypeMapping TypeName="VeterinariaModel.Mascota">
+              <MappingFragment StoreEntitySet="Mascota">
+                <ScalarProperty Name="fecha_Modificacion" ColumnName="fecha_Modificacion" />
+                <ScalarProperty Name="fecha_Ingreso" ColumnName="fecha_Ingreso" />
+                <ScalarProperty Name="foto" ColumnName="foto" />
+                <ScalarProperty Name="peso" ColumnName="peso" />
+                <ScalarProperty Name="sexo" ColumnName="sexo" />
+                <ScalarProperty Name="nombre_Completo" ColumnName="nombre_Completo" />
+                <ScalarProperty Name="id_Raza" ColumnName="id_Raza" />
+                <ScalarProperty Name="id_Tipo" ColumnName="id_Tipo" />
+                <ScalarProperty Name="id_Usuario" ColumnName="id_Usuario" />
+                <ScalarProperty Name="id_Mascota" ColumnName="id_Mascota" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RazaMascota">
+            <EntityTypeMapping TypeName="VeterinariaModel.RazaMascota">
+              <MappingFragment StoreEntitySet="RazaMascota">
+                <ScalarProperty Name="raza" ColumnName="raza" />
+                <ScalarProperty Name="id_Raza" ColumnName="id_Raza" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TipoMascota">
+            <EntityTypeMapping TypeName="VeterinariaModel.TipoMascota">
+              <MappingFragment StoreEntitySet="TipoMascota">
+                <ScalarProperty Name="tipo" ColumnName="tipo" />
+                <ScalarProperty Name="id_Tipo" ColumnName="id_Tipo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="Proc_actualizarMascota" FunctionName="VeterinariaModel.Store.Proc_actualizarMascota" />
+          <FunctionImportMapping FunctionImportName="Proc_actualizarTipoMascota" FunctionName="VeterinariaModel.Store.Proc_actualizarTipoMascota" />
+          <FunctionImportMapping FunctionImportName="Proc_crearMascota" FunctionName="VeterinariaModel.Store.Proc_crearMascota" />
+          <FunctionImportMapping FunctionImportName="Proc_crearRazaMascota" FunctionName="VeterinariaModel.Store.Proc_crearRazaMascota" />
+          <FunctionImportMapping FunctionImportName="Proc_crearTipoMascota" FunctionName="VeterinariaModel.Store.Proc_crearTipoMascota" />
+          <FunctionImportMapping FunctionImportName="Proc_eliminarMascota" FunctionName="VeterinariaModel.Store.Proc_eliminarMascota" />
+          <FunctionImportMapping FunctionImportName="Proc_eliminarRazaMascota" FunctionName="VeterinariaModel.Store.Proc_eliminarRazaMascota" />
+          <FunctionImportMapping FunctionImportName="Proc_eliminarTipoMascota" FunctionName="VeterinariaModel.Store.Proc_eliminarTipoMascota" />
+          <FunctionImportMapping FunctionImportName="Proc_listarMascota" FunctionName="VeterinariaModel.Store.Proc_listarMascota">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="VeterinariaModel.Proc_listarMascota_Result">
+                <ScalarProperty Name="id_Mascota" ColumnName="id_Mascota" />
+                <ScalarProperty Name="id_Usuario" ColumnName="id_Usuario" />
+                <ScalarProperty Name="id_Tipo" ColumnName="id_Tipo" />
+                <ScalarProperty Name="id_Raza" ColumnName="id_Raza" />
+                <ScalarProperty Name="nombre_Completo" ColumnName="nombre_Completo" />
+                <ScalarProperty Name="sexo" ColumnName="sexo" />
+                <ScalarProperty Name="peso" ColumnName="peso" />
+                <ScalarProperty Name="foto" ColumnName="foto" />
+                <ScalarProperty Name="fecha_Ingreso" ColumnName="fecha_Ingreso" />
+                <ScalarProperty Name="fecha_Modificacion" ColumnName="fecha_Modificacion" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="Proc_listarMascotaPorid_Mascota" FunctionName="VeterinariaModel.Store.Proc_listarMascotaPorid_Mascota">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="VeterinariaModel.Proc_listarMascotaPorid_Mascota_Result">
+                <ScalarProperty Name="id_Mascota" ColumnName="id_Mascota" />
+                <ScalarProperty Name="id_Usuario" ColumnName="id_Usuario" />
+                <ScalarProperty Name="id_Tipo" ColumnName="id_Tipo" />
+                <ScalarProperty Name="id_Raza" ColumnName="id_Raza" />
+                <ScalarProperty Name="nombre_Completo" ColumnName="nombre_Completo" />
+                <ScalarProperty Name="sexo" ColumnName="sexo" />
+                <ScalarProperty Name="peso" ColumnName="peso" />
+                <ScalarProperty Name="foto" ColumnName="foto" />
+                <ScalarProperty Name="fecha_Ingreso" ColumnName="fecha_Ingreso" />
+                <ScalarProperty Name="fecha_Modificacion" ColumnName="fecha_Modificacion" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="Proc_listarRazaMascota" FunctionName="VeterinariaModel.Store.Proc_listarRazaMascota">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="VeterinariaModel.Proc_listarRazaMascota_Result">
+                <ScalarProperty Name="id_Raza" ColumnName="id_Raza" />
+                <ScalarProperty Name="raza" ColumnName="raza" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="Proc_listarRazaMascotaPorid_Raza" FunctionName="VeterinariaModel.Store.Proc_listarRazaMascotaPorid_Raza">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="VeterinariaModel.Proc_listarRazaMascotaPorid_Raza_Result">
+                <ScalarProperty Name="id_Raza" ColumnName="id_Raza" />
+                <ScalarProperty Name="raza" ColumnName="raza" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="Proc_listarTipoMascota" FunctionName="VeterinariaModel.Store.Proc_listarTipoMascota">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="VeterinariaModel.Proc_listarTipoMascota_Result">
+                <ScalarProperty Name="id_Tipo" ColumnName="id_Tipo" />
+                <ScalarProperty Name="tipo" ColumnName="tipo" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="Proc_listarTipoMascotaPorid_Tipo" FunctionName="VeterinariaModel.Store.Proc_listarTipoMascotaPorid_Tipo">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="VeterinariaModel.Proc_listarTipoMascotaPorid_Tipo_Result">
+                <ScalarProperty Name="id_Tipo" ColumnName="id_Tipo" />
+                <ScalarProperty Name="tipo" ColumnName="tipo" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="Proc_actualizarRazaMascota" FunctionName="VeterinariaModel.Store.Proc_actualizarRazaMascota" />
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Ninguno" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

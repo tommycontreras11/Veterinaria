@@ -1,0 +1,244 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - Mi aplicación ASP.NET</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://getbootstrap.com/docs/5.2/assets/css/docs.css" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/style.css"/>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"></script>
+</head>
+<body class="p-0 m-0 border-0 bd-example">
+
+    @*<nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #121212;">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="#" style="font-size: calc(10px + 2vmin);">Navbar</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+                    @if (User.Identity.IsAuthenticated)
+                    {
+
+                        if (Session["Rol"].ToString() == "1" && Session["Rol"].ToString() != null)
+                        {
+                            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                                <li class="nav-item">
+                                    <a class="nav-link" style="font-size: calc(5px + 2vmin);" href="/Home/">Home</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" style="font-size: calc(5px + 2vmin);" href="/Account/Usuario">Usuarios</a>
+                                </li>
+                            </ul>
+                        }
+                        else if (Session["Rol"].ToString() == "2" && Session["Rol"].ToString() != null)
+                        {
+                            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                                <li class="nav-item">
+                                    <a class="nav-link" style="font-size: calc(5px + 2vmin);" href="/Home/">Home</a>
+                                </li>
+                            </ul>
+                        }
+
+                        <ul class="nav navbar-nav navbar-right">
+                            <li class="nav-item">
+                                <a class="nav-link" style="font-size: calc(5px + 2vmin);" href="#">@User.Identity.Name</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" style="font-size: calc(5px + 2vmin);" href="/Account/Logout">Cerrar Sesión</a>
+                            </li>
+                        </ul>
+                    }
+                    else
+                    {
+                        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                            <li class="nav-item">
+                                <a class="nav-link" style="font-size: calc(5px + 2vmin);" href="/Home/">Home</a>
+                            </li>
+                        </ul>
+                        <ul class="nav navbar-nav navbar-right">
+                            <li class="nav-item">
+                                <a class="nav-link" style="font-size: calc(5px + 2vmin);" href="/Account/Login">Iniciar Sesión</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" style="font-size: calc(5px + 2vmin);" href="/Account/Create">Registrarse</a>
+                            </li>
+                        </ul>
+                    }
+                </div>
+            </div>
+        </nav>
+
+        <div class="container body-content">
+            @RenderBody()
+            <hr />
+            <footer>
+                <p>&copy; @DateTime.Now.Year - Mi aplicación ASP.NET</p>
+            </footer>
+        </div>*@
+
+    <section id="header">
+        <div class="container">
+            <nav class="navbar navbar-expand-lg navbar-dark">
+                <div class="container-fluid">
+                    <a class="navbar-brand theme-text" href="#">
+                        <img src="~/img/logo.png" width="110" height="110" class="img-responsive"/>
+                    </a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                            aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        @if (User.Identity.IsAuthenticated)
+                        {
+
+                            if (Session["Rol"].ToString() == "1" && Session["Rol"].ToString() != null)
+                            {
+                                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                                    <li class="nav-item">
+                                        <a class="nav-link" style="font-size: calc(5px + 2vmin);" href="/Home/">Home</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" style="font-size: calc(5px + 2vmin);" href="/Account/Usuario">Usuarios</a>
+                                    </li>
+                                </ul>
+                            }
+                            else if (Session["Rol"].ToString() == "2" && Session["Rol"].ToString() != null)
+                            {
+                                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                                    <li class="nav-item">
+                                        <a class="nav-link" style="font-size: calc(5px + 2vmin);" href="/Home/">Home</a>
+                                    </li>
+                                </ul>
+                            }
+
+                            <ul class="nav navbar-nav navbar-right">
+                                <li class="nav-item">
+                                    <a class="nav-link" style="font-size: calc(5px + 2vmin);" href="#">@User.Identity.Name</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" style="font-size: calc(5px + 2vmin);" href="/Account/Logout">Cerrar Sesión</a>
+                                </li>
+                            </ul>
+                        }
+                        else
+                        {
+                            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                                <li class="nav-item">
+                                    <a class="nav-link" style="font-size: calc(5px + 2vmin);" href="/Home/">Home</a>
+                                </li>
+                            </ul>
+                            <ul class="nav navbar-nav navbar-right">
+                                <li class="nav-item">
+                                    <a class="nav-link" style="font-size: calc(5px + 2vmin);" href="/Account/Login">Iniciar Sesión</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" style="font-size: calc(5px + 2vmin);" href="/Account/Create">Registrarse</a>
+                                </li>
+                            </ul>
+                        }
+
+                    </div>
+                </div>
+            </nav>
+            <!-- navbar code -->
+            <div class="middle">
+                <h1 class="text-white display-4 fw-bold">
+                    Nos dedicamos a el cuidado<span class="theme-text">
+                        de tu mascota.
+                    </span>
+                </h1>
+            </div>
+        </div>
+        <svg class="wave" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
+            <path fill="#fff" fill-opacity="1"
+                  d="M0,192L60,181.3C120,171,240,149,360,133.3C480,117,600,107,720,106.7C840,107,960,117,1080,122.7C1200,128,1320,128,1380,128L1440,128L1440,320L1380,320C1320,320,1200,320,1080,320C960,320,840,320,720,320C600,320,480,320,360,320C240,320,120,320,60,320L0,320Z">
+            </path>
+        </svg>
+    </section>
+    <br />
+    <br />
+    <footer class="text-white text-center text-lg-start bg-dark">
+        <!-- Grid container -->
+        <div class="container p-4">
+            <!--Grid row-->
+            <div class="row mt-4">
+                <!--Grid column-->
+                <div class="col-lg-4 col-md-12 mb-4 mb-md-0">
+                    <h5 class="text-uppercase mb-4">Acerca de nosotros</h5>
+
+                    <p>
+                        Nosotros somos un equipo al cuidado de tu mascota y cuando te acercas para recibir nuestros servicios sabemos que lo haces con la confianza de que tu mascota tendrá la mejor atención.
+                    </p>
+
+                    <div class="mt-4">
+                        <!-- Facebook -->
+                        <a type="button" class="btn btn-floating btn-light btn-lg"><i class="fab fa-facebook-f"></i></a>
+                        <!-- Dribbble -->
+                        <a type="button" class="btn btn-floating btn-light btn-lg"><i class="fab fa-dribbble"></i></a>
+                        <!-- Twitter -->
+                        <a type="button" class="btn btn-floating btn-light btn-lg"><i class="fab fa-twitter"></i></a>
+                        <!-- Google + -->
+                        <a type="button" class="btn btn-floating btn-light btn-lg"><i class="fab fa-google-plus-g"></i></a>
+                        <!-- Linkedin -->
+                    </div>
+                </div>
+                <!--Grid column-->
+                <!--Grid column-->
+                <div class="col-lg-4 col-md-6 mb-4 mb-md-0">
+                    <h5 class="text-uppercase mb-4 pb-1">Contacto</h5>
+
+                    <ul class="fa-ul" style="margin-left: 1.65em;">
+                        <li class="mb-3">
+                            <span class="fa-li"><i class="fas fa-home"></i></span><span class="ms-2">Edificios docentes Instituto Politecnico Pilar Constanzo, C. Olegario Vargas, Santo Domingo Este 11602</span>
+                        </li>
+                        <li class="mb-3">
+                            <span class="fa-li"><i class="fas fa-envelope"></i></span><span class="ms-2">VeterinariaManati@gmail.com</span>
+                        </li>
+                        <li class="mb-3">
+                            <span class="fa-li"><i class="fas fa-phone"></i></span><span class="ms-2">+1 809-596-2726</span>
+                        </li>
+                    </ul>
+                </div>
+                <!--Grid column-->
+                <!--Grid column-->
+                <div class="col-lg-4 col-md-6 mb-4 mb-md-0">
+                    <h5 class="text-uppercase mb-4">Horario de apertura</h5>
+
+                    <table class="table text-center text-white">
+                        <tbody class="fw-normal">
+                            <tr>
+                                <td>Lunes - Jueves:</td>
+                                <td>8am - 9pm</td>
+                            </tr>
+                            <tr>
+                                <td>Viernes - Sábado:</td>
+                                <td>8am - 1am</td>
+                            </tr>
+                            <tr>
+                                <td>Domingo:</td>
+                                <td>9am - 10pm</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <!--Grid column-->
+            </div>
+            <!--Grid row-->
+        </div>
+        <!-- Grid container -->
+        <!-- Copyright -->
+        <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
+            © 2022 Copyright:
+            <a class="text-white" href="#">VeterinariaManati.com</a>
+        </div>
+        <!-- Copyright -->
+    </footer>
+    @RenderBody()
+    @RenderSection("scripts", required: false)
+    <script src="https://kit.fontawesome.com/2f21f67d01.js" crossorigin="anonymous"></script>
+</body>
+</html>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="d36e4c769b1e4b529bc366991e509fc7" Name="Diagram1">
+        <EntityTypeShape EntityType="VeterinariaModel.Rol" Width="1.5" PointX="0.75" PointY="1.375" />
+        <EntityTypeShape EntityType="VeterinariaModel.Usuario" Width="1.5" PointX="3" PointY="1" />
+        <AssociationConnector Association="VeterinariaModel.Rol_Usuario" />
+        <EntityTypeShape EntityType="VeterinariaModel.Mascota" Width="1.5" PointX="5.25" PointY="0.75" />
+        <EntityTypeShape EntityType="VeterinariaModel.RazaMascota" Width="1.5" PointX="3" PointY="4.875" />
+        <EntityTypeShape EntityType="VeterinariaModel.TipoMascota" Width="1.5" PointX="3" PointY="7.25" />
+        <AssociationConnector Association="VeterinariaModel.FK_Mascota_RazaMascota_id_Raza" />
+        <AssociationConnector Association="VeterinariaModel.FK_Mascota_TipoMascota_id_Tipo" />
+        <AssociationConnector Association="VeterinariaModel.FK_Mascota_Usuario_id_Usuario" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
