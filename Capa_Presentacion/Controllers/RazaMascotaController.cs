@@ -12,7 +12,7 @@ namespace Capa_Presentacion.Controllers
     {
         Clase_Negocio _Negocio = new Clase_Negocio();
 
-        AccountController accountController = new AccountController();
+        AccountController account = new AccountController();
 
         // GET: Raza
         public ActionResult Index()
@@ -20,12 +20,12 @@ namespace Capa_Presentacion.Controllers
             return View();
         }
 
-        // GET: RazaMascota/Raza
-        public ActionResult Raza()
+        // GET: RazaMascota/Razas
+        public ActionResult Razas()
         {
             if (User.Identity.IsAuthenticated)
             {
-                if (accountController.IsValid(User.Identity.Name) == 2)
+                if (account.IsValid(User.Identity.Name) == 2)
                 {
                     return RedirectToAction("Index", "Home");
                 }
@@ -38,9 +38,15 @@ namespace Capa_Presentacion.Controllers
             return View();
         }
 
-        public ActionResult RazaJson()
+        public ActionResult listarRazaMascota()
         {
             var raza = _Negocio.Proc_listarRazaMascota();
+            return Json(raza, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult listarSoloRazaMascotaPorid_Raza(List<int> id) 
+        {
+            var raza = _Negocio.Proc_listarSoloRazaMascotaPorid_Raza(id);
             return Json(raza, JsonRequestBehavior.AllowGet);
         }
 
@@ -49,7 +55,7 @@ namespace Capa_Presentacion.Controllers
         {
             if (User.Identity.IsAuthenticated)
             {
-                if (accountController.IsValid(User.Identity.Name) == 2)
+                if (account.IsValid(User.Identity.Name) == 2)
                 {
                     return RedirectToAction("Index", "Home");
                 }
@@ -84,7 +90,7 @@ namespace Capa_Presentacion.Controllers
         {
             if (User.Identity.IsAuthenticated)
             {
-                if (accountController.IsValid(User.Identity.Name) == 2)
+                if (account.IsValid(User.Identity.Name) == 2)
                 {
                     return RedirectToAction("Index", "Home");
                 }
@@ -128,7 +134,7 @@ namespace Capa_Presentacion.Controllers
                 // TODO: Add delete logic here
                 if (User.Identity.IsAuthenticated)
                 {
-                    if (accountController.IsValid(User.Identity.Name) == 2)
+                    if (account.IsValid(User.Identity.Name) == 2)
                     {
                         return RedirectToAction("Index", "Home");
                     }

@@ -17,11 +17,13 @@ namespace Capa_Entidad
         public RazaMascota()
         {
             this.Mascota = new HashSet<Mascota>();
+            this.Consejo = new HashSet<Consejo>();
         }
     
         public int id_Raza { get; set; }
         public string raza { get; set; }
     
         public virtual ICollection<Mascota> Mascota { get; set; }
+        public virtual ICollection<Consejo> Consejo { get; set; }
     }
 }

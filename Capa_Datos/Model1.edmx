@@ -5,6 +5,29 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="VeterinariaModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Cita">
+          <Key>
+            <PropertyRef Name="id_Cita" />
+          </Key>
+          <Property Name="id_Cita" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="id_Usuario" Type="int" Nullable="false" />
+          <Property Name="id_Mascota" Type="int" Nullable="false" />
+          <Property Name="id_UsuarioVeterinario" Type="int" Nullable="false" />
+          <Property Name="servicio" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="fecha_Cita" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="fecha_Creacion" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="fecha_Modificacion" Type="varchar" MaxLength="50" />
+          <Property Name="comprobar_Cita" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Consejo">
+          <Key>
+            <PropertyRef Name="id_Consejo" />
+          </Key>
+          <Property Name="id_Consejo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="id_Tipo" Type="int" Nullable="false" />
+          <Property Name="id_Raza" Type="int" Nullable="false" />
+          <Property Name="descripcion" Type="varchar(max)" Nullable="false" />
+        </EntityType>
         <EntityType Name="Mascota">
           <Key>
             <PropertyRef Name="id_Mascota" />
@@ -44,6 +67,13 @@ advertencia 6002: La tabla o vista 'Veterinaria.dbo.Rol_Usuario' no tiene defini
           <Property Name="id_Rol" Type="int" Nullable="false" />
           <Property Name="id_Usuario" Type="int" Nullable="false" />
         </EntityType>
+        <EntityType Name="Servicio">
+          <Key>
+            <PropertyRef Name="id_Servicio" />
+          </Key>
+          <Property Name="id_Servicio" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="descripcion" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
         <EntityType Name="TipoMascota">
           <Key>
             <PropertyRef Name="id_Tipo" />
@@ -63,6 +93,58 @@ advertencia 6002: La tabla o vista 'Veterinaria.dbo.Rol_Usuario' no tiene defini
           <Property Name="email" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="password" Type="varchar" MaxLength="100" Nullable="false" />
         </EntityType>
+        <Association Name="FK_Cita_Mascota_id_Mascota">
+          <End Role="Mascota" Type="Self.Mascota" Multiplicity="1" />
+          <End Role="Cita" Type="Self.Cita" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Mascota">
+              <PropertyRef Name="id_Mascota" />
+            </Principal>
+            <Dependent Role="Cita">
+              <PropertyRef Name="id_Mascota" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Cita_Usuario_id_Usuario">
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="1" />
+          <End Role="Cita" Type="Self.Cita" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="id_Usuario" />
+            </Principal>
+            <Dependent Role="Cita">
+              <PropertyRef Name="id_Usuario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Consejo_RazaMascota_id_Raza">
+          <End Role="RazaMascota" Type="Self.RazaMascota" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Consejo" Type="Self.Consejo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RazaMascota">
+              <PropertyRef Name="id_Raza" />
+            </Principal>
+            <Dependent Role="Consejo">
+              <PropertyRef Name="id_Raza" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Consejo_TipoMascota_id_Tipo">
+          <End Role="TipoMascota" Type="Self.TipoMascota" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Consejo" Type="Self.Consejo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TipoMascota">
+              <PropertyRef Name="id_Tipo" />
+            </Principal>
+            <Dependent Role="Consejo">
+              <PropertyRef Name="id_Tipo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Mascota_RazaMascota_id_Raza">
           <End Role="RazaMascota" Type="Self.RazaMascota" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -133,6 +215,23 @@ advertencia 6002: La tabla o vista 'Veterinaria.dbo.Rol_Usuario' no tiene defini
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Function Name="Proc_actualizarCita" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="id_Cita" Type="int" Mode="In" />
+          <Parameter Name="id_Usuario" Type="int" Mode="In" />
+          <Parameter Name="id_Mascota" Type="int" Mode="In" />
+          <Parameter Name="id_UsuarioVeterinario" Type="int" Mode="In" />
+          <Parameter Name="servicio" Type="varchar" Mode="In" />
+          <Parameter Name="fecha_Cita" Type="varchar" Mode="In" />
+          <Parameter Name="fecha_Creacion" Type="varchar" Mode="In" />
+          <Parameter Name="fecha_Modificacion" Type="varchar" Mode="In" />
+          <Parameter Name="comprobar_Cita" Type="bit" Mode="In" />
+        </Function>
+        <Function Name="Proc_actualizarConsejo" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="id_Consejo" Type="int" Mode="In" />
+          <Parameter Name="id_Tipo" Type="int" Mode="In" />
+          <Parameter Name="id_Raza" Type="int" Mode="In" />
+          <Parameter Name="descripcion" Type="varchar(max)" Mode="In" />
+        </Function>
         <Function Name="Proc_actualizarMascota" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="id_Mascota" Type="int" Mode="In" />
           <Parameter Name="id_Usuario" Type="int" Mode="In" />
@@ -149,6 +248,14 @@ advertencia 6002: La tabla o vista 'Veterinaria.dbo.Rol_Usuario' no tiene defini
           <Parameter Name="id_raza" Type="int" Mode="In" />
           <Parameter Name="raza" Type="varchar" Mode="In" />
         </Function>
+        <Function Name="Proc_actualizarRol_Usuario" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="id_Rol" Type="int" Mode="In" />
+          <Parameter Name="id_Usuario" Type="int" Mode="In" />
+        </Function>
+        <Function Name="Proc_actualizarServicio" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="id_Servicio" Type="int" Mode="In" />
+          <Parameter Name="descripcion" Type="varchar" Mode="In" />
+        </Function>
         <Function Name="Proc_actualizarTipoMascota" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="id_Tipo" Type="int" Mode="In" />
           <Parameter Name="tipo" Type="varchar" Mode="In" />
@@ -161,6 +268,21 @@ advertencia 6002: La tabla o vista 'Veterinaria.dbo.Rol_Usuario' no tiene defini
           <Parameter Name="telefono" Type="varchar" Mode="In" />
           <Parameter Name="email" Type="varchar" Mode="In" />
           <Parameter Name="password" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="Proc_crearCita" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="id_Usuario" Type="int" Mode="In" />
+          <Parameter Name="id_Mascota" Type="int" Mode="In" />
+          <Parameter Name="id_UsuarioVeterinario" Type="int" Mode="In" />
+          <Parameter Name="servicio" Type="varchar" Mode="In" />
+          <Parameter Name="fecha_Cita" Type="varchar" Mode="In" />
+          <Parameter Name="fecha_Creacion" Type="varchar" Mode="In" />
+          <Parameter Name="fecha_Modificacion" Type="varchar" Mode="In" />
+          <Parameter Name="comprobar_Cita" Type="bit" Mode="In" />
+        </Function>
+        <Function Name="Proc_crearConsejo" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="id_Tipo" Type="int" Mode="In" />
+          <Parameter Name="id_Raza" Type="int" Mode="In" />
+          <Parameter Name="descripcion" Type="varchar(max)" Mode="In" />
         </Function>
         <Function Name="Proc_crearMascota" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="id_Usuario" Type="int" Mode="In" />
@@ -183,6 +305,9 @@ advertencia 6002: La tabla o vista 'Veterinaria.dbo.Rol_Usuario' no tiene defini
           <Parameter Name="id_Rol" Type="int" Mode="In" />
           <Parameter Name="id_Usuario" Type="int" Mode="In" />
         </Function>
+        <Function Name="Proc_crearServicio" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="descripcion" Type="varchar" Mode="In" />
+        </Function>
         <Function Name="Proc_crearTipoMascota" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="tipo" Type="varchar" Mode="In" />
         </Function>
@@ -194,17 +319,50 @@ advertencia 6002: La tabla o vista 'Veterinaria.dbo.Rol_Usuario' no tiene defini
           <Parameter Name="email" Type="varchar" Mode="In" />
           <Parameter Name="password" Type="varchar" Mode="In" />
         </Function>
+        <Function Name="Proc_eliminarCita" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="id_Cita" Type="int" Mode="In" />
+        </Function>
+        <Function Name="Proc_eliminarConsejo" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="id_Consejo" Type="int" Mode="In" />
+        </Function>
         <Function Name="Proc_eliminarMascota" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="id_Mascota" Type="int" Mode="In" />
         </Function>
         <Function Name="Proc_eliminarRazaMascota" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="id_raza" Type="int" Mode="In" />
         </Function>
+        <Function Name="Proc_eliminarRol_Usuario" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="id_Usuario" Type="int" Mode="In" />
+        </Function>
+        <Function Name="Proc_eliminarServicio" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="id_Servicio" Type="int" Mode="In" />
+        </Function>
         <Function Name="Proc_eliminarTipoMascota" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="id_Tipo" Type="int" Mode="In" />
         </Function>
         <Function Name="Proc_eliminarUsuario" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="id_Uusuario" Type="int" Mode="In" />
+        </Function>
+        <Function Name="Proc_listarAdmin" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="Proc_listarCita" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="Proc_listarCitaPorfecha_Cita" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="fecha_Cita" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="Proc_listarCitaPorid_Cita" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="id_Cita" Type="int" Mode="In" />
+        </Function>
+        <Function Name="Proc_listarCitaPorid_Usuario" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="id_Usuario" Type="int" Mode="In" />
+        </Function>
+        <Function Name="Proc_listarConsejo" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="Proc_listarConsejoPorid_Consejo" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="id_Consejo" Type="int" Mode="In" />
+        </Function>
+        <Function Name="Proc_listarFotoPorid_Mascota" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="id_Mascota" Type="int" Mode="In" />
+        </Function>
+        <Function Name="Proc_listarid_MascotaPornombre_Completo" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="nombre_Completo" Type="varchar" Mode="In" />
         </Function>
         <Function Name="Proc_listarid_RolPorid_Usuario" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="id_Usuario" Type="int" Mode="In" />
@@ -216,13 +374,42 @@ advertencia 6002: La tabla o vista 'Veterinaria.dbo.Rol_Usuario' no tiene defini
         <Function Name="Proc_listarMascotaPorid_Mascota" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="id_Mascota" Type="int" Mode="In" />
         </Function>
+        <Function Name="Proc_listarMascotaPorid_Usuario" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="id_Usuario" Type="int" Mode="In" />
+        </Function>
+        <Function Name="Proc_listarnombre_CompletoPorid_Usuario" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="id_Usuario" Type="int" Mode="In" />
+        </Function>
+        <Function Name="Proc_listarNombre_MascotaPorid_Usuario" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="id_Usuario" Type="int" Mode="In" />
+        </Function>
         <Function Name="Proc_listarRazaMascota" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="Proc_listarRazaMascotaPorid_Raza" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="id_Raza" Type="int" Mode="In" />
         </Function>
+        <Function Name="Proc_listarRol_Usuario" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="Proc_listarRol_UsuarioPorid_Usuario" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="id_Usuario" Type="int" Mode="In" />
+        </Function>
+        <Function Name="Proc_listarServicio" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="Proc_listarServicioPorid_Servicio" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="id_Servicio" Type="int" Mode="In" />
+        </Function>
+        <Function Name="Proc_listarservicioPorid_Usuario" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="id_Usuario" Type="int" Mode="In" />
+        </Function>
+        <Function Name="Proc_listarSoloRazaMascotaPorid_Raza" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="id_Raza" Type="int" Mode="In" />
+        </Function>
+        <Function Name="Proc_listarSoloTipoMascotaPorid_Tipo" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="id_Tipo" Type="int" Mode="In" />
+        </Function>
         <Function Name="Proc_listarTipoMascota" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="Proc_listarTipoMascotaPorid_Tipo" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="id_Tipo" Type="int" Mode="In" />
+        </Function>
+        <Function Name="Proc_listarTodaCitaPorfecha_Cita" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="fecha_Cita" Type="varchar" Mode="In" />
         </Function>
         <Function Name="Proc_listarUsuario" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="Proc_listarUsuarioPorid_Usuario" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
@@ -233,9 +420,12 @@ advertencia 6002: La tabla o vista 'Veterinaria.dbo.Rol_Usuario' no tiene defini
           <Parameter Name="password" Type="varchar" Mode="In" />
         </Function>
         <EntityContainer Name="VeterinariaModelStoreContainer">
+          <EntitySet Name="Cita" EntityType="Self.Cita" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Consejo" EntityType="Self.Consejo" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Mascota" EntityType="Self.Mascota" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="RazaMascota" EntityType="Self.RazaMascota" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Rol" EntityType="Self.Rol" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Servicio" EntityType="Self.Servicio" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TipoMascota" EntityType="Self.TipoMascota" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Usuario" EntityType="Self.Usuario" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Rol_Usuario" EntityType="Self.Rol_Usuario" store:Type="Tables" store:Schema="dbo">
@@ -244,6 +434,22 @@ advertencia 6002: La tabla o vista 'Veterinaria.dbo.Rol_Usuario' no tiene defini
     [Rol_Usuario].[id_Usuario] AS [id_Usuario]
     FROM [dbo].[Rol_Usuario] AS [Rol_Usuario]</DefiningQuery>
           </EntitySet>
+          <AssociationSet Name="FK_Cita_Mascota_id_Mascota" Association="Self.FK_Cita_Mascota_id_Mascota">
+            <End Role="Mascota" EntitySet="Mascota" />
+            <End Role="Cita" EntitySet="Cita" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Cita_Usuario_id_Usuario" Association="Self.FK_Cita_Usuario_id_Usuario">
+            <End Role="Usuario" EntitySet="Usuario" />
+            <End Role="Cita" EntitySet="Cita" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Consejo_RazaMascota_id_Raza" Association="Self.FK_Consejo_RazaMascota_id_Raza">
+            <End Role="RazaMascota" EntitySet="RazaMascota" />
+            <End Role="Consejo" EntitySet="Consejo" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Consejo_TipoMascota_id_Tipo" Association="Self.FK_Consejo_TipoMascota_id_Tipo">
+            <End Role="TipoMascota" EntitySet="TipoMascota" />
+            <End Role="Consejo" EntitySet="Consejo" />
+          </AssociationSet>
           <AssociationSet Name="FK_Mascota_RazaMascota_id_Raza" Association="Self.FK_Mascota_RazaMascota_id_Raza">
             <End Role="RazaMascota" EntitySet="RazaMascota" />
             <End Role="Mascota" EntitySet="Mascota" />
@@ -309,7 +515,6 @@ advertencia 6002: La tabla o vista 'Veterinaria.dbo.Rol_Usuario' no tiene defini
           <FunctionImport Name="Proc_listarid_UsuarioPorEmail" ReturnType="Collection(Int32)">
           <Parameter Name="email" Mode="In" Type="String" />
           </FunctionImport>
-          <FunctionImport Name="Proc_listarUsuario" ReturnType="Collection(VeterinariaModel.Proc_listarUsuario_Result)" />
           <FunctionImport Name="Proc_listarUsuarioPorid_Usuario" ReturnType="Collection(VeterinariaModel.Proc_listarUsuarioPorid_Usuario_Result)">
           <Parameter Name="id_Usuario" Mode="In" Type="Int32" />
           </FunctionImport>
@@ -317,47 +522,11 @@ advertencia 6002: La tabla o vista 'Veterinaria.dbo.Rol_Usuario' no tiene defini
             <Parameter Name="email" Mode="In" Type="String" />
             <Parameter Name="password" Mode="In" Type="String" />
           </FunctionImport>
-          <EntitySet Name="Mascota" EntityType="VeterinariaModel.Mascota" />
           <EntitySet Name="RazaMascota" EntityType="VeterinariaModel.RazaMascota" />
           <EntitySet Name="TipoMascota" EntityType="VeterinariaModel.TipoMascota" />
-          <AssociationSet Name="FK_Mascota_RazaMascota_id_Raza" Association="VeterinariaModel.FK_Mascota_RazaMascota_id_Raza">
-            <End Role="RazaMascota" EntitySet="RazaMascota" />
-            <End Role="Mascota" EntitySet="Mascota" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Mascota_TipoMascota_id_Tipo" Association="VeterinariaModel.FK_Mascota_TipoMascota_id_Tipo">
-            <End Role="TipoMascota" EntitySet="TipoMascota" />
-            <End Role="Mascota" EntitySet="Mascota" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Mascota_Usuario_id_Usuario" Association="VeterinariaModel.FK_Mascota_Usuario_id_Usuario">
-            <End Role="Usuario" EntitySet="Usuario" />
-            <End Role="Mascota" EntitySet="Mascota" />
-          </AssociationSet>
-          <FunctionImport Name="Proc_actualizarMascota">
-            <Parameter Name="id_Mascota" Mode="In" Type="Int32" />
-            <Parameter Name="id_Usuario" Mode="In" Type="Int32" />
-            <Parameter Name="id_Tipo" Mode="In" Type="Int32" />
-            <Parameter Name="id_Raza" Mode="In" Type="Int32" />
-            <Parameter Name="nombre_Completo" Mode="In" Type="String" />
-            <Parameter Name="sexo" Mode="In" Type="String" />
-            <Parameter Name="peso" Mode="In" Type="String" />
-            <Parameter Name="foto" Mode="In" Type="Binary" />
-            <Parameter Name="fecha_Ingreso" Mode="In" Type="String" />
-            <Parameter Name="fecha_Modificacion" Mode="In" Type="String" />
-          </FunctionImport>
           <FunctionImport Name="Proc_actualizarTipoMascota">
             <Parameter Name="id_Tipo" Mode="In" Type="Int32" />
             <Parameter Name="tipo" Mode="In" Type="String" />
-          </FunctionImport>
-          <FunctionImport Name="Proc_crearMascota">
-            <Parameter Name="id_Usuario" Mode="In" Type="Int32" />
-            <Parameter Name="id_Tipo" Mode="In" Type="Int32" />
-            <Parameter Name="id_Raza" Mode="In" Type="Int32" />
-            <Parameter Name="nombre_Completo" Mode="In" Type="String" />
-            <Parameter Name="sexo" Mode="In" Type="String" />
-            <Parameter Name="peso" Mode="In" Type="String" />
-            <Parameter Name="foto" Mode="In" Type="Binary" />
-            <Parameter Name="fecha_Ingreso" Mode="In" Type="String" />
-            <Parameter Name="fecha_Modificacion" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="Proc_crearRazaMascota">
           <Parameter Name="raza" Mode="In" Type="String" />
@@ -374,10 +543,6 @@ advertencia 6002: La tabla o vista 'Veterinaria.dbo.Rol_Usuario' no tiene defini
           <FunctionImport Name="Proc_eliminarTipoMascota">
           <Parameter Name="id_Tipo" Mode="In" Type="Int32" />
           </FunctionImport>
-          <FunctionImport Name="Proc_listarMascota" ReturnType="Collection(VeterinariaModel.Proc_listarMascota_Result)" />
-          <FunctionImport Name="Proc_listarMascotaPorid_Mascota" ReturnType="Collection(VeterinariaModel.Proc_listarMascotaPorid_Mascota_Result)">
-          <Parameter Name="id_Mascota" Mode="In" Type="Int32" />
-          </FunctionImport>
           <FunctionImport Name="Proc_listarRazaMascota" ReturnType="Collection(VeterinariaModel.Proc_listarRazaMascota_Result)" />
           <FunctionImport Name="Proc_listarRazaMascotaPorid_Raza" ReturnType="Collection(VeterinariaModel.Proc_listarRazaMascotaPorid_Raza_Result)">
           <Parameter Name="id_Raza" Mode="In" Type="Int32" />
@@ -390,7 +555,172 @@ advertencia 6002: La tabla o vista 'Veterinaria.dbo.Rol_Usuario' no tiene defini
             <Parameter Name="id_raza" Mode="In" Type="Int32" />
             <Parameter Name="raza" Mode="In" Type="String" />
           </FunctionImport>
-        </EntityContainer>
+          <FunctionImport Name="Proc_listarFotoPorid_Mascota" ReturnType="Collection(Binary)">
+          <Parameter Name="id_Mascota" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="Proc_listarSoloTipoMascotaPorid_Tipo" ReturnType="Collection(String)">
+          <Parameter Name="id_Tipo" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="Proc_listarSoloRazaMascotaPorid_Raza" ReturnType="Collection(String)">
+          <Parameter Name="id_Raza" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <EntitySet Name="Mascota" EntityType="VeterinariaModel.Mascota" />
+          <AssociationSet Name="FK_Mascota_RazaMascota_id_Raza" Association="VeterinariaModel.FK_Mascota_RazaMascota_id_Raza">
+            <End Role="RazaMascota" EntitySet="RazaMascota" />
+            <End Role="Mascota" EntitySet="Mascota" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Mascota_TipoMascota_id_Tipo" Association="VeterinariaModel.FK_Mascota_TipoMascota_id_Tipo">
+            <End Role="TipoMascota" EntitySet="TipoMascota" />
+            <End Role="Mascota" EntitySet="Mascota" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Mascota_Usuario_id_Usuario" Association="VeterinariaModel.FK_Mascota_Usuario_id_Usuario">
+            <End Role="Usuario" EntitySet="Usuario" />
+            <End Role="Mascota" EntitySet="Mascota" />
+          </AssociationSet>
+          <FunctionImport Name="Proc_crearMascota">
+            <Parameter Name="id_Usuario" Mode="In" Type="Int32" />
+            <Parameter Name="id_Tipo" Mode="In" Type="Int32" />
+            <Parameter Name="id_Raza" Mode="In" Type="Int32" />
+            <Parameter Name="nombre_Completo" Mode="In" Type="String" />
+            <Parameter Name="sexo" Mode="In" Type="String" />
+            <Parameter Name="peso" Mode="In" Type="String" />
+            <Parameter Name="foto" Mode="In" Type="Binary" />
+            <Parameter Name="fecha_Ingreso" Mode="In" Type="String" />
+            <Parameter Name="fecha_Modificacion" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="Proc_listarMascota" ReturnType="Collection(VeterinariaModel.Proc_listarMascota_Result)" />
+          <FunctionImport Name="Proc_listarMascotaPorid_Mascota" ReturnType="Collection(VeterinariaModel.Proc_listarMascotaPorid_Mascota_Result)">
+          <Parameter Name="id_Mascota" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="Proc_actualizarCita">
+            <Parameter Name="id_Cita" Mode="In" Type="Int32" />
+            <Parameter Name="id_Usuario" Mode="In" Type="Int32" />
+            <Parameter Name="id_Mascota" Mode="In" Type="Int32" />
+            <Parameter Name="id_UsuarioVeterinario" Mode="In" Type="Int32" />
+            <Parameter Name="servicio" Mode="In" Type="String" />
+            <Parameter Name="fecha_Cita" Mode="In" Type="String" />
+            <Parameter Name="fecha_Creacion" Mode="In" Type="String" />
+            <Parameter Name="fecha_Modificacion" Mode="In" Type="String" />
+            <Parameter Name="comprobar_Cita" Mode="In" Type="Boolean" />
+          </FunctionImport>
+          <FunctionImport Name="Proc_listarCita" ReturnType="Collection(VeterinariaModel.Proc_listarCita_Result)" />
+          <FunctionImport Name="Proc_listarCitaPorid_Cita" ReturnType="Collection(VeterinariaModel.Proc_listarCitaPorid_Cita_Result)">
+          <Parameter Name="id_Cita" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="Proc_eliminarCita">
+          <Parameter Name="id_Cita" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="Proc_listarAdmin" ReturnType="Collection(VeterinariaModel.Proc_listarAdmin_Result)" />
+          <FunctionImport Name="Proc_listarUsuario" ReturnType="Collection(VeterinariaModel.Proc_listarUsuario_Result)" />
+          <FunctionImport Name="Proc_listarMascotaPorid_Usuario" ReturnType="Collection(VeterinariaModel.Proc_listarMascotaPorid_Usuario_Result)">
+          <Parameter Name="id_Usuario" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="Proc_listarNombre_MascotaPorid_Usuario" ReturnType="Collection(String)">
+          <Parameter Name="id_Usuario" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="Proc_listarid_MascotaPornombre_Completo" ReturnType="Collection(Int32)">
+          <Parameter Name="nombre_Completo" Mode="In" Type="String" />
+          </FunctionImport>
+          <EntitySet Name="Cita" EntityType="VeterinariaModel.Cita" />
+          <AssociationSet Name="FK_Cita_Mascota_id_Mascota" Association="VeterinariaModel.FK_Cita_Mascota_id_Mascota">
+            <End Role="Mascota" EntitySet="Mascota" />
+            <End Role="Cita" EntitySet="Cita" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Cita_Usuario_id_Usuario" Association="VeterinariaModel.FK_Cita_Usuario_id_Usuario">
+            <End Role="Usuario" EntitySet="Usuario" />
+            <End Role="Cita" EntitySet="Cita" />
+          </AssociationSet>
+          <EntitySet Name="Servicio" EntityType="VeterinariaModel.Servicio" />
+          <FunctionImport Name="Proc_actualizarRol_Usuario">
+            <Parameter Name="id_Rol" Mode="In" Type="Int32" />
+            <Parameter Name="id_Usuario" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="Proc_crearServicio">
+          <Parameter Name="descripcion" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="Proc_eliminarRol_Usuario">
+          <Parameter Name="id_Usuario" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="Proc_listarRol_Usuario" ReturnType="Collection(VeterinariaModel.Proc_listarRol_Usuario_Result)" />
+          <FunctionImport Name="Proc_listarServicio" ReturnType="Collection(VeterinariaModel.Proc_listarServicio_Result)" />
+          <FunctionImport Name="Proc_listarServicioPorid_Servicio" ReturnType="Collection(VeterinariaModel.Proc_listarServicioPorid_Servicio_Result)">
+          <Parameter Name="id_Servicio" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="Proc_listarRol_UsuarioPorid_Usuario" ReturnType="Collection(VeterinariaModel.Proc_listarRol_UsuarioPorid_Usuario_Result)">
+          <Parameter Name="id_Usuario" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="Proc_actualizarServicio">
+            <Parameter Name="id_Servicio" Mode="In" Type="Int32" />
+            <Parameter Name="descripcion" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="Proc_eliminarServicio">
+          <Parameter Name="id_Servicio" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="Proc_actualizarMascota">
+            <Parameter Name="id_Mascota" Mode="In" Type="Int32" />
+            <Parameter Name="id_Usuario" Mode="In" Type="Int32" />
+            <Parameter Name="id_Tipo" Mode="In" Type="Int32" />
+            <Parameter Name="id_Raza" Mode="In" Type="Int32" />
+            <Parameter Name="nombre_Completo" Mode="In" Type="String" />
+            <Parameter Name="sexo" Mode="In" Type="String" />
+            <Parameter Name="peso" Mode="In" Type="String" />
+            <Parameter Name="foto" Mode="In" Type="Binary" />
+            <Parameter Name="fecha_Ingreso" Mode="In" Type="String" />
+            <Parameter Name="fecha_Modificacion" Mode="In" Type="String" />
+          </FunctionImport>
+          <EntitySet Name="Consejo" EntityType="VeterinariaModel.Consejo" />
+          <AssociationSet Name="FK_Consejo_RazaMascota_id_Raza" Association="VeterinariaModel.FK_Consejo_RazaMascota_id_Raza">
+            <End Role="RazaMascota" EntitySet="RazaMascota" />
+            <End Role="Consejo" EntitySet="Consejo" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Consejo_TipoMascota_id_Tipo" Association="VeterinariaModel.FK_Consejo_TipoMascota_id_Tipo">
+            <End Role="TipoMascota" EntitySet="TipoMascota" />
+            <End Role="Consejo" EntitySet="Consejo" />
+          </AssociationSet>
+          <FunctionImport Name="Proc_actualizarConsejo">
+            <Parameter Name="id_Consejo" Mode="In" Type="Int32" />
+            <Parameter Name="id_Tipo" Mode="In" Type="Int32" />
+            <Parameter Name="id_Raza" Mode="In" Type="Int32" />
+            <Parameter Name="descripcion" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="Proc_crearConsejo">
+            <Parameter Name="id_Tipo" Mode="In" Type="Int32" />
+            <Parameter Name="id_Raza" Mode="In" Type="Int32" />
+            <Parameter Name="descripcion" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="Proc_eliminarConsejo">
+          <Parameter Name="id_Consejo" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="Proc_listarConsejo" ReturnType="Collection(VeterinariaModel.Proc_listarConsejo_Result)" />
+          <FunctionImport Name="Proc_listarConsejoPorid_Consejo" ReturnType="Collection(VeterinariaModel.Proc_listarConsejoPorid_Consejo_Result)">
+          <Parameter Name="id_Consejo" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="Proc_listarservicioPorid_Usuario" ReturnType="Collection(String)">
+          <Parameter Name="id_Usuario" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="Proc_listarCitaPorid_Usuario" ReturnType="Collection(VeterinariaModel.Proc_listarCitaPorid_Usuario_Result)">
+          <Parameter Name="id_Usuario" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="Proc_listarnombre_CompletoPorid_Usuario" ReturnType="Collection(String)">
+          <Parameter Name="id_Usuario" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="Proc_listarCitaPorfecha_Cita" ReturnType="Collection(String)">
+          <Parameter Name="fecha_Cita" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="Proc_crearCita">
+            <Parameter Name="id_Usuario" Mode="In" Type="Int32" />
+            <Parameter Name="id_Mascota" Mode="In" Type="Int32" />
+            <Parameter Name="id_UsuarioVeterinario" Mode="In" Type="Int32" />
+            <Parameter Name="servicio" Mode="In" Type="String" />
+            <Parameter Name="fecha_Cita" Mode="In" Type="String" />
+            <Parameter Name="fecha_Creacion" Mode="In" Type="String" />
+            <Parameter Name="fecha_Modificacion" Mode="In" Type="String" />
+            <Parameter Name="comprobar_Cita" Mode="In" Type="Boolean" />
+          </FunctionImport>
+          <FunctionImport Name="Proc_listarTodaCitaPorfecha_Cita" ReturnType="Collection(VeterinariaModel.Proc_listarTodaCitaPorfecha_Cita_Result)">
+            <Parameter Name="fecha_Cita" Mode="In" Type="String" />
+          </FunctionImport>
+          </EntityContainer>
         <EntityType Name="Rol">
           <Key>
             <PropertyRef Name="id_Rol" />
@@ -412,20 +742,12 @@ advertencia 6002: La tabla o vista 'Veterinaria.dbo.Rol_Usuario' no tiene defini
           <Property Name="password" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Rol" Relationship="VeterinariaModel.Rol_Usuario" FromRole="Usuario" ToRole="Rol" />
           <NavigationProperty Name="Mascota" Relationship="VeterinariaModel.FK_Mascota_Usuario_id_Usuario" FromRole="Usuario" ToRole="Mascota" />
+          <NavigationProperty Name="Cita" Relationship="VeterinariaModel.FK_Cita_Usuario_id_Usuario" FromRole="Usuario" ToRole="Cita" />
         </EntityType>
         <Association Name="Rol_Usuario">
           <End Type="VeterinariaModel.Rol" Role="Rol" Multiplicity="*" />
           <End Type="VeterinariaModel.Usuario" Role="Usuario" Multiplicity="*" />
         </Association>
-        <ComplexType Name="Proc_listarUsuario_Result">
-          <Property Type="Int32" Name="id_Usuario" Nullable="false" />
-          <Property Type="String" Name="nombre_Completo" Nullable="false" MaxLength="150" />
-          <Property Type="String" Name="direccion" Nullable="false" MaxLength="150" />
-          <Property Type="String" Name="ciudad" Nullable="false" MaxLength="150" />
-          <Property Type="String" Name="telefono" Nullable="false" MaxLength="10" />
-          <Property Type="String" Name="email" Nullable="false" MaxLength="100" />
-          <Property Type="String" Name="password" Nullable="false" MaxLength="100" />
-        </ComplexType>
         <ComplexType Name="Proc_listarUsuarioPorid_Usuario_Result">
           <Property Type="Int32" Name="id_Usuario" Nullable="false" />
           <Property Type="String" Name="nombre_Completo" Nullable="false" MaxLength="150" />
@@ -438,6 +760,40 @@ advertencia 6002: La tabla o vista 'Veterinaria.dbo.Rol_Usuario' no tiene defini
         <ComplexType Name="Proc_loguearse_Result">
           <Property Type="String" Name="email" Nullable="false" MaxLength="100" />
           <Property Type="String" Name="password" Nullable="false" MaxLength="100" />
+        </ComplexType>
+        <EntityType Name="RazaMascota">
+          <Key>
+            <PropertyRef Name="id_Raza" />
+          </Key>
+          <Property Name="id_Raza" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="raza" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Mascota" Relationship="VeterinariaModel.FK_Mascota_RazaMascota_id_Raza" FromRole="RazaMascota" ToRole="Mascota" />
+          <NavigationProperty Name="Consejo" Relationship="VeterinariaModel.FK_Consejo_RazaMascota_id_Raza" FromRole="RazaMascota" ToRole="Consejo" />
+        </EntityType>
+        <EntityType Name="TipoMascota">
+          <Key>
+            <PropertyRef Name="id_Tipo" />
+          </Key>
+          <Property Name="id_Tipo" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="tipo" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Mascota" Relationship="VeterinariaModel.FK_Mascota_TipoMascota_id_Tipo" FromRole="TipoMascota" ToRole="Mascota" />
+          <NavigationProperty Name="Consejo" Relationship="VeterinariaModel.FK_Consejo_TipoMascota_id_Tipo" FromRole="TipoMascota" ToRole="Consejo" />
+        </EntityType>
+        <ComplexType Name="Proc_listarRazaMascota_Result">
+          <Property Type="Int32" Name="id_Raza" Nullable="false" />
+          <Property Type="String" Name="raza" Nullable="false" MaxLength="50" />
+        </ComplexType>
+        <ComplexType Name="Proc_listarRazaMascotaPorid_Raza_Result">
+          <Property Type="Int32" Name="id_Raza" Nullable="false" />
+          <Property Type="String" Name="raza" Nullable="false" MaxLength="50" />
+        </ComplexType>
+        <ComplexType Name="Proc_listarTipoMascota_Result">
+          <Property Type="Int32" Name="id_Tipo" Nullable="false" />
+          <Property Type="String" Name="tipo" Nullable="false" MaxLength="50" />
+        </ComplexType>
+        <ComplexType Name="Proc_listarTipoMascotaPorid_Tipo_Result">
+          <Property Type="Int32" Name="id_Tipo" Nullable="false" />
+          <Property Type="String" Name="tipo" Nullable="false" MaxLength="50" />
         </ComplexType>
         <EntityType Name="Mascota">
           <Key>
@@ -456,22 +812,7 @@ advertencia 6002: La tabla o vista 'Veterinaria.dbo.Rol_Usuario' no tiene defini
           <NavigationProperty Name="RazaMascota" Relationship="VeterinariaModel.FK_Mascota_RazaMascota_id_Raza" FromRole="Mascota" ToRole="RazaMascota" />
           <NavigationProperty Name="TipoMascota" Relationship="VeterinariaModel.FK_Mascota_TipoMascota_id_Tipo" FromRole="Mascota" ToRole="TipoMascota" />
           <NavigationProperty Name="Usuario" Relationship="VeterinariaModel.FK_Mascota_Usuario_id_Usuario" FromRole="Mascota" ToRole="Usuario" />
-        </EntityType>
-        <EntityType Name="RazaMascota">
-          <Key>
-            <PropertyRef Name="id_Raza" />
-          </Key>
-          <Property Name="id_Raza" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="raza" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="Mascota" Relationship="VeterinariaModel.FK_Mascota_RazaMascota_id_Raza" FromRole="RazaMascota" ToRole="Mascota" />
-        </EntityType>
-        <EntityType Name="TipoMascota">
-          <Key>
-            <PropertyRef Name="id_Tipo" />
-          </Key>
-          <Property Name="id_Tipo" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="tipo" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="Mascota" Relationship="VeterinariaModel.FK_Mascota_TipoMascota_id_Tipo" FromRole="TipoMascota" ToRole="Mascota" />
+          <NavigationProperty Name="Cita" Relationship="VeterinariaModel.FK_Cita_Mascota_id_Mascota" FromRole="Mascota" ToRole="Cita" />
         </EntityType>
         <Association Name="FK_Mascota_RazaMascota_id_Raza">
           <End Type="VeterinariaModel.RazaMascota" Role="RazaMascota" Multiplicity="1">
@@ -539,21 +880,193 @@ advertencia 6002: La tabla o vista 'Veterinaria.dbo.Rol_Usuario' no tiene defini
           <Property Type="String" Name="fecha_Ingreso" Nullable="false" MaxLength="50" />
           <Property Type="String" Name="fecha_Modificacion" Nullable="true" MaxLength="50" />
         </ComplexType>
-        <ComplexType Name="Proc_listarRazaMascota_Result">
-          <Property Type="Int32" Name="id_Raza" Nullable="false" />
-          <Property Type="String" Name="raza" Nullable="false" MaxLength="50" />
+        <ComplexType Name="Proc_listarCita_Result">
+          <Property Type="Int32" Name="id_Cita" Nullable="false" />
+          <Property Type="Int32" Name="id_Usuario" Nullable="false" />
+          <Property Type="Int32" Name="id_Mascota" Nullable="false" />
+          <Property Type="Int32" Name="id_UsuarioVeterinario" Nullable="false" />
+          <Property Type="String" Name="servicio" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="fecha_Cita" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="fecha_Creacion" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="fecha_Modificacion" Nullable="false" MaxLength="50" />
+          <Property Type="Boolean" Name="comprobar_Cita" Nullable="false" />
         </ComplexType>
-        <ComplexType Name="Proc_listarRazaMascotaPorid_Raza_Result">
-          <Property Type="Int32" Name="id_Raza" Nullable="false" />
-          <Property Type="String" Name="raza" Nullable="false" MaxLength="50" />
+        <ComplexType Name="Proc_listarCitaPorid_Cita_Result">
+          <Property Type="Int32" Name="id_Cita" Nullable="false" />
+          <Property Type="Int32" Name="id_Usuario" Nullable="false" />
+          <Property Type="Int32" Name="id_Mascota" Nullable="false" />
+          <Property Type="Int32" Name="id_UsuarioVeterinario" Nullable="false" />
+          <Property Type="String" Name="servicio" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="fecha_Cita" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="fecha_Creacion" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="fecha_Modificacion" Nullable="false" MaxLength="50" />
+          <Property Type="Boolean" Name="comprobar_Cita" Nullable="false" />
         </ComplexType>
-        <ComplexType Name="Proc_listarTipoMascota_Result">
+        <ComplexType Name="Proc_listarAdmin_Result">
+          <Property Type="Int32" Name="id_Usuario" Nullable="false" />
+          <Property Type="String" Name="nombre_Completo" Nullable="false" MaxLength="150" />
+          <Property Type="String" Name="direccion" Nullable="false" MaxLength="150" />
+          <Property Type="String" Name="ciudad" Nullable="false" MaxLength="150" />
+          <Property Type="String" Name="telefono" Nullable="false" MaxLength="10" />
+          <Property Type="String" Name="email" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="password" Nullable="false" MaxLength="100" />
+        </ComplexType>
+        <ComplexType Name="Proc_listarUsuario_Result">
+          <Property Type="Int32" Name="id_Usuario" Nullable="false" />
+          <Property Type="String" Name="nombre_Completo" Nullable="false" MaxLength="150" />
+          <Property Type="String" Name="direccion" Nullable="false" MaxLength="150" />
+          <Property Type="String" Name="ciudad" Nullable="false" MaxLength="150" />
+          <Property Type="String" Name="telefono" Nullable="false" MaxLength="10" />
+          <Property Type="String" Name="email" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="password" Nullable="false" MaxLength="100" />
+        </ComplexType>
+        <ComplexType Name="Proc_listarMascotaPorid_Usuario_Result">
+          <Property Type="Int32" Name="id_Mascota" Nullable="false" />
+          <Property Type="Int32" Name="id_Usuario" Nullable="false" />
           <Property Type="Int32" Name="id_Tipo" Nullable="false" />
-          <Property Type="String" Name="tipo" Nullable="false" MaxLength="50" />
+          <Property Type="Int32" Name="id_Raza" Nullable="false" />
+          <Property Type="String" Name="nombre_Completo" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="sexo" Nullable="false" MaxLength="9" />
+          <Property Type="String" Name="peso" Nullable="false" MaxLength="50" />
+          <Property Type="Binary" Name="foto" Nullable="false" />
+          <Property Type="String" Name="fecha_Ingreso" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="fecha_Modificacion" Nullable="true" MaxLength="50" />
         </ComplexType>
-        <ComplexType Name="Proc_listarTipoMascotaPorid_Tipo_Result">
+        <EntityType Name="Cita">
+          <Key>
+            <PropertyRef Name="id_Cita" />
+          </Key>
+          <Property Name="id_Cita" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="id_Usuario" Type="Int32" Nullable="false" />
+          <Property Name="id_Mascota" Type="Int32" Nullable="false" />
+          <Property Name="id_UsuarioVeterinario" Type="Int32" Nullable="false" />
+          <Property Name="servicio" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="fecha_Cita" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="fecha_Creacion" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="fecha_Modificacion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="comprobar_Cita" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Mascota" Relationship="VeterinariaModel.FK_Cita_Mascota_id_Mascota" FromRole="Cita" ToRole="Mascota" />
+          <NavigationProperty Name="Usuario" Relationship="VeterinariaModel.FK_Cita_Usuario_id_Usuario" FromRole="Cita" ToRole="Usuario" />
+        </EntityType>
+        <Association Name="FK_Cita_Mascota_id_Mascota">
+          <End Type="VeterinariaModel.Mascota" Role="Mascota" Multiplicity="1" />
+          <End Type="VeterinariaModel.Cita" Role="Cita" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Mascota">
+              <PropertyRef Name="id_Mascota" />
+            </Principal>
+            <Dependent Role="Cita">
+              <PropertyRef Name="id_Mascota" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Cita_Usuario_id_Usuario">
+          <End Type="VeterinariaModel.Usuario" Role="Usuario" Multiplicity="1" />
+          <End Type="VeterinariaModel.Cita" Role="Cita" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="id_Usuario" />
+            </Principal>
+            <Dependent Role="Cita">
+              <PropertyRef Name="id_Usuario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Servicio">
+          <Key>
+            <PropertyRef Name="id_Servicio" />
+          </Key>
+          <Property Name="id_Servicio" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="descripcion" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <ComplexType Name="Proc_listarRol_Usuario_Result">
+          <Property Type="Int32" Name="id_Rol" Nullable="false" />
+          <Property Type="Int32" Name="id_Usuario" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="Proc_listarServicio_Result">
+          <Property Type="Int32" Name="id_Servicio" Nullable="false" />
+          <Property Type="String" Name="descripcion" Nullable="false" MaxLength="50" />
+        </ComplexType>
+        <ComplexType Name="Proc_listarServicioPorid_Servicio_Result">
+          <Property Type="Int32" Name="id_Servicio" Nullable="false" />
+          <Property Type="String" Name="descripcion" Nullable="false" MaxLength="50" />
+        </ComplexType>
+        <ComplexType Name="Proc_listarRol_UsuarioPorid_Usuario_Result">
+          <Property Type="Int32" Name="id_Rol" Nullable="false" />
+          <Property Type="Int32" Name="id_Usuario" Nullable="false" />
+        </ComplexType>
+        <EntityType Name="Consejo">
+          <Key>
+            <PropertyRef Name="id_Consejo" />
+          </Key>
+          <Property Name="id_Consejo" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="id_Tipo" Type="Int32" Nullable="false" />
+          <Property Name="id_Raza" Type="Int32" Nullable="false" />
+          <Property Name="descripcion" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="RazaMascota" Relationship="VeterinariaModel.FK_Consejo_RazaMascota_id_Raza" FromRole="Consejo" ToRole="RazaMascota" />
+          <NavigationProperty Name="TipoMascota" Relationship="VeterinariaModel.FK_Consejo_TipoMascota_id_Tipo" FromRole="Consejo" ToRole="TipoMascota" />
+        </EntityType>
+        <Association Name="FK_Consejo_RazaMascota_id_Raza">
+          <End Type="VeterinariaModel.RazaMascota" Role="RazaMascota" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="VeterinariaModel.Consejo" Role="Consejo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RazaMascota">
+              <PropertyRef Name="id_Raza" />
+            </Principal>
+            <Dependent Role="Consejo">
+              <PropertyRef Name="id_Raza" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Consejo_TipoMascota_id_Tipo">
+          <End Type="VeterinariaModel.TipoMascota" Role="TipoMascota" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="VeterinariaModel.Consejo" Role="Consejo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TipoMascota">
+              <PropertyRef Name="id_Tipo" />
+            </Principal>
+            <Dependent Role="Consejo">
+              <PropertyRef Name="id_Tipo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <ComplexType Name="Proc_listarConsejo_Result">
+          <Property Type="Int32" Name="id_Consejo" Nullable="false" />
           <Property Type="Int32" Name="id_Tipo" Nullable="false" />
-          <Property Type="String" Name="tipo" Nullable="false" MaxLength="50" />
+          <Property Type="Int32" Name="id_Raza" Nullable="false" />
+          <Property Type="String" Name="descripcion" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="Proc_listarConsejoPorid_Consejo_Result">
+          <Property Type="Int32" Name="id_Consejo" Nullable="false" />
+          <Property Type="Int32" Name="id_Tipo" Nullable="false" />
+          <Property Type="Int32" Name="id_Raza" Nullable="false" />
+          <Property Type="String" Name="descripcion" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="Proc_listarCitaPorid_Usuario_Result">
+          <Property Type="Int32" Name="id_Cita" Nullable="false" />
+          <Property Type="Int32" Name="id_Usuario" Nullable="false" />
+          <Property Type="Int32" Name="id_Mascota" Nullable="false" />
+          <Property Type="Int32" Name="id_UsuarioVeterinario" Nullable="false" />
+          <Property Type="String" Name="servicio" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="fecha_Cita" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="fecha_Creacion" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="fecha_Modificacion" Nullable="true" MaxLength="50" />
+          <Property Type="Boolean" Name="comprobar_Cita" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="Proc_listarTodaCitaPorfecha_Cita_Result">
+          <Property Type="Int32" Name="id_Cita" Nullable="false" />
+          <Property Type="Int32" Name="id_Usuario" Nullable="false" />
+          <Property Type="Int32" Name="id_Mascota" Nullable="false" />
+          <Property Type="Int32" Name="id_UsuarioVeterinario" Nullable="false" />
+          <Property Type="String" Name="servicio" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="fecha_Cita" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="fecha_Creacion" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="fecha_Modificacion" Nullable="true" MaxLength="50" />
+          <Property Type="Boolean" Name="comprobar_Cita" Nullable="false" />
         </ComplexType>
         </Schema>
     </edmx:ConceptualModels>
@@ -597,19 +1110,6 @@ advertencia 6002: La tabla o vista 'Veterinaria.dbo.Rol_Usuario' no tiene defini
           <FunctionImportMapping FunctionImportName="Proc_eliminarUsuario" FunctionName="VeterinariaModel.Store.Proc_eliminarUsuario" />
           <FunctionImportMapping FunctionImportName="Proc_listarid_RolPorid_Usuario" FunctionName="VeterinariaModel.Store.Proc_listarid_RolPorid_Usuario" />
           <FunctionImportMapping FunctionImportName="Proc_listarid_UsuarioPorEmail" FunctionName="VeterinariaModel.Store.Proc_listarid_UsuarioPorEmail" />
-          <FunctionImportMapping FunctionImportName="Proc_listarUsuario" FunctionName="VeterinariaModel.Store.Proc_listarUsuario">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="VeterinariaModel.Proc_listarUsuario_Result">
-                <ScalarProperty Name="id_Usuario" ColumnName="id_Usuario" />
-                <ScalarProperty Name="nombre_Completo" ColumnName="nombre_Completo" />
-                <ScalarProperty Name="direccion" ColumnName="direccion" />
-                <ScalarProperty Name="ciudad" ColumnName="ciudad" />
-                <ScalarProperty Name="telefono" ColumnName="telefono" />
-                <ScalarProperty Name="email" ColumnName="email" />
-                <ScalarProperty Name="password" ColumnName="password" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="Proc_listarUsuarioPorid_Usuario" FunctionName="VeterinariaModel.Store.Proc_listarUsuarioPorid_Usuario">
             <ResultMapping>
               <ComplexTypeMapping TypeName="VeterinariaModel.Proc_listarUsuarioPorid_Usuario_Result">
@@ -631,22 +1131,6 @@ advertencia 6002: La tabla o vista 'Veterinaria.dbo.Rol_Usuario' no tiene defini
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <EntitySetMapping Name="Mascota">
-            <EntityTypeMapping TypeName="VeterinariaModel.Mascota">
-              <MappingFragment StoreEntitySet="Mascota">
-                <ScalarProperty Name="fecha_Modificacion" ColumnName="fecha_Modificacion" />
-                <ScalarProperty Name="fecha_Ingreso" ColumnName="fecha_Ingreso" />
-                <ScalarProperty Name="foto" ColumnName="foto" />
-                <ScalarProperty Name="peso" ColumnName="peso" />
-                <ScalarProperty Name="sexo" ColumnName="sexo" />
-                <ScalarProperty Name="nombre_Completo" ColumnName="nombre_Completo" />
-                <ScalarProperty Name="id_Raza" ColumnName="id_Raza" />
-                <ScalarProperty Name="id_Tipo" ColumnName="id_Tipo" />
-                <ScalarProperty Name="id_Usuario" ColumnName="id_Usuario" />
-                <ScalarProperty Name="id_Mascota" ColumnName="id_Mascota" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="RazaMascota">
             <EntityTypeMapping TypeName="VeterinariaModel.RazaMascota">
               <MappingFragment StoreEntitySet="RazaMascota">
@@ -663,46 +1147,12 @@ advertencia 6002: La tabla o vista 'Veterinaria.dbo.Rol_Usuario' no tiene defini
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <FunctionImportMapping FunctionImportName="Proc_actualizarMascota" FunctionName="VeterinariaModel.Store.Proc_actualizarMascota" />
           <FunctionImportMapping FunctionImportName="Proc_actualizarTipoMascota" FunctionName="VeterinariaModel.Store.Proc_actualizarTipoMascota" />
-          <FunctionImportMapping FunctionImportName="Proc_crearMascota" FunctionName="VeterinariaModel.Store.Proc_crearMascota" />
           <FunctionImportMapping FunctionImportName="Proc_crearRazaMascota" FunctionName="VeterinariaModel.Store.Proc_crearRazaMascota" />
           <FunctionImportMapping FunctionImportName="Proc_crearTipoMascota" FunctionName="VeterinariaModel.Store.Proc_crearTipoMascota" />
           <FunctionImportMapping FunctionImportName="Proc_eliminarMascota" FunctionName="VeterinariaModel.Store.Proc_eliminarMascota" />
           <FunctionImportMapping FunctionImportName="Proc_eliminarRazaMascota" FunctionName="VeterinariaModel.Store.Proc_eliminarRazaMascota" />
           <FunctionImportMapping FunctionImportName="Proc_eliminarTipoMascota" FunctionName="VeterinariaModel.Store.Proc_eliminarTipoMascota" />
-          <FunctionImportMapping FunctionImportName="Proc_listarMascota" FunctionName="VeterinariaModel.Store.Proc_listarMascota">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="VeterinariaModel.Proc_listarMascota_Result">
-                <ScalarProperty Name="id_Mascota" ColumnName="id_Mascota" />
-                <ScalarProperty Name="id_Usuario" ColumnName="id_Usuario" />
-                <ScalarProperty Name="id_Tipo" ColumnName="id_Tipo" />
-                <ScalarProperty Name="id_Raza" ColumnName="id_Raza" />
-                <ScalarProperty Name="nombre_Completo" ColumnName="nombre_Completo" />
-                <ScalarProperty Name="sexo" ColumnName="sexo" />
-                <ScalarProperty Name="peso" ColumnName="peso" />
-                <ScalarProperty Name="foto" ColumnName="foto" />
-                <ScalarProperty Name="fecha_Ingreso" ColumnName="fecha_Ingreso" />
-                <ScalarProperty Name="fecha_Modificacion" ColumnName="fecha_Modificacion" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="Proc_listarMascotaPorid_Mascota" FunctionName="VeterinariaModel.Store.Proc_listarMascotaPorid_Mascota">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="VeterinariaModel.Proc_listarMascotaPorid_Mascota_Result">
-                <ScalarProperty Name="id_Mascota" ColumnName="id_Mascota" />
-                <ScalarProperty Name="id_Usuario" ColumnName="id_Usuario" />
-                <ScalarProperty Name="id_Tipo" ColumnName="id_Tipo" />
-                <ScalarProperty Name="id_Raza" ColumnName="id_Raza" />
-                <ScalarProperty Name="nombre_Completo" ColumnName="nombre_Completo" />
-                <ScalarProperty Name="sexo" ColumnName="sexo" />
-                <ScalarProperty Name="peso" ColumnName="peso" />
-                <ScalarProperty Name="foto" ColumnName="foto" />
-                <ScalarProperty Name="fecha_Ingreso" ColumnName="fecha_Ingreso" />
-                <ScalarProperty Name="fecha_Modificacion" ColumnName="fecha_Modificacion" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="Proc_listarRazaMascota" FunctionName="VeterinariaModel.Store.Proc_listarRazaMascota">
             <ResultMapping>
               <ComplexTypeMapping TypeName="VeterinariaModel.Proc_listarRazaMascota_Result">
@@ -736,7 +1186,263 @@ advertencia 6002: La tabla o vista 'Veterinaria.dbo.Rol_Usuario' no tiene defini
             </ResultMapping>
           </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="Proc_actualizarRazaMascota" FunctionName="VeterinariaModel.Store.Proc_actualizarRazaMascota" />
-        </EntityContainerMapping>
+          <FunctionImportMapping FunctionImportName="Proc_listarFotoPorid_Mascota" FunctionName="VeterinariaModel.Store.Proc_listarFotoPorid_Mascota" />
+          <FunctionImportMapping FunctionImportName="Proc_listarSoloTipoMascotaPorid_Tipo" FunctionName="VeterinariaModel.Store.Proc_listarSoloTipoMascotaPorid_Tipo" />
+          <FunctionImportMapping FunctionImportName="Proc_listarSoloRazaMascotaPorid_Raza" FunctionName="VeterinariaModel.Store.Proc_listarSoloRazaMascotaPorid_Raza" />
+          <EntitySetMapping Name="Mascota">
+            <EntityTypeMapping TypeName="VeterinariaModel.Mascota">
+              <MappingFragment StoreEntitySet="Mascota">
+                <ScalarProperty Name="fecha_Modificacion" ColumnName="fecha_Modificacion" />
+                <ScalarProperty Name="fecha_Ingreso" ColumnName="fecha_Ingreso" />
+                <ScalarProperty Name="foto" ColumnName="foto" />
+                <ScalarProperty Name="peso" ColumnName="peso" />
+                <ScalarProperty Name="sexo" ColumnName="sexo" />
+                <ScalarProperty Name="nombre_Completo" ColumnName="nombre_Completo" />
+                <ScalarProperty Name="id_Raza" ColumnName="id_Raza" />
+                <ScalarProperty Name="id_Tipo" ColumnName="id_Tipo" />
+                <ScalarProperty Name="id_Usuario" ColumnName="id_Usuario" />
+                <ScalarProperty Name="id_Mascota" ColumnName="id_Mascota" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="Proc_crearMascota" FunctionName="VeterinariaModel.Store.Proc_crearMascota" />
+          <FunctionImportMapping FunctionImportName="Proc_listarMascota" FunctionName="VeterinariaModel.Store.Proc_listarMascota">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="VeterinariaModel.Proc_listarMascota_Result">
+                <ScalarProperty Name="id_Mascota" ColumnName="id_Mascota" />
+                <ScalarProperty Name="id_Usuario" ColumnName="id_Usuario" />
+                <ScalarProperty Name="id_Tipo" ColumnName="id_Tipo" />
+                <ScalarProperty Name="id_Raza" ColumnName="id_Raza" />
+                <ScalarProperty Name="nombre_Completo" ColumnName="nombre_Completo" />
+                <ScalarProperty Name="sexo" ColumnName="sexo" />
+                <ScalarProperty Name="peso" ColumnName="peso" />
+                <ScalarProperty Name="foto" ColumnName="foto" />
+                <ScalarProperty Name="fecha_Ingreso" ColumnName="fecha_Ingreso" />
+                <ScalarProperty Name="fecha_Modificacion" ColumnName="fecha_Modificacion" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="Proc_listarMascotaPorid_Mascota" FunctionName="VeterinariaModel.Store.Proc_listarMascotaPorid_Mascota">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="VeterinariaModel.Proc_listarMascotaPorid_Mascota_Result">
+                <ScalarProperty Name="id_Mascota" ColumnName="id_Mascota" />
+                <ScalarProperty Name="id_Usuario" ColumnName="id_Usuario" />
+                <ScalarProperty Name="id_Tipo" ColumnName="id_Tipo" />
+                <ScalarProperty Name="id_Raza" ColumnName="id_Raza" />
+                <ScalarProperty Name="nombre_Completo" ColumnName="nombre_Completo" />
+                <ScalarProperty Name="sexo" ColumnName="sexo" />
+                <ScalarProperty Name="peso" ColumnName="peso" />
+                <ScalarProperty Name="foto" ColumnName="foto" />
+                <ScalarProperty Name="fecha_Ingreso" ColumnName="fecha_Ingreso" />
+                <ScalarProperty Name="fecha_Modificacion" ColumnName="fecha_Modificacion" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="Proc_actualizarCita" FunctionName="VeterinariaModel.Store.Proc_actualizarCita" />
+          <FunctionImportMapping FunctionImportName="Proc_listarCita" FunctionName="VeterinariaModel.Store.Proc_listarCita">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="VeterinariaModel.Proc_listarCita_Result">
+                <ScalarProperty Name="id_Cita" ColumnName="id_Cita" />
+                <ScalarProperty Name="id_Usuario" ColumnName="id_Usuario" />
+                <ScalarProperty Name="id_Mascota" ColumnName="id_Mascota" />
+                <ScalarProperty Name="id_UsuarioVeterinario" ColumnName="id_UsuarioVeterinario" />
+                <ScalarProperty Name="servicio" ColumnName="servicio" />
+                <ScalarProperty Name="fecha_Cita" ColumnName="fecha_Cita" />
+                <ScalarProperty Name="fecha_Creacion" ColumnName="fecha_Creacion" />
+                <ScalarProperty Name="fecha_Modificacion" ColumnName="fecha_Modificacion" />
+                <ScalarProperty Name="comprobar_Cita" ColumnName="comprobar_Cita" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="Proc_listarCitaPorid_Cita" FunctionName="VeterinariaModel.Store.Proc_listarCitaPorid_Cita">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="VeterinariaModel.Proc_listarCitaPorid_Cita_Result">
+                <ScalarProperty Name="id_Cita" ColumnName="id_Cita" />
+                <ScalarProperty Name="id_Usuario" ColumnName="id_Usuario" />
+                <ScalarProperty Name="id_Mascota" ColumnName="id_Mascota" />
+                <ScalarProperty Name="id_UsuarioVeterinario" ColumnName="id_UsuarioVeterinario" />
+                <ScalarProperty Name="servicio" ColumnName="servicio" />
+                <ScalarProperty Name="fecha_Cita" ColumnName="fecha_Cita" />
+                <ScalarProperty Name="fecha_Creacion" ColumnName="fecha_Creacion" />
+                <ScalarProperty Name="fecha_Modificacion" ColumnName="fecha_Modificacion" />
+                <ScalarProperty Name="comprobar_Cita" ColumnName="comprobar_Cita" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="Proc_eliminarCita" FunctionName="VeterinariaModel.Store.Proc_eliminarCita" />
+          <FunctionImportMapping FunctionImportName="Proc_listarAdmin" FunctionName="VeterinariaModel.Store.Proc_listarAdmin">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="VeterinariaModel.Proc_listarAdmin_Result">
+                <ScalarProperty Name="id_Usuario" ColumnName="id_Usuario" />
+                <ScalarProperty Name="nombre_Completo" ColumnName="nombre_Completo" />
+                <ScalarProperty Name="direccion" ColumnName="direccion" />
+                <ScalarProperty Name="ciudad" ColumnName="ciudad" />
+                <ScalarProperty Name="telefono" ColumnName="telefono" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="password" ColumnName="password" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="Proc_listarUsuario" FunctionName="VeterinariaModel.Store.Proc_listarUsuario">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="VeterinariaModel.Proc_listarUsuario_Result">
+                <ScalarProperty Name="id_Usuario" ColumnName="id_Usuario" />
+                <ScalarProperty Name="nombre_Completo" ColumnName="nombre_Completo" />
+                <ScalarProperty Name="direccion" ColumnName="direccion" />
+                <ScalarProperty Name="ciudad" ColumnName="ciudad" />
+                <ScalarProperty Name="telefono" ColumnName="telefono" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="password" ColumnName="password" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="Proc_listarMascotaPorid_Usuario" FunctionName="VeterinariaModel.Store.Proc_listarMascotaPorid_Usuario">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="VeterinariaModel.Proc_listarMascotaPorid_Usuario_Result">
+                <ScalarProperty Name="id_Mascota" ColumnName="id_Mascota" />
+                <ScalarProperty Name="id_Usuario" ColumnName="id_Usuario" />
+                <ScalarProperty Name="id_Tipo" ColumnName="id_Tipo" />
+                <ScalarProperty Name="id_Raza" ColumnName="id_Raza" />
+                <ScalarProperty Name="nombre_Completo" ColumnName="nombre_Completo" />
+                <ScalarProperty Name="sexo" ColumnName="sexo" />
+                <ScalarProperty Name="peso" ColumnName="peso" />
+                <ScalarProperty Name="foto" ColumnName="foto" />
+                <ScalarProperty Name="fecha_Ingreso" ColumnName="fecha_Ingreso" />
+                <ScalarProperty Name="fecha_Modificacion" ColumnName="fecha_Modificacion" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="Proc_listarNombre_MascotaPorid_Usuario" FunctionName="VeterinariaModel.Store.Proc_listarNombre_MascotaPorid_Usuario" />
+          <FunctionImportMapping FunctionImportName="Proc_listarid_MascotaPornombre_Completo" FunctionName="VeterinariaModel.Store.Proc_listarid_MascotaPornombre_Completo" />
+          <EntitySetMapping Name="Cita">
+            <EntityTypeMapping TypeName="VeterinariaModel.Cita">
+              <MappingFragment StoreEntitySet="Cita">
+                <ScalarProperty Name="comprobar_Cita" ColumnName="comprobar_Cita" />
+                <ScalarProperty Name="fecha_Modificacion" ColumnName="fecha_Modificacion" />
+                <ScalarProperty Name="fecha_Creacion" ColumnName="fecha_Creacion" />
+                <ScalarProperty Name="fecha_Cita" ColumnName="fecha_Cita" />
+                <ScalarProperty Name="servicio" ColumnName="servicio" />
+                <ScalarProperty Name="id_UsuarioVeterinario" ColumnName="id_UsuarioVeterinario" />
+                <ScalarProperty Name="id_Mascota" ColumnName="id_Mascota" />
+                <ScalarProperty Name="id_Usuario" ColumnName="id_Usuario" />
+                <ScalarProperty Name="id_Cita" ColumnName="id_Cita" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Servicio">
+            <EntityTypeMapping TypeName="VeterinariaModel.Servicio">
+              <MappingFragment StoreEntitySet="Servicio">
+                <ScalarProperty Name="descripcion" ColumnName="descripcion" />
+                <ScalarProperty Name="id_Servicio" ColumnName="id_Servicio" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="Proc_actualizarRol_Usuario" FunctionName="VeterinariaModel.Store.Proc_actualizarRol_Usuario" />
+          <FunctionImportMapping FunctionImportName="Proc_crearServicio" FunctionName="VeterinariaModel.Store.Proc_crearServicio" />
+          <FunctionImportMapping FunctionImportName="Proc_eliminarRol_Usuario" FunctionName="VeterinariaModel.Store.Proc_eliminarRol_Usuario" />
+          <FunctionImportMapping FunctionImportName="Proc_listarRol_Usuario" FunctionName="VeterinariaModel.Store.Proc_listarRol_Usuario">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="VeterinariaModel.Proc_listarRol_Usuario_Result">
+                <ScalarProperty Name="id_Rol" ColumnName="id_Rol" />
+                <ScalarProperty Name="id_Usuario" ColumnName="id_Usuario" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="Proc_listarServicio" FunctionName="VeterinariaModel.Store.Proc_listarServicio">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="VeterinariaModel.Proc_listarServicio_Result">
+                <ScalarProperty Name="id_Servicio" ColumnName="id_Servicio" />
+                <ScalarProperty Name="descripcion" ColumnName="descripcion" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="Proc_listarServicioPorid_Servicio" FunctionName="VeterinariaModel.Store.Proc_listarServicioPorid_Servicio">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="VeterinariaModel.Proc_listarServicioPorid_Servicio_Result">
+                <ScalarProperty Name="id_Servicio" ColumnName="id_Servicio" />
+                <ScalarProperty Name="descripcion" ColumnName="descripcion" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="Proc_listarRol_UsuarioPorid_Usuario" FunctionName="VeterinariaModel.Store.Proc_listarRol_UsuarioPorid_Usuario">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="VeterinariaModel.Proc_listarRol_UsuarioPorid_Usuario_Result">
+                <ScalarProperty Name="id_Rol" ColumnName="id_Rol" />
+                <ScalarProperty Name="id_Usuario" ColumnName="id_Usuario" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="Proc_actualizarServicio" FunctionName="VeterinariaModel.Store.Proc_actualizarServicio" />
+          <FunctionImportMapping FunctionImportName="Proc_eliminarServicio" FunctionName="VeterinariaModel.Store.Proc_eliminarServicio" />
+          <FunctionImportMapping FunctionImportName="Proc_actualizarMascota" FunctionName="VeterinariaModel.Store.Proc_actualizarMascota" />
+          <EntitySetMapping Name="Consejo">
+            <EntityTypeMapping TypeName="VeterinariaModel.Consejo">
+              <MappingFragment StoreEntitySet="Consejo">
+                <ScalarProperty Name="descripcion" ColumnName="descripcion" />
+                <ScalarProperty Name="id_Raza" ColumnName="id_Raza" />
+                <ScalarProperty Name="id_Tipo" ColumnName="id_Tipo" />
+                <ScalarProperty Name="id_Consejo" ColumnName="id_Consejo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="Proc_actualizarConsejo" FunctionName="VeterinariaModel.Store.Proc_actualizarConsejo" />
+          <FunctionImportMapping FunctionImportName="Proc_crearConsejo" FunctionName="VeterinariaModel.Store.Proc_crearConsejo" />
+          <FunctionImportMapping FunctionImportName="Proc_eliminarConsejo" FunctionName="VeterinariaModel.Store.Proc_eliminarConsejo" />
+          <FunctionImportMapping FunctionImportName="Proc_listarConsejo" FunctionName="VeterinariaModel.Store.Proc_listarConsejo">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="VeterinariaModel.Proc_listarConsejo_Result">
+                <ScalarProperty Name="id_Consejo" ColumnName="id_Consejo" />
+                <ScalarProperty Name="id_Tipo" ColumnName="id_Tipo" />
+                <ScalarProperty Name="id_Raza" ColumnName="id_Raza" />
+                <ScalarProperty Name="descripcion" ColumnName="descripcion" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="Proc_listarConsejoPorid_Consejo" FunctionName="VeterinariaModel.Store.Proc_listarConsejoPorid_Consejo">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="VeterinariaModel.Proc_listarConsejoPorid_Consejo_Result">
+                <ScalarProperty Name="id_Consejo" ColumnName="id_Consejo" />
+                <ScalarProperty Name="id_Tipo" ColumnName="id_Tipo" />
+                <ScalarProperty Name="id_Raza" ColumnName="id_Raza" />
+                <ScalarProperty Name="descripcion" ColumnName="descripcion" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="Proc_listarservicioPorid_Usuario" FunctionName="VeterinariaModel.Store.Proc_listarservicioPorid_Usuario" />
+          <FunctionImportMapping FunctionImportName="Proc_listarCitaPorid_Usuario" FunctionName="VeterinariaModel.Store.Proc_listarCitaPorid_Usuario">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="VeterinariaModel.Proc_listarCitaPorid_Usuario_Result">
+                <ScalarProperty Name="id_Cita" ColumnName="id_Cita" />
+                <ScalarProperty Name="id_Usuario" ColumnName="id_Usuario" />
+                <ScalarProperty Name="id_Mascota" ColumnName="id_Mascota" />
+                <ScalarProperty Name="id_UsuarioVeterinario" ColumnName="id_UsuarioVeterinario" />
+                <ScalarProperty Name="servicio" ColumnName="servicio" />
+                <ScalarProperty Name="fecha_Cita" ColumnName="fecha_Cita" />
+                <ScalarProperty Name="fecha_Creacion" ColumnName="fecha_Creacion" />
+                <ScalarProperty Name="fecha_Modificacion" ColumnName="fecha_Modificacion" />
+                <ScalarProperty Name="comprobar_Cita" ColumnName="comprobar_Cita" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="Proc_listarnombre_CompletoPorid_Usuario" FunctionName="VeterinariaModel.Store.Proc_listarnombre_CompletoPorid_Usuario" />
+          <FunctionImportMapping FunctionImportName="Proc_listarCitaPorfecha_Cita" FunctionName="VeterinariaModel.Store.Proc_listarCitaPorfecha_Cita" />
+          <FunctionImportMapping FunctionImportName="Proc_crearCita" FunctionName="VeterinariaModel.Store.Proc_crearCita" />
+          <FunctionImportMapping FunctionImportName="Proc_listarTodaCitaPorfecha_Cita" FunctionName="VeterinariaModel.Store.Proc_listarTodaCitaPorfecha_Cita">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="VeterinariaModel.Proc_listarTodaCitaPorfecha_Cita_Result">
+                <ScalarProperty Name="id_Cita" ColumnName="id_Cita" />
+                <ScalarProperty Name="id_Usuario" ColumnName="id_Usuario" />
+                <ScalarProperty Name="id_Mascota" ColumnName="id_Mascota" />
+                <ScalarProperty Name="id_UsuarioVeterinario" ColumnName="id_UsuarioVeterinario" />
+                <ScalarProperty Name="servicio" ColumnName="servicio" />
+                <ScalarProperty Name="fecha_Cita" ColumnName="fecha_Cita" />
+                <ScalarProperty Name="fecha_Creacion" ColumnName="fecha_Creacion" />
+                <ScalarProperty Name="fecha_Modificacion" ColumnName="fecha_Modificacion" />
+                <ScalarProperty Name="comprobar_Cita" ColumnName="comprobar_Cita" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
   </edmx:Runtime>

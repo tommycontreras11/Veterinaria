@@ -18,6 +18,7 @@ namespace Capa_Entidad
         {
             this.Rol = new HashSet<Rol>();
             this.Mascota = new HashSet<Mascota>();
+            this.Cita = new HashSet<Cita>();
         }
     
         public int id_Usuario { get; set; }
@@ -30,5 +31,6 @@ namespace Capa_Entidad
     
         public virtual ICollection<Rol> Rol { get; set; }
         public virtual ICollection<Mascota> Mascota { get; set; }
+        public virtual ICollection<Cita> Cita { get; set; }
     }
 }

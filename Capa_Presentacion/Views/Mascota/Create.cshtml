@@ -1,0 +1,288 @@
+﻿@model Capa_Entidad.Mascota
+
+@{
+    ViewBag.Title = "Create";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - Mi aplicación ASP.NET</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://getbootstrap.com/docs/5.2/assets/css/docs.css" rel="stylesheet">
+</head>
+<body class="p-0 m-0 border-0 bd-example">
+
+    <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #121212;">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#" style="font-size: calc(10px + 2vmin);">Veterinaria Manatí</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+                @if (User.Identity.IsAuthenticated)
+                {
+
+                    if (Session["Rol"].ToString() == "1" && Session["Rol"].ToString() != null)
+                    {
+                        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                            <li class="nav-item">
+                                <a class="nav-link" style="font-size: calc(5px + 2vmin);" href="/Home/">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" style="font-size: calc(5px + 2vmin);" href="/Account/Usuarios">Usuarios</a>
+                            </li>
+                        </ul>
+                    }
+                    else if (Session["Rol"].ToString() == "2" && Session["Rol"].ToString() != null)
+                    {
+                        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                            <li class="nav-item">
+                                <a class="nav-link" style="font-size: calc(5px + 2vmin);" href="/Home/">Home</a>
+                            </li>
+                        </ul>
+                    }
+
+                    <ul class="nav navbar-nav navbar-right">
+                        <li class="nav-item">
+                            <a class="nav-link" style="font-size: calc(5px + 2vmin);" href="/Account/Perfil">@User.Identity.Name</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" style="font-size: calc(5px + 2vmin);" href="/Account/Logout">Cerrar Sesión</a>
+                        </li>
+                    </ul>
+                }
+                else
+                {
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link" style="font-size: calc(5px + 2vmin);" href="/Home/">Home</a>
+                        </li>
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li class="nav-item">
+                            <a class="nav-link" style="font-size: calc(5px + 2vmin);" href="/Account/Login">Iniciar Sesión</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" style="font-size: calc(5px + 2vmin);" href="/Account/Create">Registrarse</a>
+                        </li>
+                    </ul>
+                }
+            </div>
+        </div>
+    </nav>
+    <div class="container">
+        <div class="col-md-12">
+            <h2>Create</h2>
+
+            @using (Html.BeginForm("Create", "Mascota", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+                @Html.AntiForgeryToken()
+
+                <div class="form-horizontal">
+                    <h4>Mascota</h4>
+                    <h1>@ViewBag.mensaje</h1>
+                    <hr />
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                    <div class="form-group">
+                        <div class="col-md-10" id="selectUsuario">
+
+                        </div>
+                    </div><br>
+
+                    <div class="form-group">
+                        <div class="col-md-10" id="selectTipo">
+
+                        </div>
+                    </div><br>
+
+                    <div class="form-group">
+                        <div class="col-md-10" id="selectRaza">
+
+                        </div>
+                    </div><br>
+
+                    @*<div class="form-group">
+                            @Html.LabelFor(model => model.id_Tipo, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.id_Tipo, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.id_Tipo, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.id_Raza, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.id_Raza, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.id_Raza, "", new { @class = "text-danger" })
+                            </div>
+                        </div>*@
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.nombre_Completo, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.nombre_Completo, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.nombre_Completo, "", new { @class = "text-danger" })
+                        </div>
+                    </div><br>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.sexo, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            <select class="form-select" name="sexo" aria-label="Default select example">
+                                <option id="Masculino" value="Masculino">Masculino</option>
+                                <option id="Femenino" value="Femenino">Femenino</option>
+                            </select>
+                        </div>
+                    </div><br>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.peso, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.peso, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.peso, "", new { @class = "text-danger" })
+                        </div>
+                    </div><br>
+
+                    <div class="form-group">
+                        <label>Foto</label>
+                        <div class="col-md-8">
+                            <input type="file" class="form-control" name="imageLoad" value="" />
+                            @Html.ValidationMessageFor(model => model.foto, "", new { @class = "text-danger" })
+                        </div>
+                    </div><br>
+
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <input type="submit" value="Create" class="btn btn-primary" />
+                        </div>
+                    </div>
+                </div>
+            }
+
+            <div>
+                @Html.ActionLink("Back to List", "Index")
+            </div>
+
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.js"></script>
+</body>
+</html>
+
+<script>
+
+    $(document).ready(function () {
+        listarUsuario();
+        listarTipoMascota();
+        listarRazaMascota();
+    });
+
+    function listarUsuario() {
+
+        $.ajax({
+            type: "GET",
+            url: "/Account/listarUsuarioPorid_Usuario",
+            dataType: "JSON",
+            contentType: "application/json; charset=utf-8",
+            cache: false,
+
+            success: function (data) {
+
+                let items = "";
+                alert(data);
+                items += "<label>Usuario</label>";
+                items += "<select class='form-select' name='usuario' aria-label='Default select example'>";
+
+                items += "<option id='" + JSON.stringify(data.id_Usuario).replaceAll("\"", "") + "' value='" + JSON.stringify(data.id_Usuario).replaceAll("\"", "") + "'>" + JSON.stringify(data.nombre_Completo).replaceAll("\"", "") + "</option>";
+                
+                items += "</select>";
+
+                $("#selectUsuario").append(items);
+            },
+
+            error: function (error) {
+                alert("Ha ocurrido un error: " + error);
+            }
+        });
+
+    }
+
+    function listarTipoMascota() {
+
+        $.ajax({
+            type: "GET",
+            url: "/TipoMascota/listarTipoMascota",
+            dataType: "JSON",
+            contentType: "application/json; charset=utf-8",
+            cache: false,
+
+            success: function (data) {
+
+                let items = "";
+
+                items += "<label>Tipo de mascota</label>";
+                items += "<select class='form-select' name='tipoMascota' aria-label='Default select example'>";
+
+                for (let i = 0; i < data.length; i++) {
+                    const tipoMascota = data[i];
+                    items += "<option id='" + tipoMascota.id_Tipo + "' value='" + tipoMascota.id_Tipo + "'> " + tipoMascota.tipo + " </option>";
+                }
+
+                items += "</select>";
+
+                $("#selectTipo").append(items);
+            },
+
+            error: function (error) {
+                alert("Ha ocurrido un error: " + error);
+            }
+        });
+
+    }
+
+    function listarRazaMascota() {
+
+        $.ajax({
+            type: "GET",
+            url: "/RazaMascota/listarRazaMascota",
+            dataType: "JSON",
+            contentType: "application/json; charset=utf-8",
+            cache: false,
+
+            success: function (data) {
+
+                let items = "";
+
+                items += "<label>Raza de la mascota</label>";
+                items += "<select class='form-select' name='razaMascota' aria-label='Default select example'>";
+
+                for (let i = 0; i < data.length; i++) {
+                    const raza = data[i];
+                    items += "<option id='" + raza.id_Raza + "' value='" + raza.id_Raza + "'>" + raza.raza + "</option>";
+                }
+
+                items += "</select>";
+
+                $("#selectRaza").append(items);
+
+            },
+
+            error: function (error) {
+                alert("Ha ocurrido un error: " + error);
+            }
+        });
+
+    }
+
+</script>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

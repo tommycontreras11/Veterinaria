@@ -1,0 +1,376 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - Mi aplicación ASP.NET</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://getbootstrap.com/docs/5.2/assets/css/docs.css" rel="stylesheet">
+</head>
+<body class="p-0 m-0 border-0 bd-example">
+
+    <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #121212;">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#" style="font-size: calc(10px + 2vmin);">Veterinaria Manatí</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+                @if (User.Identity.IsAuthenticated)
+                {
+
+                    if (Session["Rol"].ToString() == "1" && Session["Rol"].ToString() != null)
+                    {
+                        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                            <li class="nav-item">
+                                <a class="nav-link" style="font-size: calc(5px + 2vmin);" href="/Home/">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" style="font-size: calc(5px + 2vmin);" href="/Account/Usuarios">Usuarios</a>
+                            </li>
+                        </ul>
+                    }
+                    else if (Session["Rol"].ToString() == "2" && Session["Rol"].ToString() != null)
+                    {
+                        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                            <li class="nav-item">
+                                <a class="nav-link" style="font-size: calc(5px + 2vmin);" href="/Home/">Home</a>
+                            </li>
+                        </ul>
+                    }
+
+                    <ul class="nav navbar-nav navbar-right">
+                        <li class="nav-item">
+                            <a class="nav-link" style="font-size: calc(5px + 2vmin);" href="/Account/Perfil">@User.Identity.Name</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" style="font-size: calc(5px + 2vmin);" href="/Account/Logout">Cerrar Sesión</a>
+                        </li>
+                    </ul>
+                }
+                else
+                {
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link" style="font-size: calc(5px + 2vmin);" href="/Home/">Home</a>
+                        </li>
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li class="nav-item">
+                            <a class="nav-link" style="font-size: calc(5px + 2vmin);" href="/Account/Login">Iniciar Sesión</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" style="font-size: calc(5px + 2vmin);" href="/Account/Create">Registrarse</a>
+                        </li>
+                    </ul>
+                }
+            </div>
+        </div>
+    </nav>
+    <div class="container">
+        <div class="col-md-12">
+            <br />
+            <h2>Citas</h2>
+            @if (User.Identity.IsAuthenticated)
+            {
+                if (Session["Rol"].ToString() == "1" && Session["Rol"].ToString() != null)
+                {
+                    <input type="text" id="message" />
+                    <input type="button" id="sendmessage" value="Send" />
+                    <div class="table-responsive" id="table"></div>
+                    @*<input type="hidden" id="displayname" />*@
+                }
+                else if (Session["Rol"].ToString() == "2" && Session["Rol"].ToString() != null)
+                {
+                    <ul id="discussion">
+                    </ul>
+                }
+            }
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.js"></script>
+    <script src="~/Scripts/jquery.signalR-2.4.3.min.js"></script>
+    <script src="~/signalr/hubs"></script>
+</body>
+</html>
+
+<script>
+
+    let id_Usuario = new Array();
+    let id_Doctor = new Array();
+
+    let id_UsuarioMascota = new Array();
+    let id_UsuarioCita = new Array();
+    let id_UsuarioDoctor = new Array();
+
+    $(document).ready(function () {
+
+
+        if (@Session["Rol"].ToString() == "1" && @Session["Rol"].ToString() != null) {
+            chat();
+            listarTodaCitaPorfecha_Cita();
+        }
+        else if (@Session["Rol"].ToString() == "2" && @Session["Rol"].ToString() != null) {
+            listarid_UsuarioVeterinarioPorid_Usuario();
+            chat();
+        }
+        
+    });
+
+    function listarid_UsuarioVeterinarioPorid_Usuario() {
+
+        $.ajax({
+            type: "GET",
+            url: "/Cita/listarservicioPorid_Usuario",
+            dataType: "JSON",
+            contentType: "application/json; charset=utf-8",
+            cache: false,
+
+            success: function (data) {
+                if (data == "Aún no tienes una cita") {
+                    alert("No tienes");
+                } else {
+
+                    $.ajax({
+                        type: "GET",
+                        url: "/Cita/listarCitaPorid_Usuario",
+                        dataType: "JSON",
+                        contentType: "application/json; charset=utf-8",
+                        cache: false,
+
+                        success: function (cita) {
+                            for (let i = 0; i < cita.length; i++) {
+                                const citaUsuario = cita[i];
+                                id_Usuario.push(citaUsuario.id_Usuario);
+                                id_Doctor.push(citaUsuario.id_UsuarioVeterinario);
+                            }
+
+                            $.ajax({
+                                type: "POST",
+                                url: "/Account/Proc_listarnombre_CompletoPorid_Usuario",
+                                traditional: true,
+                                data: { "id": id_Usuario },
+
+                                success: function (data_Usuario) {
+
+                                    for (let i = 0; i < data_Usuario.length; i++) {
+                                        alert(data_Usuario[i]);
+                                    }
+
+                                    $.ajax({
+                                        type: "GET",
+                                        url: "/Cita/listarCitaPorfecha_Cita",
+                                        dataType: "JSON",
+                                        contentType: "application/json; charset=utf-8",
+                                        cache: false,
+
+                                        success: function (data) {
+                                            alert(data);
+                                        },
+
+                                        error: function (error) {
+                                            alert("Ha ocurrido un error: " + error);
+                                        }
+                                    });
+
+                                    $.ajax({
+                                        type: "POST",
+                                        url: "/Account/Proc_listarnombre_CompletoPorid_Usuario",
+                                        traditional: true,
+                                        data: { "id": id_Doctor },
+
+                                        success: function (data_Doctor) {
+
+
+                                            let items = "";
+
+                                            items += "<div class='card text-center'>";
+                                            items += "<div class='card-header'>Información de la mascota</div>";
+                                            items += "<div class='card-body'>";
+
+                                            for (let i = 0; i < cita.length; i++) {
+                                                const citaUsuario = cita[i];
+
+                                                items += "<p class='card-text'>Usuario: " + data_Usuario[i] + "</p>";
+                                                items += "<p class='card-text'>Doctor: " + data_Doctor[i] + "</p>";
+                                                items += "<p class='card-text'>Servicio: " + citaUsuario.servicio + "</p>";
+                                                items += "<p class='card-text'>Fecha cita: " + citaUsuario.fecha_Cita + "</p>";
+
+                                            }
+                                            //DateTime.Now.ToString("dd/MM/yyyy HH:mm tt")
+                                            items += "</div>";
+                                            items += "<div class='card-footer text-muted'>2 days ago</div>";
+                                            items += "</div>";
+
+                                            $(".col-md-12").append(items);
+                                        },
+
+                                        error: function (error) {
+                                            alert("Ha ocurrido un error: " + error);
+                                        }
+                                    });
+
+                                },
+
+                                error: function (error) {
+                                    alert("Ha ocurrido un error: " + error);
+                                }
+                            });
+
+                        },
+
+                        error: function (error) {
+                            alert("Ha ocurrido un error: " + error);
+                        }
+                    });
+
+                }
+            },
+
+            error: function (error) {
+                alert("Ha ocurrido un error: " + error);
+            }
+        });
+
+    }
+
+    function listarTodaCitaPorfecha_Cita() {
+
+        $.ajax({
+            type: "GET",
+            url: "/Cita/listarTodaCitaPorfecha_Cita",
+            dataType: "JSON",
+            contentType: "application/json; charset=utf-8",
+            cache: false,
+
+            success: function (data) {
+
+                for (let i = 0; i < data.length; i++) {
+                    const cita = data[i];
+                    id_UsuarioMascota.push(cita.id_Usuario);
+                    id_UsuarioCita.push(cita.id_Usuario);
+                    id_UsuarioDoctor.push(cita.id_UsuarioVeterinario);
+                }
+
+                $.ajax({
+                    type: "POST",
+                    url: "/Mascota/listarTodoNombre_MascotaPorid_Usuario",
+                    traditional: true,
+                    data: { "id": id_UsuarioMascota },
+
+                    success: function (mascota) {
+                        alert(mascota);
+                        $.ajax({
+                            type: "POST",
+                            url: "/Account/Proc_listarnombre_CompletoPorid_Usuario",
+                            traditional: true,
+                            data: { "id": id_UsuarioCita },
+
+                            success: function (usuario) {
+                                alert(usuario);
+                                $.ajax({
+                                    type: "POST",
+                                    url: "/Account/Proc_listarnombre_CompletoPorid_Usuario",
+                                    traditional: true,
+                                    data: { "id": id_UsuarioDoctor },
+
+                                    success: function (doctor) {
+                                        alert(doctor);
+                                        let items = "";
+
+                                        items += "<table class='table table-bordered table-hover'>";
+                                        items += "<thead class='table-dark'>";
+                                        items += "<tr>";
+                                        items += "<th>Usuario</th>";
+                                        items += "<th>Mascota</th>";
+                                        items += "<th>Doctor</th>";
+                                        items += "<th>Servicio</th>";
+                                        items += "<th>Acciones</th>";
+                                        items += "</tr>";
+                                        items += "<thead>";
+                                        items += "<tbody>";
+
+                                        for (let i = 0; i < data.length; i++) {
+                                            const cita = data[i];
+
+                                            items += "<tr>";
+                                            items += "<td>" + usuario[i] + "</td>";
+                                            items += "<td>" + mascota[i] + "</td>";
+                                            items += "<td>" + doctor[i] + "</td>";
+                                            items += "<td>" + cita.servicio + "</td>";
+                                            items += "<td><a href='Procesar?id=" + cita.id_Cita + "' class='btn btn-primary'>Procesar</a></td>";
+                                            items += "</tr>";
+                                        }
+
+                                        items += "</tbody>";
+                                        items += "</table>";
+
+                                        $("#table").append(items);
+                                    },
+
+                                    error: function (error) {
+                                        alert("Ha ocurrido un error: " + error);
+                                    }
+                                });
+
+                            },
+
+                            error: function (error) {
+                                alert("Ha ocurrido un error: " + error);
+                            }
+                        });
+
+                    },
+
+                    error: function (error) {
+                        alert("Ha ocurrido un error: " + error);
+                    }
+                });
+
+            },
+
+            error: function (error) { 
+                alert("Ha ocurrido un error: " + error);
+            }
+        });
+
+    }
+
+    function chat() {
+        // Reference the auto-generated proxy for the hub.
+        var chat = $.connection.chatHub;
+        // Create a function that the hub can call back to display messages.
+        chat.client.addNewMessageToPage = function (name, message) {
+            // Add the message to the page.
+            $('#discussion').append('<li><strong>' + htmlEncode(name)
+                + '</strong>: ' + htmlEncode(message) + '</li>');
+        };
+        // Get the user name and store it to prepend to messages.
+        $('#displayname').val(prompt('Enter your name:', ''));
+        // Set initial focus to message input box.
+        $('#message').focus();
+        // Start the connection.
+        $.connection.hub.start().done(function () {
+            $('#sendmessage').click(function () {
+                // Call the Send method on the hub.
+                chat.server.send($('#displayname').val(), $('#message').val());
+                // Clear text box and reset focus for next comment.
+                $('#message').val('').focus();
+            });
+        });
+    }
+
+    // This optional function html-encodes messages for display in the page.
+    function htmlEncode(value) {
+        var encodedValue = $('<div />').text(value).html();
+        return encodedValue;
+    }
+
+</script>

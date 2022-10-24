@@ -30,6 +30,12 @@ namespace Capa_Negocio
             return _Datos.Proc_listarUsuario();
         }
 
+        /*----------Proc_listarAdmin----------*/
+        public List<Proc_listarAdmin_Result> Proc_listarAdmin()
+        {
+            return _Datos.Proc_listarAdmin();
+        }
+
         /*----------Proc_listarUsuarioPorid_Usuario_Result----------*/
         public Proc_listarUsuarioPorid_Usuario_Result Proc_listarUsuarioPorid_Usuario(int id_Usuario)
         {
@@ -40,6 +46,12 @@ namespace Capa_Negocio
         public int Proc_listarid_UsuarioPorEmail(string email)
         {
             return _Datos.Proc_listarid_UsuarioPorEmail(email);
+        }
+
+        /*----------Proc_listarnombre_CompletoPorid_Usuario----------*/
+        public List<string> Proc_listarnombre_CompletoPorid_Usuario(List<int> id)
+        {
+            return _Datos.Proc_listarnombre_CompletoPorid_Usuario(id);
         }
 
         /*----------Proc_crearUsuario----------*/
@@ -84,6 +96,18 @@ namespace Capa_Negocio
 
         /*----------Procedimientos almacenados----------*/
 
+        /*----------Proc_listarRol_Usuario----------*/
+        public List<Proc_listarRol_Usuario_Result> Proc_listarRol_Usuario()
+        {
+            return _Datos.Proc_listarRol_Usuario();
+        }
+
+        /*----------Proc_listarRol_UsuarioPorid_Usuario----------*/
+        public Proc_listarRol_UsuarioPorid_Usuario_Result Proc_listarRol_UsuarioPorid_Usuario(int id_Usuario)
+        {
+            return _Datos.Proc_listarRol_UsuarioPorid_Usuario(id_Usuario);
+        }
+
         /*----------Proc_listarid_RolPorid_Usuario----------*/
 
         public int Proc_listarid_RolPorid_Usuario(int id_Usuario)
@@ -95,6 +119,18 @@ namespace Capa_Negocio
         public void Proc_crearRol_Usuario(int id_Rol, int id_Usuario)
         {
             _Datos.Proc_crearRol_Usuario(id_Rol, id_Usuario);
+        }
+
+        /*----------Proc_actualizarRol_Usuario----------*/
+        public void Proc_actualizarRol_Usuario(int id_Rol, int id_Usuario)
+        {
+            _Datos.Proc_actualizarRol_Usuario(id_Rol, id_Usuario);
+        }
+
+        /*----------Proc_eliminarRol_Usuario----------*/
+        public void Proc_eliminarRol_Usuario(int id_Usuario)
+        {
+            _Datos.Proc_eliminarRol_Usuario(id_Usuario);
         }
 
 
@@ -116,6 +152,48 @@ namespace Capa_Negocio
         public Proc_listarMascotaPorid_Mascota_Result Proc_listarMascotaPorid_Mascota(int id_Mascota)
         {
             return _Datos.Proc_listarMascotaPorid_Mascota(id_Mascota);
+        }
+
+        /*----------Proc_listarFotoPorid_Mascota----------*/
+        public List<byte[]> Proc_listarFotoPorid_Mascota(List<int> id)
+        {
+            return _Datos.Proc_listarFotoPorid_Mascota(id);
+        }
+
+        /*----------Proc_listarFotoPorid_Mascota----------*/
+        public List<byte[]> Proc_listarUnaFotoPorid_Mascota(int id)
+        {
+            return _Datos.Proc_listarUnaFotoPorid_Mascota(id);
+        }
+
+        /*----------Proc_listarMascotaPorid_Usuario----------*/
+        public Proc_listarMascotaPorid_Usuario_Result Proc_listarMascotaPorid_Usuario(int id)
+        {
+            return _Datos.Proc_listarMascotaPorid_Usuario(id);
+        }
+
+        /*----------Proc_listarSoloTipoMascotaPorid_Tipo --> JSON----------*/
+        public List<string> Proc_listarSoloTipoMascotaPorid_Tipo(List<int> id)
+        {
+            return _Datos.Proc_listarSoloTipoMascotaPorid_Tipo(id);
+        }
+
+        /*----------Proc_listarMascotaid_Usuario----------*/
+        public List<string> Proc_listarNombre_MascotaPorid_Usuario(int id)
+        {
+            return _Datos.Proc_listarNombre_MascotaPorid_Usuario(id);
+        }
+
+        /*----------Proc_listarNombre_MascotaPorid_Usuario----------*/
+        public List<string> Proc_listarTodoNombre_MascotaPorid_Usuario(List<int> id)
+        {
+            return _Datos.Proc_listarTodoNombre_MascotaPorid_Usuario(id);
+        }
+
+        /*----------Proc_listarid_MascotaPornombre_Completo----------*/
+        public int Proc_listarid_MascotaPornombre_Completo(string nombre)
+        {
+            return _Datos.Proc_listarid_MascotaPornombre_Completo(nombre);
         }
 
         /*----------Proc_crearMascota----------*/
@@ -195,6 +273,12 @@ namespace Capa_Negocio
             return _Datos.Proc_listarRazaMascotaPorid_Raza(id_Raza);
         }
 
+        /*----------Proc_listarSoloRazaMascotaPorid_Raza----------*/
+        public List<string> Proc_listarSoloRazaMascotaPorid_Raza(List<int> id)
+        {
+            return _Datos.Proc_listarSoloRazaMascotaPorid_Raza(id);
+        }
+
         /*----------Proc_crearRazaMascota----------*/
         public void Proc_crearRazaMascota(RazaMascota razaMascota)
         {
@@ -212,6 +296,185 @@ namespace Capa_Negocio
         {
             _Datos.Proc_eliminarRazaMascota(id_Raza);
         }
+
+        /*----------Fin de los procedimientos almacenados de la tabla RazaMascota----------*/
+
+
+        /*----------Tabla Cita----------*/
+
+
+        /*----------Procedimientos almacenados----------*/
+
+        /*----------Proc_listarCita----------*/
+        public List<Proc_listarCita_Result> Proc_listarCita()
+        {
+            return _Datos.Proc_listarCita();
+        }
+
+        /*----------Proc_listarCitaPorid_Cita----------*/
+        public Proc_listarCitaPorid_Cita_Result Proc_listarCitaPorid_Cita(int id_Cita)
+        {
+            return _Datos.Proc_listarCitaPorid_Cita(id_Cita);
+        }
+
+        /*----------Proc_listarCitaPorfecha_Cita----------*/
+        public List<string> Proc_listarCitaPorfecha_Cita(string fecha)
+        {
+            return _Datos.Proc_listarCitaPorfecha_Cita(fecha);
+        }
+
+        /*----------Proc_listarservicioPorid_Usuario----------*/
+        public List<string> Proc_listarservicioPorid_Usuario(int id_Usuario)
+        {
+            return _Datos.Proc_listarservicioPorid_Usuario(id_Usuario);
+        }
+
+        /*----------Proc_listarCitaPorid_Usuario----------*/
+        public List<Proc_listarCitaPorid_Usuario_Result> Proc_listarCitaPorid_Usuario(int id_Usuario)
+        {
+            return _Datos.Proc_listarCitaPorid_Usuario(id_Usuario);
+        }
+
+        /*----------Proc_listarTodaCitaPorfecha_Cita----------*/
+        public List<Proc_listarTodaCitaPorfecha_Cita_Result> Proc_listarTodaCitaPorfecha_Cita(string fecha)
+        {
+            return _Datos.Proc_listarTodaCitaPorfecha_Cita(fecha);
+        }
+
+        /*----------Proc_crearCita----------*/
+        public void Proc_crearCita(Cita cita)
+        {
+            _Datos.Proc_crearCita(cita);
+        }
+
+        /*----------Proc_actualizarCita----------*/
+        public void Proc_actualizarCita(Cita cita)
+        {
+            _Datos.Proc_actualizarCita(cita);
+        }
+
+        /*----------Proc_eliminarCita----------*/
+        public void Proc_eliminarCita(int id_Cita)
+        {
+            _Datos.Proc_eliminarCita(id_Cita);
+        }
+
+
+        /*----------Fin de los procedimientos almacenados de la tabla Cita----------*/
+
+
+        /*----------Tabla Servicio----------*/
+
+
+        /*----------Procedimientos almacenados----------*/
+
+        /*----------Proc_listarServicio----------*/
+        public List<Proc_listarServicio_Result> Proc_listarServicio()
+        {
+            return _Datos.Proc_listarServicio();
+        }
+
+        /*----------Proc_listarServicioPorid_Servicio----------*/
+        public Proc_listarServicioPorid_Servicio_Result Proc_listarServicioPorid_Servicio(int id_Servicio)
+        {
+            return _Datos.Proc_listarServicioPorid_Servicio(id_Servicio);
+        }
+
+        /*----------Proc_crearServicio----------*/
+        public void Proc_crearServicio(Servicio servicio)
+        {
+            _Datos.Proc_crearServicio(servicio);
+        }
+
+        /*----------Proc_actualizarServicio----------*/
+        public void Proc_actualizarServicio(Servicio servicio)
+        {
+            _Datos.Proc_actualizarServicio(servicio);
+        }
+
+        /*----------Proc_eliminarServicio----------*/
+        public void Proc_eliminarServicio(int id_Servicio)
+        {
+            _Datos.Proc_eliminarServicio(id_Servicio);
+        }
+
+
+        /*----------Fin de los procedimientos almacenados de la tabla Servicio----------*/
+
+
+        /*----------Tabla Consejo----------*/
+
+
+        /*----------Procedimientos almacenados----------*/
+
+        /*----------Proc_listarConsejo----------*/
+        public List<Proc_listarConsejo_Result> Proc_listarConsejo()
+        {
+            return _Datos.Proc_listarConsejo();
+        }
+
+        /*----------Proc_listarConsejoPorid_Consejo----------*/
+        public Proc_listarConsejoPorid_Consejo_Result Proc_listarConsejoPorid_Consejo(int id_Consejo)
+        {
+            return _Datos.Proc_listarConsejoPorid_Consejo(id_Consejo);
+        }
+
+        /*----------Proc_crearConsejo----------*/
+        public void Proc_crearConsejo(Consejo consejo)
+        {
+            _Datos.Proc_crearConsejo(consejo);
+        }
+
+        /*----------Proc_actualizarConsejo----------*/
+        public void Proc_actualizarConsejo(Consejo consejo)
+        {
+            _Datos.Proc_actualizarConsejo(consejo);
+        }
+
+        /*----------Proc_eliminarConsejo----------*/
+        public void Proc_eliminarConsejo(int id_Consejo)
+        {
+            _Datos.Proc_eliminarConsejo(id_Consejo);
+        }
+
+
+        /*----------Fin de los procedimientos almacenados de la tabla Consejo----------*/
+
+
+        /*----------Tabla Consejo_Mascota----------*/
+
+
+        /*----------Procedimientos almacenados----------*/
+
+        /*----------Proc_listarConsejo_Mascota----------*/
+        //public List<Proc_listarConsejo_Mascota_Result> Proc_listarConsejo_Mascota()
+        //{
+        //    return _Datos.Proc_listarConsejo_Mascota();
+        //}
+
+        ///*----------Proc_listarConsejo_MascotaPorid_Consejo_Mascota----------*/
+        //public Proc_listarConsejo_MascotaPorid_Consejo_Mascota_Result Proc_listarConsejo_MascotaPorid_Consejo_Mascota(int id_Consejo_Mascota)
+        //{
+        //    return _Datos.Proc_listarConsejo_MascotaPorid_Consejo_Mascota(id_Consejo_Mascota);
+        //}
+
+        ///*----------Proc_crearConsejo----------*/
+        //public void Proc_crearConsejo_Mascota(Consejo_Mascota consejo_Mascota)
+        //{
+        //    _Datos.Proc_crearConsejo_Mascota(consejo_Mascota);
+        //}
+
+        ///*----------Proc_actualizarConsejo----------*/
+        //public void Proc_actualizarConsejo_Mascota(Consejo_Mascota consejo_Mascota)
+        //{
+        //    _Datos.Proc_actualizarConsejo_Mascota(consejo_Mascota);
+        //}
+
+        ///*----------Proc_eliminarConsejo----------*/
+        //public void Proc_eliminarConsejo_Mascota(int id_Consejo_Mascota)
+        //{
+        //    _Datos.Proc_eliminarConsejo_Mascota(id_Consejo_Mascota);
+        //}
     }
 }
 

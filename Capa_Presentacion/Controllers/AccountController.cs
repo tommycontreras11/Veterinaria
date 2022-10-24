@@ -16,7 +16,7 @@ namespace Capa_Presentacion.Controllers
         Clase_Negocio _Negocio = new Clase_Negocio();
 
         // GET: Account
-        public ActionResult Index()
+        public ActionResult Perfil()
         {
             return View();
         }
@@ -72,8 +72,8 @@ namespace Capa_Presentacion.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-        // GET: Account/Usuario
-        public ActionResult Usuario()
+        // GET: Account/Usuarios
+        public ActionResult Usuarios()
         {
             if (User.Identity.IsAuthenticated)
             {
@@ -89,10 +89,46 @@ namespace Capa_Presentacion.Controllers
             return View();
         }
 
-        public ActionResult UsuarioJson() 
+        public ActionResult listarUsuario() 
         {
             var usuario = _Negocio.Proc_listarUsuario();
             return Json(usuario, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult listarUsuarioPorid_Usuario()
+        {
+            var id_Usuario = _Negocio.Proc_listarid_UsuarioPorEmail(User.Identity.Name);
+            var usuario = _Negocio.Proc_listarUsuarioPorid_Usuario(id_Usuario);
+            return Json(usuario, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult Proc_listarnombre_CompletoPorid_Usuario(List<int> id) 
+        {
+            var nombre = _Negocio.Proc_listarnombre_CompletoPorid_Usuario(id);
+            return Json(nombre, JsonRequestBehavior.AllowGet);
+        }
+
+        // GET: Account/Admin
+        public ActionResult Admin()
+        {
+            if (User.Identity.IsAuthenticated)
+            {
+                if (IsValid(User.Identity.Name) == 2)
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+            }
+            else
+            {
+                return RedirectToAction("Login", "Account");
+            }
+            return View();
+        }
+
+        public ActionResult listarAdmin()
+        {
+            var admin = _Negocio.Proc_listarAdmin();
+            return Json(admin, JsonRequestBehavior.AllowGet);
         }
 
         // GET: Account/Create
@@ -116,6 +152,42 @@ namespace Capa_Presentacion.Controllers
                 var id_Usuario = _Negocio.Proc_listarid_UsuarioPorEmail(usuario.email);
                 _Negocio.Proc_crearRol_Usuario(2, id_Usuario);
                 
+                return View();
+            }
+            catch
+            {
+                return View();
+            }
+        }
+
+        // GET: Account/CreateAdmin
+        public ActionResult CreateAdmin()
+        {
+            if (User.Identity.IsAuthenticated)
+            {
+                if (IsValid(User.Identity.Name) == 2) 
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+            }
+            else 
+            {
+                return RedirectToAction("Login", "Account");
+            }
+            return View();
+        }
+
+        // POST: Account/CreateAdmin
+        [HttpPost]
+        public ActionResult CreateAdmin(Usuario usuario)
+        {
+            try
+            {
+                // TODO: Add insert logic here
+                _Negocio.Proc_crearUsuario(usuario);
+                var id_Usuario = _Negocio.Proc_listarid_UsuarioPorEmail(usuario.email);
+                _Negocio.Proc_crearRol_Usuario(1, id_Usuario);
+
                 return View();
             }
             catch
@@ -150,7 +222,8 @@ namespace Capa_Presentacion.Controllers
             {
                 // TODO: Add update logic here
                 _Negocio.Proc_actualizarUsuario(usuario);
-                return View();
+
+                return RedirectToAction("Usuario", "Account");
             }
             catch
             {
@@ -165,7 +238,7 @@ namespace Capa_Presentacion.Controllers
         //}
 
         // POST: Account/Delete/5
-        [HttpPost]
+        //[HttpPost]
         public ActionResult Delete(int id)
         {
             try

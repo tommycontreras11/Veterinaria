@@ -1,0 +1,197 @@
+﻿@model Capa_Entidad.Proc_listarMascotaPorid_Mascota_Result
+
+@{
+    ViewBag.Title = "Edit";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - Mi aplicación ASP.NET</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://getbootstrap.com/docs/5.2/assets/css/docs.css" rel="stylesheet">
+</head>
+<body class="p-0 m-0 border-0 bd-example">
+
+    <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #121212;">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#" style="font-size: calc(10px + 2vmin);">Veterinaria Manatí</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+                @if (User.Identity.IsAuthenticated)
+                {
+
+                    if (Session["Rol"].ToString() == "1" && Session["Rol"].ToString() != null)
+                    {
+                        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                            <li class="nav-item">
+                                <a class="nav-link" style="font-size: calc(5px + 2vmin);" href="/Home/">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" style="font-size: calc(5px + 2vmin);" href="/Account/Usuarios">Usuarios</a>
+                            </li>
+                        </ul>
+                    }
+                    else if (Session["Rol"].ToString() == "2" && Session["Rol"].ToString() != null)
+                    {
+                        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                            <li class="nav-item">
+                                <a class="nav-link" style="font-size: calc(5px + 2vmin);" href="/Home/">Home</a>
+                            </li>
+                        </ul>
+                    }
+
+                    <ul class="nav navbar-nav navbar-right">
+                        <li class="nav-item">
+                            <a class="nav-link" style="font-size: calc(5px + 2vmin);" href="/Account/Perfil">@User.Identity.Name</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" style="font-size: calc(5px + 2vmin);" href="/Account/Logout">Cerrar Sesión</a>
+                        </li>
+                    </ul>
+                }
+                else
+                {
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link" style="font-size: calc(5px + 2vmin);" href="/Home/">Home</a>
+                        </li>
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li class="nav-item">
+                            <a class="nav-link" style="font-size: calc(5px + 2vmin);" href="/Account/Login">Iniciar Sesión</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" style="font-size: calc(5px + 2vmin);" href="/Account/Create">Registrarse</a>
+                        </li>
+                    </ul>
+                }
+            </div>
+        </div>
+    </nav>
+    <div class="container">
+        <div class="col-md-12">
+            <h2>Edit</h2>
+
+
+            @using (Html.BeginForm("Edit", "Mascota", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+                @Html.AntiForgeryToken()
+
+                <div class="form-horizontal">
+                    <h4>Proc_listarMascotaPorid_Mascota_Result</h4>
+                    <hr />
+                    @*@Html.ValidationSummary(true, "", new { @class = "text-danger" })*@
+                    <div class="form-group">
+                        @*@Html.LabelFor(model => model.id_Mascota, htmlAttributes: new { @class = "control-label col-md-2" })*@
+                        <div class="col-md-10">
+                            @*@Html.EditorFor(model => model.id_Mascota, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.id_Mascota, "", new { @class = "text-danger" })*@
+                            <input type="text" name="id_Mascota" class="form-control" value="@Model.id_Mascota" hidden />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @*@Html.LabelFor(model => model.id_Usuario, htmlAttributes: new { @class = "control-label col-md-2" })*@
+                        <div class="col-md-10">
+                            @*@Html.EditorFor(model => model.id_Usuario, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.id_Usuario, "", new { @class = "text-danger" })*@
+                            <input type="text" name="id_Usuario" class="form-control" value="@Model.id_Usuario" hidden />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @*@Html.LabelFor(model => model.id_Tipo, htmlAttributes: new { @class = "control-label col-md-2" })*@
+                        <div class="col-md-10">
+                            @*@Html.EditorFor(model => model.id_Tipo, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.id_Tipo, "", new { @class = "text-danger" })*@
+                            <input type="text" name="id_Tipo" class="form-control" value="@Model.id_Tipo" hidden />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @*@Html.LabelFor(model => model.id_Raza, htmlAttributes: new { @class = "control-label col-md-2" })*@
+                        <div class="col-md-10">
+                            @*@Html.EditorFor(model => model.id_Raza, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.id_Raza, "", new { @class = "text-danger" })*@
+                            <input type="text" name="id_Raza" class="form-control" value="@Model.id_Raza" hidden />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-md-2">Nombre Completo</label>
+                        @*@Html.LabelFor(model => model.nombre_Completo, htmlAttributes: new { @class = "control-label col-md-2" })*@
+                        <div class="col-md-10">
+                            @*@Html.EditorFor(model => model.nombre_Completo, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.nombre_Completo, "", new { @class = "text-danger" })*@
+                            <input type="text" name="nombre_Completo" class="form-control" value="@Model.nombre_Completo" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-md-2">Sexo</label>
+                        @*@Html.LabelFor(model => model.sexo, htmlAttributes: new { @class = "control-label col-md-2" })*@
+                        <div class="col-md-10">
+                            @*@Html.EditorFor(model => model.sexo, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.sexo, "", new { @class = "text-danger" })*@
+                            <input type="text" name="sexo" class="form-control" value="@Model.sexo" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @*@Html.LabelFor(model => model.peso_Mascota, htmlAttributes: new { @class = "control-label col-md-2" })*@
+                        <label class="control-label col-md-2">Peso</label>
+                        <div class="col-md-10">
+                            @*@Html.EditorFor(model => model.peso_Mascota, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.peso_Mascota, "", new { @class = "text-danger" })*@
+                            <input type="text" name="peso" class="form-control" value="@Model.peso" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Foto</label>
+                        <div class="col-md-10">
+                            <img src="@Url.Action("getUnaImage", "Mascota", new { id=Model.id_Mascota })" width="70" height="70" />
+                            <input type="file" class="form-control" name="imageLoad" />
+                            @Html.ValidationMessageFor(model => model.foto, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @*@Html.LabelFor(model => model.peso_Mascota, htmlAttributes: new { @class = "control-label col-md-2" })*@
+                        <label class="control-label col-md-2">Fecha ingreso</label>
+                        <div class="col-md-10">
+                            @*@Html.EditorFor(model => model.peso_Mascota, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.peso_Mascota, "", new { @class = "text-danger" })*@
+                            <input type="datetime-local" name="fecha_Ingreso" class="form-control" value="@Model.fecha_Ingreso" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <input type="submit" value="Save" class="btn btn-default" />
+                        </div>
+                    </div>
+                </div>
+            }
+
+            <div>
+                @Html.ActionLink("Back to List", "Index")
+            </div>
+
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

@@ -14,6 +14,11 @@ namespace Capa_Entidad
     
     public partial class Mascota
     {
+        public Mascota()
+        {
+            this.Cita = new HashSet<Cita>();
+        }
+    
         public int id_Mascota { get; set; }
         public int id_Usuario { get; set; }
         public int id_Tipo { get; set; }
@@ -28,5 +33,6 @@ namespace Capa_Entidad
         public virtual RazaMascota RazaMascota { get; set; }
         public virtual TipoMascota TipoMascota { get; set; }
         public virtual Usuario Usuario { get; set; }
+        public virtual ICollection<Cita> Cita { get; set; }
     }
 }

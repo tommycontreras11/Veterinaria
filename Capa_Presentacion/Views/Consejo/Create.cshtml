@@ -1,7 +1,7 @@
-﻿@model IEnumerable<Capa_Entidad.Proc_listarRazaMascota_Result>
+﻿@model Capa_Entidad.Consejo
 
 @{
-    ViewBag.Title = "Raza";
+    ViewBag.Title = "Create";
     Layout = null;
 }
 
@@ -14,7 +14,6 @@
     <title>@ViewBag.Title - Mi aplicación ASP.NET</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://getbootstrap.com/docs/5.2/assets/css/docs.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 <body class="p-0 m-0 border-0 bd-example">
 
@@ -35,7 +34,7 @@
                                 <a class="nav-link" style="font-size: calc(5px + 2vmin);" href="/Home/">Home</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" style="font-size: calc(5px + 2vmin);" href="/Account/Usuario">Usuarios</a>
+                                <a class="nav-link" style="font-size: calc(5px + 2vmin);" href="/Account/Usuarios">Usuarios</a>
                             </li>
                         </ul>
                     }
@@ -50,7 +49,7 @@
 
                     <ul class="nav navbar-nav navbar-right">
                         <li class="nav-item">
-                            <a class="nav-link" style="font-size: calc(5px + 2vmin);" href="#">@User.Identity.Name</a>
+                            <a class="nav-link" style="font-size: calc(5px + 2vmin);" href="/Account/Perfil">@User.Identity.Name</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" style="font-size: calc(5px + 2vmin);" href="/Account/Logout">Cerrar Sesión</a>
@@ -78,14 +77,52 @@
     </nav>
     <div class="container">
         <div class="col-md-12">
-            <br />
-            <h2>Raza</h2>
+            <h2>Create</h2>
 
-            <a href="Create" class="btn btn-primary" style="margin-bottom: 10px;">Create</a>
 
-            <div class="table-responsive" id="table"></div>
+            @using (Html.BeginForm())
+            {
+                @Html.AntiForgeryToken()
+
+                <div class="form-horizontal">
+                    <h4>Consejo</h4>
+                    <hr />
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.descripcion, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.descripcion, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.descripcion, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-10" id="selectTipo">
+
+                        </div>
+                    </div><br>
+
+                    <div class="form-group">
+                        <div class="col-md-10" id="selectRaza">
+
+                        </div>
+                    </div><br>
+
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <input type="submit" value="Create" class="btn btn-default" />
+                        </div>
+                    </div>
+                </div>
+            }
+
+            <div>
+                @Html.ActionLink("Back to List", "Index")
+            </div>
+
         </div>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.js"></script>
 </body>
 </html>
@@ -93,14 +130,15 @@
 <script>
 
     $(document).ready(function () {
+        listarTipoMascota();
         listarRazaMascota();
     });
 
-    function listarRazaMascota() {
+    function listarTipoMascota() {
 
         $.ajax({
             type: "GET",
-            url: "/RazaMascota/RazaJson",
+            url: "/TipoMascota/listarTipoMascota",
             dataType: "JSON",
             contentType: "application/json; charset=utf-8",
             cache: false,
@@ -109,32 +147,51 @@
 
                 let items = "";
 
-                items += "<table class='table table-bordered table-hover'>";
-                items += "<thead class='table-dark'>";
-                items += "<tr>";
-                items += "<th>Id</th>";
-                items += "<th>Raza</th>";
-                items += "<th>Editar</th>";
-                items += "<th>Eliminar</th>";
-                items += "<tr>";
-                items += "</thead>";
-                items += "<tbody>";
+                items += "<label>Tipo de mascota</label>";
+                items += "<select class='form-select' name='tipoMascota' aria-label='Default select example'>";
+
+                for (let i = 0; i < data.length; i++) {
+                    const tipoMascota = data[i];
+                    items += "<option id='" + tipoMascota.id_Tipo + "' value='" + tipoMascota.id_Tipo + "'> " + tipoMascota.tipo + " </option>";
+                }
+
+                items += "</select>";
+
+                $("#selectTipo").append(items);
+            },
+
+            error: function (error) {
+                alert("Ha ocurrido un error: " + error);
+            }
+        });
+
+    }
+
+    function listarRazaMascota() {
+
+        $.ajax({
+            type: "GET",
+            url: "/RazaMascota/listarRazaMascota",
+            dataType: "JSON",
+            contentType: "application/json; charset=utf-8",
+            cache: false,
+
+            success: function (data) {
+
+                let items = "";
+
+                items += "<label>Raza de la mascota</label>";
+                items += "<select class='form-select' name='razaMascota' aria-label='Default select example'>";
 
                 for (let i = 0; i < data.length; i++) {
                     const raza = data[i];
-
-                    items += "<tr>";
-                    items += "<td>" + raza.id_Raza + "</td>";
-                    items += "<td>" + raza.raza + "</td>";
-                    items += "<td><a href='Edit?id=" + raza.id_Raza + "' class='btn btn-warning'>Editar</a></td>";
-                    items += "<td><a href='Delete?id=" + raza.id_Raza + "' class='btn btn-danger'>Eliminar</a></td>";
-                    items += "</tr>";
+                    items += "<option id='" + raza.id_Raza + "' value='" + raza.id_Raza + "'>" + raza.raza + "</option>";
                 }
 
-                items += "</tbody>";
-                items += "</table>";
+                items += "</select>";
 
-                $("#table").append(items);
+                $("#selectRaza").append(items);
+
             },
 
             error: function (error) {
@@ -145,3 +202,7 @@
     }
 
 </script>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

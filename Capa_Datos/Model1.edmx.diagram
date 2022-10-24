@@ -8,13 +8,20 @@
         <EntityTypeShape EntityType="VeterinariaModel.Rol" Width="1.5" PointX="0.75" PointY="1.375" />
         <EntityTypeShape EntityType="VeterinariaModel.Usuario" Width="1.5" PointX="3" PointY="1" />
         <AssociationConnector Association="VeterinariaModel.Rol_Usuario" />
-        <EntityTypeShape EntityType="VeterinariaModel.Mascota" Width="1.5" PointX="5.25" PointY="0.75" />
         <EntityTypeShape EntityType="VeterinariaModel.RazaMascota" Width="1.5" PointX="3" PointY="4.875" />
         <EntityTypeShape EntityType="VeterinariaModel.TipoMascota" Width="1.5" PointX="3" PointY="7.25" />
+        <EntityTypeShape EntityType="VeterinariaModel.Mascota" Width="1.5" PointX="5.25" PointY="3.125" />
         <AssociationConnector Association="VeterinariaModel.FK_Mascota_RazaMascota_id_Raza" />
         <AssociationConnector Association="VeterinariaModel.FK_Mascota_TipoMascota_id_Tipo" />
         <AssociationConnector Association="VeterinariaModel.FK_Mascota_Usuario_id_Usuario" />
-      </Diagram>
+        <EntityTypeShape EntityType="VeterinariaModel.Cita" Width="1.5" PointX="7.5" PointY="2.375" />
+        <AssociationConnector Association="VeterinariaModel.FK_Cita_Mascota_id_Mascota" />
+        <AssociationConnector Association="VeterinariaModel.FK_Cita_Usuario_id_Usuario" />
+        <EntityTypeShape EntityType="VeterinariaModel.Servicio" Width="1.5" PointX="7.375" PointY="6.75" />
+        <EntityTypeShape EntityType="VeterinariaModel.Consejo" Width="1.5" PointX="5.25" PointY="8.875" />
+        <AssociationConnector Association="VeterinariaModel.FK_Consejo_RazaMascota_id_Raza" />
+        <AssociationConnector Association="VeterinariaModel.FK_Consejo_TipoMascota_id_Tipo" />
+        </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
 </edmx:Edmx>
