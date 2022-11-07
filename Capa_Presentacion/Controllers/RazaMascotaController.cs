@@ -112,7 +112,7 @@ namespace Capa_Presentacion.Controllers
             {
                 // TODO: Add update logic here
                 _Negocio.Proc_actualizarRazaMascota(razaMascota);
-                return View();
+                return RedirectToAction("Razas", "RazaMascota");
             }
             catch
             {
@@ -145,7 +145,7 @@ namespace Capa_Presentacion.Controllers
                 }
 
                 _Negocio.Proc_eliminarRazaMascota(id);
-                return RedirectToAction("Raza", "RazaMascota");
+                return RedirectToAction("Razas", "RazaMascota");
             }
             catch
             {

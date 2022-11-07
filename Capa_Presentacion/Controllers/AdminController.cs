@@ -107,7 +107,7 @@ namespace Capa_Presentacion.Controllers
                 // TODO: Add update logic here
                 _Negocio.Proc_actualizarUsuario(usuario);
 
-                return RedirectToAction("Admin", "Admin");
+                return RedirectToAction("Admins", "Admin");
             }
             catch
             {
@@ -141,7 +141,7 @@ namespace Capa_Presentacion.Controllers
                 }
 
                 _Negocio.Proc_eliminarUsuario(id);
-                return RedirectToAction("Admin", "Admin");
+                return RedirectToAction("Admins", "Admin");
             }
             catch
             {

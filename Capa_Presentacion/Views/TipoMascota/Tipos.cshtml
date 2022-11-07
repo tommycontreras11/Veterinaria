@@ -12,8 +12,12 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - Mi aplicación ASP.NET</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://getbootstrap.com/docs/5.2/assets/css/docs.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://getbootstrap.com/docs/5.2/assets/css/docs.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.2.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap5.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/select/1.4.0/css/select.bootstrap5.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css">
 </head>
 <body class="p-0 m-0 border-0 bd-example">
 
@@ -76,17 +80,18 @@
         </div>
     </nav>
     <div class="container">
-        <div class="col-md-12">
-            <br />
-            <h2>TipoAnimal</h2>
+        <br />
+        <h2>Tipos</h2>
 
-            <a href="Create" class="btn btn-primary" style="margin-bottom: 10px;">Create</a>
-
+        <a href="Create" class="btn btn-primary" style="margin-bottom: 10px;">Create</a>
+        <div class="row">
             <div class="table-responsive" id="table"></div>
         </div>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js"></script>
+    <script src="https://cdn.datatables.net/select/1.4.0/js/dataTables.select.min.js"></script>
 </body>
 </html>
 
@@ -109,14 +114,14 @@
 
                 let items = "";
 
-                items += "<table class='table table-bordered table-hover'>";
-                items += "<thead class='table-dark'>";
+                items += "<table id='example' class='table table-striped' style='width:100%'>";
+                items += "<thead>";
                 items += "<tr>";
-                items += "<th>Id</th>";
+                items += "<th>Id Tipo</th>";
                 items += "<th>Tipo</th>";
                 items += "<th>Editar</th>";
                 items += "<th>Eliminar</th>";
-                items += "<tr>";
+                items += "</tr>";
                 items += "</thead>";
                 items += "<tbody>";
 
@@ -135,6 +140,11 @@
                 items += "</table>";
 
                 $("#table").append(items);
+
+                $('#example').DataTable({
+                    select: true
+                });
+
             },
 
             error: function (error) {

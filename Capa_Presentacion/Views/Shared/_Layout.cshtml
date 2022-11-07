@@ -5,13 +5,183 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - Mi aplicación ASP.NET</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://getbootstrap.com/docs/5.2/assets/css/docs.css" rel="stylesheet">
-    <link rel="stylesheet" href="~/css/style.css"/>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://getbootstrap.com/docs/5.2/assets/css/docs.css">
+    <link rel="stylesheet" href="~/css/style.css" />
 </head>
 <body class="p-0 m-0 border-0 bd-example">
+    <style>
+        span {
+            display: inline-block;
+            text-decoration: none;
+            color: inherit;
+        }
 
+        .section-head {
+            margin-bottom: 40px;
+        }
+
+            .section-head h4 {
+                position: relative;
+                padding: 0;
+                color: #f91942;
+                line-height: 1;
+                letter-spacing: 0.3px;
+                font-size: 34px;
+                font-weight: 700;
+                text-align: center;
+                text-transform: none;
+                margin-bottom: 30px;
+            }
+
+            .section-head #titulo {
+                position: relative;
+                padding: 0;
+                color: black;
+                line-height: 1;
+                letter-spacing: 0.3px;
+                font-size: 34px;
+                font-weight: 700;
+                text-align: center;
+                text-transform: none;
+                margin-bottom: 30px;
+            }
+
+            .section-head h4::before {
+                content: '';
+                width: 60px;
+                height: 3px;
+                background: #f91942;
+                position: absolute;
+                bottom: -10px;
+                left: 0;
+                right: 0;
+                margin: 0 auto;
+            }
+
+            .section-head #h4::before {
+                content: '';
+                width: 60px;
+                height: 3px;
+                background: #E6B30E;
+                position: absolute;
+                bottom: -10px;
+                left: 0;
+                right: 0;
+                margin: 0 auto;
+            }
+
+            .section-head h4 span {
+                font-weight: 700;
+                padding-bottom: 5px;
+                color: #2f2f2f;
+            }
+
+            .section-head p {
+                color: #818181;
+                font-size: 16px;
+                line-height: 28px;
+                text-align: center;
+            }
+
+        .item {
+            background: #fff;
+            text-align: center;
+            padding: 30px 25px;
+            box-shadow: 0 0 25px rgba(0,0,0,0.07);
+            border-radius: 20px;
+            margin-bottom: 30px;
+            border: 5px solid rgba(0,0,0,0.07);
+            -webkit-transition: all 0.5s ease 0s;
+            transition: all 0.5s ease 0s;
+        }
+
+            .item:hover {
+                background: #f91942;
+                box-shadow: 0 8px 20px 0 rgba(0,0,0,0.2);
+                -webkit-transition: all 0.5s ease 0s;
+                transition: all 0.5s ease 0s;
+            }
+
+                .item:hover .item,
+                .item:hover span.icon {
+                    background: #fff;
+                    border-radius: 10px;
+                    -webkit-transition: all 0.5s ease 0s;
+                    transition: all 0.5s ease 0s;
+                }
+
+                .item:hover h6,
+                .item:hover p {
+                    color: #fff;
+                    -webkit-transition: all 0.5s ease 0s;
+                    transition: all 0.5s ease 0s;
+                }
+
+            .item .icon {
+                font-size: 40px;
+                margin-bottom: 25px;
+                color: #e6b30e;
+                width: 90px;
+                height: 90px;
+                line-height: 96px;
+                border-radius: 50px;
+            }
+
+            .item .feature_box_col_one {
+                background: rgba(247,198,5,0.2);
+                color: #f91942;
+            }
+
+            .item .feature_box_col_two {
+                background: rgba(255, 77, 28, 0.15);
+                color: #f91942;
+            }
+
+            .item .feature_box_col_three {
+                background: rgba(0,147,38,0.15);
+                color: #f91942;
+            }
+
+            .item .feature_box_col_four {
+                background: rgba(146,39,255,0.15);
+                color: #f91942;
+            }
+
+            .item .feature_box_col_five {
+                background: rgba(146,39,255,0.15);
+                color: #f91942;
+            }
+
+            .item .feature_box_col_six {
+                background: rgba(23,39,246,0.15);
+                color: #f91942;
+            }
+
+            .item p {
+                font-size: 15px;
+                line-height: 26px;
+            }
+
+            .item h6 {
+                margin-bottom: 20px;
+                color: #2f2f2f;
+            }
+
+        #container {
+            position: relative;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .responsive-iframe {
+            width: 900px;
+            height: 400px;
+            border: none;
+        }
+    </style>
     @*<nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #121212;">
             <div class="container-fluid">
                 <a class="navbar-brand" href="#" style="font-size: calc(10px + 2vmin);">Navbar</a>
@@ -84,7 +254,7 @@
             <nav class="navbar navbar-expand-lg navbar-dark">
                 <div class="container-fluid">
                     <a class="navbar-brand theme-text" href="#">
-                        <img src="~/img/logo.png" width="110" height="110" class="img-responsive"/>
+                        <img src="~/img/logo.png" width="110" height="110" class="img-responsive" />
                     </a>
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                             data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
@@ -161,6 +331,96 @@
     </section>
     <br />
     <br />
+    <br />
+    <br />
+    <div class="container" style="margin-bottom: 30px">
+        <div class="row flex-lg-row flex-column-reverse ">
+            <div class="col-lg-6 text-center text-lg-start">
+                <div class="section-head col-sm-12">
+                    <h4 id="titulo">Bienvenidos a veterinaria Manatí</h4>
+                    @*<p>Lorem Ipsum is simply dummy text of the printing and type setting industry. Lorem Ipsum has been the industry's<br>standard dummy text ever since the 1500s, when an unknown book.</p>*@
+                </div>
+                <p style="text-align: justify">
+                    Veterinaria Manatí fue fundada en mayo de 2022 como una Clínica Veterinaria para el servicio de todos sus clientes. Gracias a Dios llevamos el bienestar de cientos de mascotas que se atienden con nosotros.
+
+                    Desde entonces tratamos a cada uno de nuestros pacientes como parte de nuestra familia.
+                </p>
+                <p style="text-align: justify">
+                    Proveemos un servicio personalizado acorde a la necesidad de cada uno de nuestros clientes, donde que en cada visita las mascotas se sientan como en su casa, además de que sus propietarios sientan la confianza de que reciben el mayor nivel de cuidado y la atención especializada que sus mascotas necesitan.
+                </p>
+            </div>
+            <div class="col-lg-6 mb-4 mb-lg-0 ps-lg-4 text-center">
+                <img src="~/img/foto.jpg" class="img-fluid" alt="About Us" style="border-radius: 8px">
+            </div>
+
+        </div>
+    </div>
+    <div class="pt-5 pb-5">
+        <div class="container">
+            <div class="row">
+                <div class="section-head col-sm-12">
+                    <h4><span>¿Por qué</span> elegirnos?</h4>
+                    @*<p>Lorem Ipsum is simply dummy text of the printing and type setting industry. Lorem Ipsum has been the industry's<br>standard dummy text ever since the 1500s, when an unknown book.</p>*@
+                </div>
+                <div class="col-lg-3 col-sm-6">
+                    <div class="item">
+                        <span class="icon feature_box_col_one"><i class="fa fa-scissors"></i></span>
+                        <h6>Peluquería</h6>
+                        <p>Contamos con un personal capacitado en mejorar el aspecto de tu mascota.</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-sm-6">
+                    <div class="item">
+                        <span class="icon feature_box_col_two"><i class="fa fa-shower"></i></span>
+                        <h6>Baño</h6>
+                        <p>Tenemos un personal capacitado para el baño de tu mascota, le damos un trato excelente.</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-sm-6">
+                    <div class="item">
+                        <span class="icon feature_box_col_three"><i class="fa fa-calendar"></i></span>
+                        <h6>Cita</h6>
+                        <p>Tienes la opción de reservar citas, el cual te garantiza nuestro servicio para esa fecha.</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-sm-6">
+                    <div class="item">
+                        <span class="icon feature_box_col_four"><i class="fa fa-ambulance"></i></span>
+                        <h6>Emergencia</h6>
+                        <p>Damos prioridad a cualquier emergencia, no dudes en llamarnos o escribirnos.</p>
+                    </div>
+                </div>
+                <div class="section-head col-sm-12">
+                    <h4 id="h4"><span>Nuestra ubicación</span></h4>
+                    @*<p>Lorem Ipsum is simply dummy text of the printing and type setting industry. Lorem Ipsum has been the industry's<br>standard dummy text ever since the 1500s, when an unknown book.</p>*@
+                </div>
+                @*<div class="container justify-content-center align-items-center embed-responsive embed-responsive-16by9">
+                        <div class="col-auto pb-5 text-center">
+                            <iframe class="embed-responsive-item" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3784.1563613570343!2d-69.87994578510781!3d18.47657528743468!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8eaf88147681dbc1%3A0x70599744bf67fa2d!2sManati%20Veterinaria!5e0!3m2!1ses-419!2sdo!4v1667244042179!5m2!1ses-419!2sdo" width="900" height="400" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                        </div>
+                    </div>*@
+                <div class="container" id="container">
+                    <div class="col-auto pb-5 text-center">
+                        <iframe class="responsive-iframe" style="border-radius: 8px" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3784.1563613570343!2d-69.87994578510781!3d18.47657528743468!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8eaf88147681dbc1%3A0x70599744bf67fa2d!2sManati%20Veterinaria!5e0!3m2!1ses-419!2sdo!4v1667244042179!5m2!1ses-419!2sdo"></iframe>
+                    </div>
+                </div>
+                @*<div class="col-lg-3 col-sm-6">
+                        <div class="item">
+                            <span class="icon feature_box_col_five"><i class="fa fa-upload"></i></span>
+                            <h6>Market Strategy</h6>
+                            <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor Aenean massa.</p>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-sm-6">
+                        <div class="item">
+                            <span class="icon feature_box_col_six"><i class="fa fa-camera"></i></span>
+                            <h6>Retina Ready</h6>
+                            <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor Aenean massa.</p>
+                        </div>
+                    </div>*@
+            </div>
+        </div>
+    </div>
     <footer class="text-white text-center text-lg-start bg-dark">
         <!-- Grid container -->
         <div class="container p-4">
@@ -171,7 +431,7 @@
                     <h5 class="text-uppercase mb-4">Acerca de nosotros</h5>
 
                     <p>
-                        Nosotros somos un equipo al cuidado de tu mascota y cuando te acercas para recibir nuestros servicios sabemos que lo haces con la confianza de que tu mascota tendrá la mejor atención.
+                        Nosotros somos un equipo dedicado al cuidado de tu mascota y cuando te acercas para recibir nuestros servicios sabemos que lo haces con la confianza de que tu mascota tendrá la mejor atención.
                     </p>
 
                     <div class="mt-4">
@@ -239,6 +499,7 @@
     </footer>
     @RenderBody()
     @RenderSection("scripts", required: false)
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://kit.fontawesome.com/2f21f67d01.js" crossorigin="anonymous"></script>
 </body>
 </html>

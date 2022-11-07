@@ -1,0 +1,1279 @@
+﻿@model Capa_Entidad.Chat
+
+@{
+    ViewBag.Title = "Index";
+    Layout = null;
+}
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - Mi aplicación ASP.NET</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://getbootstrap.com/docs/5.2/assets/css/docs.css" rel="stylesheet">
+</head>
+<body class="p-0 m-0 border-0 bd-example">
+    <style>
+
+        #chat3 .form-control {
+            border-color: transparent;
+        }
+
+            #chat3 .form-control:focus {
+                border-color: transparent;
+                box-shadow: inset 0px 0px 0px 1px transparent;
+            }
+
+        section {
+            border-radius: 6px;
+        }
+
+        .badge-dot {
+            border-radius: 50%;
+            height: 10px;
+            width: 10px;
+            margin-left: 2.9rem;
+            margin-top: -.75rem;
+        }
+    </style>
+    <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #121212;">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#" style="font-size: calc(10px + 2vmin);">Veterinaria Manatí</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+                @if (User.Identity.IsAuthenticated)
+                {
+
+                    if (Session["Rol"].ToString() == "1" && Session["Rol"].ToString() != null)
+                    {
+                        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                            <li class="nav-item">
+                                <a class="nav-link" style="font-size: calc(5px + 2vmin);" href="/Home/">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" style="font-size: calc(5px + 2vmin);" href="/Account/Usuarios">Usuarios</a>
+                            </li>
+                        </ul>
+                    }
+                    else if (Session["Rol"].ToString() == "2" && Session["Rol"].ToString() != null)
+                    {
+                        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                            <li class="nav-item">
+                                <a class="nav-link" style="font-size: calc(5px + 2vmin);" href="/Home/">Home</a>
+                            </li>
+                        </ul>
+                    }
+
+                    <ul class="nav navbar-nav navbar-right">
+                        <li class="nav-item">
+                            <a class="nav-link" style="font-size: calc(5px + 2vmin);" href="/Account/Perfil">@User.Identity.Name</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" style="font-size: calc(5px + 2vmin);" href="/Account/Logout">Cerrar Sesión</a>
+                        </li>
+                    </ul>
+                }
+                else
+                {
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link" style="font-size: calc(5px + 2vmin);" href="/Home/">Home</a>
+                        </li>
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li class="nav-item">
+                            <a class="nav-link" style="font-size: calc(5px + 2vmin);" href="/Account/Login">Iniciar Sesión</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" style="font-size: calc(5px + 2vmin);" href="/Account/Create">Registrarse</a>
+                        </li>
+                    </ul>
+                }
+            </div>
+        </div>
+    </nav>
+    <div class="container">
+        <div class="col-md-12">
+            <h2>Create</h2>
+
+
+            @using (Html.BeginForm())
+            {
+                @Html.AntiForgeryToken()
+
+                <div class="form-horizontal">
+                    <h4>Chat</h4>
+                    <h2>@ViewBag.id</h2>
+                    <hr />
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    @*<div class="form-group">
+                    @Html.LabelFor(model => model.id_Chat, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.id_Chat, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.id_Chat, "", new { @class = "text-danger" })
+                    </div>
+                </div>*@
+
+                    @*<div class="form-group">
+                    @Html.LabelFor(model => model.id_Usuario, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.id_Usuario, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.id_Usuario, "", new { @class = "text-danger" })
+                    </div>
+                </div>*@
+
+                    @*<div class="form-group">
+                    @Html.LabelFor(model => model.id_UsuarioRespuesta, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.id_UsuarioRespuesta, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.id_UsuarioRespuesta, "", new { @class = "text-danger" })
+                    </div>
+                </div>*@
+
+                    @*<div class="form-group">
+                    @Html.LabelFor(model => model.comentario, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.comentario, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.comentario, "", new { @class = "text-danger" })
+                    </div>
+                </div>*@
+
+                    @*<div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="Create" class="btn btn-default" />
+                    </div>
+                </div>*@
+                    <section style="background-color: #CDC4F9;" id="section">
+                        <div class="container py-5">
+
+                            <div class="row">
+                                <div class="col-md-12">
+
+                                    <div class="card" id="chat3" style="border-radius: 15px;">
+                                        <div class="card-body">
+
+                                            <div class="row" id="row">
+                                                <div class="col-md-6 col-lg-5 col-xl-4 mb-4 mb-md-0">
+
+                                                    <div class="p-3">
+
+                                                        <div class="overflow-auto" id="overflow" style="position: relative; height: 400px">
+                                                            <ul class="list-unstyled mb-0" id="row2">
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            }
+
+            <div>
+                @Html.ActionLink("Back to List", "Index")
+            </div>
+            @*<input type="text" id="message" />
+        <input type="button" id="sendmessage" value="Send" />*@
+            @*<ul id="discussion"></ul>*@
+        </div>
+        @*<table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Name</th>
+                </tr>
+            </thead>
+            <tbody id="messagesTable"></tbody>
+        </table>*@
+    </div>
+
+    <script src="https://kit.fontawesome.com/2f21f67d01.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.js"></script>
+    <script src="~/Scripts/jquery.signalR-2.4.3.min.js"></script>
+    <script src="~/signalr/hubs"></script>
+
+</body>
+</html>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
+<script>
+
+    let a = 1;
+
+    $(document).ready(function () {
+        listarUsuarios();
+        setInterval(function () {
+            if (document.getElementById("overflow")) {
+                document.getElementById("overflow").remove();
+            }
+            listarUsuarios();
+        }, 3000)
+    });
+
+
+    function GetAllAdmin() {
+
+        var tbl = $('#row2');
+        //$.ajax({
+        //    type: "GET",
+        //    url: "/Chat/GetMessages",
+        //    traditional: true,
+        //    data: {"id": id},
+
+        //    success: function (data) {
+
+        //        tbl.empty();
+        //        var i = 1;
+        //        tbl.append("<div class='col-md-6 col-lg-7 col-xl-8' id='contenido'>"+
+        //        "<div class='pt-3 pe-3 overflow-auto' style='position: relative; height: 400px'>");
+
+        //        let array = [];
+
+        //        for (let i = 0; i < data.length; i++) {
+        //            const chat = data[i];
+        //            array.push(chat.id_Usuario);
+        //        }
+        //        $.each(data, function (key, value) {
+        //            if (array[i] == id) {
+        //                tbl.append(
+        //                    "<div class='d-flex flex-row justify-content-end'>" +
+        //                    "  <div>" +
+        //                    "      <p class='small p-2 me-3 mb-1 text-white rounded-3 bg-primary'>" + value.comentario + "</p>" +
+        //                    "      <p class='small me-3 mb-3 rounded-3 text-muted'>" + value.fecha_Creacion + "</p>" +
+        //                    "  </div>" +
+        //                    "<img src='https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava6-bg.webp' alt='avatar 1' style='width: 45px; height: 100%;'/>" +
+        //                    "</div>");
+        //            } else {
+        //                tbl.append(
+        //                    "  <div class='d-flex flex-row justify-content-start'>"+
+        //                "      <img src='https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava6-bg.webp' alt='avatar 1' style='width: 45px; height: 100%;'/>"+
+        //                "  <div>"+
+        //                    "      <p class='small p-2 ms-3 mb-1 rounded-3' style='background-color: #f5f6f7; '>" + value.comentario + "</p>"+
+        //                    "      <p class='small ms-3 mb-3 rounded-3 text-muted float-end'>" + value.fecha_Creacion + "</p>"+
+        //                "  </div>"+
+        //                "  </div>");
+
+        //            }
+
+        //            i = i + 1;
+        //        });
+        //        tbl.append("</div>"+
+        //        "  <div class='text-muted d-flex justify-content-start align-items-center pe-3 pt-3 mt-2' id='contenedor'>"+
+        //        "      <img src='https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava6-bg.webp' alt='avatar 3' style='width: 40px; height: 100%;'/>"+
+        //        "      <input type='text' class='form-control form-control-lg' name='comentario' id='comentario' placeholder='Type message'/>"+
+        //        "      <a class='ms-1 text-muted' href='#!'><i class='fas fa-paperclip'></i></a>"+
+        //        "      <a class='ms-3 text-muted' href='#!'><i class='fas fa-smile'></i></a>"+
+        //        "      <a class='ms-3' onclick='crearChat(" + id + ")'><i class='fas fa-paper-plane'></i></a>"+
+        //        "  </div>"+
+        //        "</div>");
+        //    },
+
+        //    error: function (error) {
+        //        alert("Ha ocurrido un error: " + error);
+        //    }
+        //});
+        $.ajax({
+            type: "GET",
+            url: "/Chat/GetMessages",
+            dataType: 'JSON',
+            contentType: "application/json; charset:utf-8",
+
+            success: function (data) {
+
+                tbl.empty();
+                var i = 1;
+                $.each(data, function (key, value) {
+                    tbl.append(
+                        "<li class='p-2 border-bottom' id='li" + value.id_Usuario + "'>" +
+                            "<a onclick='listarComentario(" + value.id_Usuario + ")' class='d-flex justify-content-between'>"+
+                            "<div class='d-flex flex-row'>"+
+                                "<div>"+
+                                    "<img src='https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava1-bg.webp' alt='avatar' class='d-flex align-self-center me-3' width='60'>"+
+                                    "<span class='badge bg-success badge-dot'></span>"+
+                                "</div>"+
+                                "<div class='pt-1'>"+
+                                    "<p class='fw-bold mb-0'>" + value.nombre_Completo + "</p>"+
+                                    "<p class='small text-muted'>Hello, Are you there?</p>"+
+                                "</div>"+
+                            "</div>"+
+                                "<div class='pt-1'>"+
+                                    "<p class='small text-muted mb-1'>Just now</p>"+
+                                    "<span class='badge bg-danger rounded-pill float-end'>3</span>"+
+                                "</div>"+
+                            "</a>"+
+                        "</li>");
+                    i = i + 1;
+                });
+            },
+
+            error: function (error) {
+                alert("Ha ocurrido un error: " + error);
+            }
+        });
+        //$.ajax({
+        //    type: "GET",
+        //    url: "/Chat/GetMessages",
+        //    dataType: "JSON",
+        //    contentType: "application/json; charset:utf-8",
+
+        //    success: function (data) {
+        //        let items = "";
+
+        //        for (let i = 0; i < data.length; i++) {
+        //            const admin = data[i];
+
+        //            items += "<li class='p-2 border-bottom' id='li" + admin.id_Usuario + "'>";
+        //            items += "<a onclick='listarComentario(" + admin.id_Usuario + ")' class='d-flex justify-content-between'>";
+        //            items += "<div class='d-flex flex-row'>";
+        //            items += "<div>";
+        //            items += "<img src='https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava1-bg.webp' alt='avatar' class='d-flex align-self-center me-3' width='60'>";
+        //            items += "<span class='badge bg-success badge-dot'></span>";
+        //            items += "</div>";
+        //            items += "<div class='pt-1'>";
+        //            items += "<p class='fw-bold mb-0'>" + admin.nombre_Completo + "</p>";
+        //            items += "<p class='small text-muted'>Hello, Are you there?</p>";
+        //            items += "</div>";
+        //            items += "</div>";
+        //            items += "<div class='pt-1'>";
+        //            items += "<p class='small text-muted mb-1'>Just now</p>";
+        //            items += "<span class='badge bg-danger rounded-pill float-end'>3</span>";
+        //            items += "</div>";
+        //            items += "</a>";
+        //            items += "</li>";
+        //        }
+
+        //        $("#row2").append(items);
+        //    },
+
+        //    error: function (error) {
+        //        alert("Ha ocurrido un error: " + error);
+        //    }
+        //});
+
+    }
+
+    function klk(id) {
+
+        if (@Session["Rol"].ToString() == "1" && @Session["Rol"].ToString() != null)
+        {
+            alert("Admin" + id);
+
+        }
+        else if(@Session["Rol"].ToString() == "2" && @Session["Rol"].ToString() != null)
+        {
+            alert("User" + id);
+        }
+
+    }
+
+    function listarUsuarios() {
+        var tbl = $('#row2');
+        if (@Session["Rol"].ToString() == "1" && @Session["Rol"].ToString() != null)
+        {
+            $.ajax({
+                type: "GET",
+                url: "/Account/listarUsuario",
+                dataType: "JSON",
+                contentType: "application/json; charset=utf-8",
+                cache: false,
+
+                success: function (data) {
+
+                    let items = "";
+
+                    for (let i = 0; i < data.length; i++) {
+                        const usuario = data[i];
+
+                        items += "<li class='p-2 border-bottom' id='li" + usuario.id_Usuario + "'>";
+                        items += "<a onclick='listarComentario(" + usuario.id_Usuario + ")' class='d-flex justify-content-between'>";
+                        items += "<div class='d-flex flex-row'>";
+                        items += "<div>";
+                        items += "<img src='https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava1-bg.webp' alt='avatar' class='d-flex align-self-center me-3' width='60'>";
+                        items += "<span class='badge bg-success badge-dot'></span>";
+                        items += "</div>";
+                        items += "<div class='pt-1'>";
+                        items += "<p class='fw-bold mb-0'>" + usuario.nombre_Completo + "</p>";
+                        items += "<p class='small text-muted'>Hello, Are you there?</p>";
+                        items += "</div>";
+                        items += "</div>";
+                        items += "<div class='pt-1'>";
+                        items += "<p class='small text-muted mb-1'>Just now</p>";
+                        items += "<span class='badge bg-danger rounded-pill float-end'>3</span>";
+                        items += "</div>";
+                        items += "</a>";
+                        items += "</li>";
+                    }
+
+                    $("#row2").append(items);
+                },
+
+                error: function (error) {
+                    alert("Ha ocurrido un error: " + error)
+                }
+            });
+
+            //$.ajax({
+            //    type: "GET",
+            //    url: "/Chat/GetMessages4",
+            //    dataType: 'JSON',
+            //    contentType: "application/json; charset:utf-8",
+
+            //    success: function (data) {
+
+
+            //        var i = 1;
+            //        $.each(data, function (key, value) {
+            //            tbl.append(
+            //                "<li class='p-2 border-bottom' id='li" + value.id_Usuario + "'>" +
+            //                "<a onclick='listarComentario(" + value.id_Usuario + ")' class='d-flex justify-content-between'>" +
+            //                "<div class='d-flex flex-row'>" +
+            //                "<div>" +
+            //                "<img src='https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava1-bg.webp' alt='avatar' class='d-flex align-self-center me-3' width='60'>" +
+            //                "<span class='badge bg-success badge-dot'></span>" +
+            //                "</div>" +
+            //                "<div class='pt-1'>" +
+            //                "<p class='fw-bold mb-0'>" + value.nombre_Completo + "</p>" +
+            //                "<p class='small text-muted'>Hello, Are you there?</p>" +
+            //                "</div>" +
+            //                "</div>" +
+            //                "<div class='pt-1'>" +
+            //                "<p class='small text-muted mb-1'>Just now</p>" +
+            //                "<span class='badge bg-danger rounded-pill float-end'>3</span>" +
+            //                "</div>" +
+            //                "</a>" +
+            //                "</li>");
+            //            i = i + 1;
+            //        });
+            //    },
+
+            //    error: function (error) {
+            //        alert("Ha ocurrido un error: " + error);
+            //    }
+            //});
+
+        }
+        else if(@Session["Rol"].ToString() == "2" && @Session["Rol"].ToString() != null)
+        {
+            $.ajax({
+                type: "GET",
+                url: "/Admin/listarAdmin",
+                dataType: "JSON",
+                contentType: "application/json; charset=utf-8",
+                cache: false,
+
+                success: function (data) {
+
+                    let items = "";
+
+                    for (let i = 0; i < data.length; i++) {
+                        const admin = data[i];
+
+                        items += "<li class='p-2 border-bottom' id='li" + admin.id_Usuario + "'>";
+                        items += "<a onclick='listarComentario(" + admin.id_Usuario + ")' class='d-flex justify-content-between'>";
+                        items += "<div class='d-flex flex-row'>";
+                        items += "<div>";
+                        items += "<img src='https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava1-bg.webp' alt='avatar' class='d-flex align-self-center me-3' width='60'>";
+                        items += "<span class='badge bg-success badge-dot'></span>";
+                        items += "</div>";
+                        items += "<div class='pt-1'>";
+                        items += "<p class='fw-bold mb-0'>" + admin.nombre_Completo + "</p>";
+                        items += "<p class='small text-muted'>Hello, Are you there?</p>";
+                        items += "</div>";
+                        items += "</div>";
+                        items += "<div class='pt-1'>";
+                        items += "<p class='small text-muted mb-1'>Just now</p>";
+                        items += "<span class='badge bg-danger rounded-pill float-end'>3</span>";
+                        items += "</div>";
+                        items += "</a>";
+                        items += "</li>";
+                    }
+
+                    $("#row2").append(items);
+                },
+
+                error: function (error) {
+                    alert("Ha ocurrido un error: " + error)
+                }
+            });
+            //$.ajax({
+            //    type: "GET",
+            //    url: "/Chat/GetMessages",
+            //    dataType: 'JSON',
+            //    contentType: "application/json; charset:utf-8",
+
+            //    success: function (data) {
+
+            //        var i = 1;
+            //        $.each(data, function (key, value) {
+            //            tbl.append(
+            //                "<li class='p-2 border-bottom' id='li" + value.id_Usuario + "'>" +
+            //                "<a onclick='listarComentario(" + value.id_Usuario + ")' class='d-flex justify-content-between'>" +
+            //                "<div class='d-flex flex-row'>" +
+            //                "<div>" +
+            //                "<img src='https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava1-bg.webp' alt='avatar' class='d-flex align-self-center me-3' width='60'>" +
+            //                "<span class='badge bg-success badge-dot'></span>" +
+            //                "</div>" +
+            //                "<div class='pt-1'>" +
+            //                "<p class='fw-bold mb-0'>" + value.nombre_Completo + "</p>" +
+            //                "<p class='small text-muted'>Hello, Are you there?</p>" +
+            //                "</div>" +
+            //                "</div>" +
+            //                "<div class='pt-1'>" +
+            //                "<p class='small text-muted mb-1'>Just now</p>" +
+            //                "<span class='badge bg-danger rounded-pill float-end'>3</span>" +
+            //                "</div>" +
+            //                "</a>" +
+            //                "</li>");
+            //            i = i + 1;
+            //        });
+            //    },
+
+            //    error: function (error) {
+            //        alert("Ha ocurrido un error: " + error);
+            //    }
+            //});
+
+
+        }
+
+    }
+
+    //function listarUsuario() {
+
+
+
+    //}
+    let id_ = 0;
+    //function comentario(id) {
+    //    alert(id);
+    //    $.ajax({
+    //        type: "POST",
+    //        url: "/Chat/comentario",
+    //        traditional: true,
+    //        data: { "id": id },
+
+    //        success: function (data) {
+    //            id_ 
+                
+    //        },
+
+    //        error: function (error) {
+    //            alert("Ha ocurrido un error: " + error);
+    //        }
+    //    });
+    //}
+
+    let array = [];
+    function listarComentario(id) {
+        //var tbl = $('#row');
+        ///*        alert("item: " + id + " usuario " + id_Usuario);*/
+        //        $.ajax({
+        //    type: "POST",
+        //    url: "/Chat/GetMessages2",
+        //    traditional: true,
+        //    data: {"id": id},
+
+        //    success: function (data) {
+        //        alert(data);
+        //        var i = 1;
+        //        tbl.append("<div class='col-md-6 col-lg-7 col-xl-8' id='contenido'>"+
+        //        "<div class='pt-3 pe-3 overflow-auto' style='position: relative; height: 400px'>");
+
+        //        let array = [];
+
+        //        for (let i = 0; i < data.length; i++) {
+        //            const chat = data[i];
+        //            array.push(chat.id_Usuario);
+        //        }
+        //        $.each(data, function (key, value) {
+        //            if (array[i] == id) {
+        //                tbl.append(
+        //                    "<div class='d-flex flex-row justify-content-end'>" +
+        //                    "  <div>" +
+        //                    "      <p class='small p-2 me-3 mb-1 text-white rounded-3 bg-primary'>" + value.comentario + "</p>" +
+        //                    "      <p class='small me-3 mb-3 rounded-3 text-muted'>" + value.fecha_Creacion + "</p>" +
+        //                    "  </div>" +
+        //                    "<img src='https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava6-bg.webp' alt='avatar 1' style='width: 45px; height: 100%;'/>" +
+        //                    "</div>");
+        //            } else {
+        //                tbl.append(
+        //                    "  <div class='d-flex flex-row justify-content-start'>"+
+        //                "      <img src='https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava6-bg.webp' alt='avatar 1' style='width: 45px; height: 100%;'/>"+
+        //                "  <div>"+
+        //                    "      <p class='small p-2 ms-3 mb-1 rounded-3' style='background-color: #f5f6f7; '>" + value.comentario + "</p>"+
+        //                    "      <p class='small ms-3 mb-3 rounded-3 text-muted float-end'>" + value.fecha_Creacion + "</p>"+
+        //                "  </div>"+
+        //                "  </div>");
+
+        //            }
+
+        //            i = i + 1;
+        //        });
+        //        tbl.append("</div>"+
+        //        "  <div class='text-muted d-flex justify-content-start align-items-center pe-3 pt-3 mt-2' id='contenedor'>"+
+        //        "      <img src='https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava6-bg.webp' alt='avatar 3' style='width: 40px; height: 100%;'/>"+
+        //        "      <input type='text' class='form-control form-control-lg' name='comentario' id='comentario' placeholder='Type message'/>"+
+        //        "      <a class='ms-1 text-muted' href='#!'><i class='fas fa-paperclip'></i></a>"+
+        //        "      <a class='ms-3 text-muted' href='#!'><i class='fas fa-smile'></i></a>"+
+        //        "      <a class='ms-3' onclick='crearChat(" + id + ")'><i class='fas fa-paper-plane'></i></a>"+
+        //        "  </div>"+
+        //        "</div>");
+        //    },
+
+        //    error: function (error) {
+        //        alert("Ha ocurrido un error: " + error);
+        //    }
+        //});
+        //$.ajax({
+        //    type: "GET",
+        //    url: "/Chat/listarChatPorid_ChatUsuario",
+        //    traditional: true,
+        //    data: { "id": id },
+
+        //    success: function (data) {
+        //        let items = "";
+
+        //        items += "<div class='col-md-6 col-lg-7 col-xl-8' id='contenido'>";
+        //        items += "  <div class='pt-3 pe-3 overflow-auto' style='position: relative; height: 400px'>";
+
+        //        let array = [];
+
+        //        for (let i = 0; i < data.length; i++) {
+        //            const chat = data[i];
+        //            array.push(chat.id_Usuario);
+        //        }
+
+
+        //        for (let i = 0; i < data.length; i++) {
+        //            const chat = data[i];
+        //            alert("Primero " + array[i] + " Segundo " + array[i + 1]);
+        //            if (array[i] == id) {
+        //                items += "<div class='d-flex flex-row justify-content-end'>";
+        //                items += "  <div>";
+        //                items += "      <p class='small p-2 me-3 mb-1 text-white rounded-3 bg-primary'>" + chat.comentario + "</p>";
+        //                items += "      <p class='small me-3 mb-3 rounded-3 text-muted'>" + chat.fecha_Creacion + "</p>";
+        //                items += "  </div>";
+        //                items += "      <img src='https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava6-bg.webp' alt='avatar 1' style='width: 45px; height: 100%;'/>";
+        //                items += "</div>";
+        //            } else {
+        //                items += "  <div class='d-flex flex-row justify-content-start'>";
+        //                items += "      <img src='https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava6-bg.webp' alt='avatar 1' style='width: 45px; height: 100%;'/>";
+        //                items += "  <div>";
+        //                items += "      <p class='small p-2 ms-3 mb-1 rounded-3' style='background-color: #f5f6f7; '>" + chat.comentario + "</p>";
+        //                items += "      <p class='small ms-3 mb-3 rounded-3 text-muted float-end'>" + chat.fecha_Creacion + "</p>";
+        //                items += "  </div>";
+        //                items += "  </div>";
+
+        //            }
+
+        //            /*                                alert(chat.id_Usuario);*/
+        //            //if ((i+1) % 2 == 0) {
+        //            //    items += "<div class='d-flex flex-row justify-content-end'>";
+        //            //    items += "  <div>";
+        //            //    items += "      <p class='small p-2 me-3 mb-1 text-white rounded-3 bg-primary'>" + chat.comentario + "</p>";
+        //            //    items += "      <p class='small me-3 mb-3 rounded-3 text-muted'>" + chat.fecha_Creacion + "</p>";
+        //            //    items += "  </div>";
+        //            //    items += "      <img src='https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava6-bg.webp' alt='avatar 1' style='width: 45px; height: 100%;'/>";
+        //            //    items += "</div>";
+
+        //            //} else {
+        //            //    items += "  <div class='d-flex flex-row justify-content-start'>";
+        //            //    items += "      <img src='https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava6-bg.webp' alt='avatar 1' style='width: 45px; height: 100%;'/>";
+        //            //    items += "  <div>";
+        //            //    items += "      <p class='small p-2 ms-3 mb-1 rounded-3' style='background-color: #f5f6f7; '>" + chat.comentario + "</p>";
+        //            //    items += "      <p class='small ms-3 mb-3 rounded-3 text-muted float-end'>" + chat.fecha_Creacion + "</p>";
+        //            //    items += "  </div>";
+        //            //    items += "  </div>";
+        //            //}
+
+        //            //if ((i + 1) % 2 == 0) {
+        //            //    items += "  <div class='d-flex flex-row justify-content-end'>";
+        //            //    items += "  <div>";
+        //            //    items += "      <p class='small p-2 me-3 mb-1 text-white rounded-3 bg-primary'>" + chat.comentario + "</p>";
+        //            //    items += "      <p class='small me-3 mb-3 rounded-3 text-muted'>" + chat.fecha_Creacion + "</p>";
+        //            //    items += "  </div>";
+        //            //    items += "      <img src='https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava6-bg.webp' alt='avatar 1' style='width: 45px; height: 100%;'>";
+        //            //    items += "  </div>";
+        //            //    items += "  <br>";
+        //            //} else {
+        //            //    items += "  <div class='d-flex flex-row justify-content-start'>";
+        //            //    items += "      <img src='https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava6-bg.webp' alt='avatar 1' style='width: 45px; height: 100%;'>";
+        //            //    items += "  <div>";
+        //            //    items += "      <p class='small p-2 ms-3 mb-1 rounded-3' style='background-color: #f5f6f7; '>" + chat.comentario + "</p>";
+        //            //    items += "      <p class='small ms-3 mb-3 rounded-3 text-muted float-end'>" + chat.fecha_Creacion + "</p>";
+        //            //    items += "  </div>";
+        //            //    items += "  </div>";
+        //            //    items += "  <br>";
+        //            //}
+        //        }
+
+        //        items += "</div>";
+        //        items += "  <div class='text-muted d-flex justify-content-start align-items-center pe-3 pt-3 mt-2' id='contenedor'>";
+        //        items += "      <img src='https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava6-bg.webp' alt='avatar 3' style='width: 40px; height: 100%;'/>";
+        //        items += "      <input type='text' class='form-control form-control-lg' name='comentario' id='comentario' placeholder='Type message'/>";
+        //        items += "      <a class='ms-1 text-muted' href='#!'><i class='fas fa-paperclip'></i></a>";
+        //        items += "      <a class='ms-3 text-muted' href='#!'><i class='fas fa-smile'></i></a>";
+        //        items += "      <a class='ms-3' onclick='crearChat(" + id + ")'><i class='fas fa-paper-plane'></i></a>";
+        //        items += "  </div>";
+        //        items += "</div>";
+
+        //        $("#row").append(items);
+
+        //    },
+
+        //    error: function (error) {
+        //        alert("Ha ocurrido un error: " + error);
+        //    }
+        //});
+
+        $.ajax({
+            type: "POST",
+            url: "/Chat/listarcomentarioPorid_Usuario",
+            traditional: true,
+            data: { "id": id },
+
+            success: function (data) {
+                /*                    alert("id_UsuarioRespuesta: " + id);*/
+                //array.push(id);
+                //var estilos = window.getComputedStyle(document.getElementById("li" + array[0]), null);
+                //var background = estilos.getPropertyValue("background-color");
+
+                //if (background == "blue") {
+                //    let li = document.getElementById("li" + array[0]);
+                //    li.style = "background-color: white";
+                //} else {
+                //    let li = document.getElementById("li" + array[0]);
+                //    li.style = "background-color: blue";
+                //}
+
+                if (data == "Aún no hay comentarios") {
+
+                    let items = "";
+
+                    if (document.getElementById("contenido")) {
+                        document.getElementById("contenido").remove();
+                    }
+
+
+                    items += "<div class='col-md-6 col-lg-7 col-xl-8' id='contenido2'>";
+                    items += "<div class='pt-3 pe-3 overflow-auto' style='position: relative; height: 400px'>";
+
+                    items += "</div>";
+                    items += "<div class='text-muted d-flex justify-content-start align-items-center pe-3 pt-3 mt-2' id='contenedor'>";
+                    items += "<img src='https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava6-bg.webp' alt='avatar 3' style='width: 40px; height: 100%;'>";
+                    items += "      <input type='text' class='form-control form-control-lg' name='comentario' id='comentario' placeholder='Type message'/>";
+                    items += "      <a class='ms-1 text-muted' href='#!'><i class='fas fa-paperclip'></i></a>";
+                    items += "      <a class='ms-3 text-muted' href='#!'><i class='fas fa-smile'></i></a>";
+                    items += "      <a class='ms-3' onclick='crearChat(" + id + ")'><i class='fas fa-paper-plane'></i></a>";
+                    items += "</div>";
+                    items += "</div>";
+
+                    $("#row").append(items);
+
+                } else {
+
+                    $.ajax({
+                        type: "GET",
+                        url: "/Chat/listarChatPorid_ChatUsuario",
+                        traditional: true,
+                        data: { "id": id },
+
+                        success: function (data) {
+                            let items = "";
+
+                            if (document.getElementById("contenido")) {
+                                document.getElementById("contenido").remove();
+                            }
+
+                            items += "<div class='col-md-6 col-lg-7 col-xl-8' id='contenido'>";
+                            items += "  <div class='pt-3 pe-3 overflow-auto' style='position: relative; height: 400px'>";
+
+                            let array = [];
+
+                            for (let i = 0; i < data.length; i++) {
+                                const chat = data[i];
+                                array.push(chat.id_Usuario);
+                            }
+
+
+                            for (let i = 0; i < data.length; i++) {
+                                const chat = data[i];
+                                //alert("Primero " + array[i] + " Segundo " + array[i + 1]);
+                                if (array[i] == id) {
+                                    items += "<div class='d-flex flex-row justify-content-end'>";
+                                    items += "  <div>";
+                                    items += "      <p class='small p-2 me-3 mb-1 text-white rounded-3 bg-primary'>" + chat.comentario + "</p>";
+                                    items += "      <p class='small me-3 mb-3 rounded-3 text-muted'>" + chat.fecha_Creacion + "</p>";
+                                    items += "  </div>";
+                                    items += "      <img src='https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava6-bg.webp' alt='avatar 1' style='width: 45px; height: 100%;'/>";
+                                    items += "</div>";
+                                } else {
+                                    items += "  <div class='d-flex flex-row justify-content-start'>";
+                                    items += "      <img src='https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava6-bg.webp' alt='avatar 1' style='width: 45px; height: 100%;'/>";
+                                    items += "  <div>";
+                                    items += "      <p class='small p-2 ms-3 mb-1 rounded-3' style='background-color: #f5f6f7; '>" + chat.comentario + "</p>";
+                                    items += "      <p class='small ms-3 mb-3 rounded-3 text-muted float-end'>" + chat.fecha_Creacion + "</p>";
+                                    items += "  </div>";
+                                    items += "  </div>";
+
+                                }
+
+                                /*                                alert(chat.id_Usuario);*/
+                                //if ((i+1) % 2 == 0) {
+                                //    items += "<div class='d-flex flex-row justify-content-end'>";
+                                //    items += "  <div>";
+                                //    items += "      <p class='small p-2 me-3 mb-1 text-white rounded-3 bg-primary'>" + chat.comentario + "</p>";
+                                //    items += "      <p class='small me-3 mb-3 rounded-3 text-muted'>" + chat.fecha_Creacion + "</p>";
+                                //    items += "  </div>";
+                                //    items += "      <img src='https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava6-bg.webp' alt='avatar 1' style='width: 45px; height: 100%;'/>";
+                                //    items += "</div>";
+
+                                //} else {
+                                //    items += "  <div class='d-flex flex-row justify-content-start'>";
+                                //    items += "      <img src='https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava6-bg.webp' alt='avatar 1' style='width: 45px; height: 100%;'/>";
+                                //    items += "  <div>";
+                                //    items += "      <p class='small p-2 ms-3 mb-1 rounded-3' style='background-color: #f5f6f7; '>" + chat.comentario + "</p>";
+                                //    items += "      <p class='small ms-3 mb-3 rounded-3 text-muted float-end'>" + chat.fecha_Creacion + "</p>";
+                                //    items += "  </div>";
+                                //    items += "  </div>";
+                                //}
+
+                                //if ((i + 1) % 2 == 0) {
+                                //    items += "  <div class='d-flex flex-row justify-content-end'>";
+                                //    items += "  <div>";
+                                //    items += "      <p class='small p-2 me-3 mb-1 text-white rounded-3 bg-primary'>" + chat.comentario + "</p>";
+                                //    items += "      <p class='small me-3 mb-3 rounded-3 text-muted'>" + chat.fecha_Creacion + "</p>";
+                                //    items += "  </div>";
+                                //    items += "      <img src='https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava6-bg.webp' alt='avatar 1' style='width: 45px; height: 100%;'>";
+                                //    items += "  </div>";
+                                //    items += "  <br>";
+                                //} else {
+                                //    items += "  <div class='d-flex flex-row justify-content-start'>";
+                                //    items += "      <img src='https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava6-bg.webp' alt='avatar 1' style='width: 45px; height: 100%;'>";
+                                //    items += "  <div>";
+                                //    items += "      <p class='small p-2 ms-3 mb-1 rounded-3' style='background-color: #f5f6f7; '>" + chat.comentario + "</p>";
+                                //    items += "      <p class='small ms-3 mb-3 rounded-3 text-muted float-end'>" + chat.fecha_Creacion + "</p>";
+                                //    items += "  </div>";
+                                //    items += "  </div>";
+                                //    items += "  <br>";
+                                //}
+                            }
+
+                            items += "</div>";
+                            items += "  <div class='text-muted d-flex justify-content-start align-items-center pe-3 pt-3 mt-2' id='contenedor'>";
+                            items += "      <img src='https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava6-bg.webp' alt='avatar 3' style='width: 40px; height: 100%;'/>";
+                            items += "      <input type='text' class='form-control form-control-lg' name='comentario' id='comentario' placeholder='Type message'/>";
+                            items += "      <a class='ms-1 text-muted' href='#!'><i class='fas fa-paperclip'></i></a>";
+                            items += "      <a class='ms-3 text-muted' href='#!'><i class='fas fa-smile'></i></a>";
+                            items += "      <a class='ms-3' onclick='crearChat(" + id + ")'><i class='fas fa-paper-plane'></i></a>";
+                            items += "  </div>";
+                            items += "</div>";
+
+                            $("#row").append(items);
+
+                        },
+
+                        error: function (error) {
+                            alert("Ha ocurrido un error: " + error);
+                        }
+                    });
+
+                }
+            },
+
+            error: function (error) {
+                alert("Ha ocurrido un error: " + error)
+            }
+        });
+
+        // Declare a proxy to reference the hub.
+//        var notifications = $.connection.myHub;
+//        //debugger;
+//        // Create a function that the hub can call to broadcast messages.
+//        notifications.client.displayStatus = function () {
+//            /*GetAllAdmin()*/
+//            $.ajax({
+//                type: "POST",
+//                url: "/Chat/listarcomentarioPorid_Usuario",
+//                traditional: true,
+//                data: { "id": id },
+
+//                success: function (data) {
+///*                    alert("id_UsuarioRespuesta: " + id);*/
+//                    //array.push(id);
+//                    //var estilos = window.getComputedStyle(document.getElementById("li" + array[0]), null);
+//                    //var background = estilos.getPropertyValue("background-color");
+
+//                    //if (background == "blue") {
+//                    //    let li = document.getElementById("li" + array[0]);
+//                    //    li.style = "background-color: white";
+//                    //} else {
+//                    //    let li = document.getElementById("li" + array[0]);
+//                    //    li.style = "background-color: blue";
+//                    //}
+
+//                    if (data == "Aún no hay comentarios") {
+
+//                        let items = "";
+
+//                        if (document.getElementById("contenido")) {
+//                            document.getElementById("contenido").remove();
+//                        }
+
+
+//                        items += "<div class='col-md-6 col-lg-7 col-xl-8' id='contenido2'>";
+//                        items += "<div class='pt-3 pe-3 overflow-auto' style='position: relative; height: 400px'>";
+
+//                        items += "</div>";
+//                        items += "<div class='text-muted d-flex justify-content-start align-items-center pe-3 pt-3 mt-2' id='contenedor'>";
+//                        items += "<img src='https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava6-bg.webp' alt='avatar 3' style='width: 40px; height: 100%;'>";
+//                        items += "      <input type='text' class='form-control form-control-lg' name='comentario' id='comentario' placeholder='Type message'/>";
+//                        items += "      <a class='ms-1 text-muted' href='#!'><i class='fas fa-paperclip'></i></a>";
+//                        items += "      <a class='ms-3 text-muted' href='#!'><i class='fas fa-smile'></i></a>";
+//                        items += "      <a class='ms-3' onclick='crearChat(" + id + ")'><i class='fas fa-paper-plane'></i></a>";
+//                        items += "</div>";
+//                        items += "</div>";
+
+//                        $("#row").append(items);
+
+//                    } else {
+
+//                        $.ajax({
+//                            type: "GET",
+//                            url: "/Chat/GetMessages2",
+//                            traditional: true,
+//                            data: { "id": id },
+
+//                            success: function (data) {
+//                                let items = "";
+
+//                                if (document.getElementById("contenido")) {
+//                                    document.getElementById("contenido").remove();
+//                                }
+
+//                                items += "<div class='col-md-6 col-lg-7 col-xl-8' id='contenido'>";
+//                                items += "  <div class='pt-3 pe-3 overflow-auto' style='position: relative; height: 400px'>";
+
+//                                let array = [];
+
+//                                for (let i = 0; i < data.length; i++) {
+//                                    const chat = data[i];
+//                                    array.push(chat.id_Usuario);
+//                                }
+
+
+//                                for (let i = 0; i < data.length; i++) {
+//                                    const chat = data[i];
+//                                    //alert("Primero " + array[i] + " Segundo " + array[i + 1]);
+//                                    if (array[i] == id) {
+//                                        items += "<div class='d-flex flex-row justify-content-end'>";
+//                                        items += "  <div>";
+//                                        items += "      <p class='small p-2 me-3 mb-1 text-white rounded-3 bg-primary'>" + chat.comentario + "</p>";
+//                                        items += "      <p class='small me-3 mb-3 rounded-3 text-muted'>" + chat.fecha_Creacion + "</p>";
+//                                        items += "  </div>";
+//                                        items += "      <img src='https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava6-bg.webp' alt='avatar 1' style='width: 45px; height: 100%;'/>";
+//                                        items += "</div>";
+//                                    } else {
+//                                        items += "  <div class='d-flex flex-row justify-content-start'>";
+//                                        items += "      <img src='https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava6-bg.webp' alt='avatar 1' style='width: 45px; height: 100%;'/>";
+//                                        items += "  <div>";
+//                                        items += "      <p class='small p-2 ms-3 mb-1 rounded-3' style='background-color: #f5f6f7; '>" + chat.comentario + "</p>";
+//                                        items += "      <p class='small ms-3 mb-3 rounded-3 text-muted float-end'>" + chat.fecha_Creacion + "</p>";
+//                                        items += "  </div>";
+//                                        items += "  </div>";
+
+//                                    }
+
+//                                    /*                                alert(chat.id_Usuario);*/
+//                                    //if ((i+1) % 2 == 0) {
+//                                    //    items += "<div class='d-flex flex-row justify-content-end'>";
+//                                    //    items += "  <div>";
+//                                    //    items += "      <p class='small p-2 me-3 mb-1 text-white rounded-3 bg-primary'>" + chat.comentario + "</p>";
+//                                    //    items += "      <p class='small me-3 mb-3 rounded-3 text-muted'>" + chat.fecha_Creacion + "</p>";
+//                                    //    items += "  </div>";
+//                                    //    items += "      <img src='https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava6-bg.webp' alt='avatar 1' style='width: 45px; height: 100%;'/>";
+//                                    //    items += "</div>";
+
+//                                    //} else {
+//                                    //    items += "  <div class='d-flex flex-row justify-content-start'>";
+//                                    //    items += "      <img src='https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava6-bg.webp' alt='avatar 1' style='width: 45px; height: 100%;'/>";
+//                                    //    items += "  <div>";
+//                                    //    items += "      <p class='small p-2 ms-3 mb-1 rounded-3' style='background-color: #f5f6f7; '>" + chat.comentario + "</p>";
+//                                    //    items += "      <p class='small ms-3 mb-3 rounded-3 text-muted float-end'>" + chat.fecha_Creacion + "</p>";
+//                                    //    items += "  </div>";
+//                                    //    items += "  </div>";
+//                                    //}
+
+//                                    //if ((i + 1) % 2 == 0) {
+//                                    //    items += "  <div class='d-flex flex-row justify-content-end'>";
+//                                    //    items += "  <div>";
+//                                    //    items += "      <p class='small p-2 me-3 mb-1 text-white rounded-3 bg-primary'>" + chat.comentario + "</p>";
+//                                    //    items += "      <p class='small me-3 mb-3 rounded-3 text-muted'>" + chat.fecha_Creacion + "</p>";
+//                                    //    items += "  </div>";
+//                                    //    items += "      <img src='https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava6-bg.webp' alt='avatar 1' style='width: 45px; height: 100%;'>";
+//                                    //    items += "  </div>";
+//                                    //    items += "  <br>";
+//                                    //} else {
+//                                    //    items += "  <div class='d-flex flex-row justify-content-start'>";
+//                                    //    items += "      <img src='https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava6-bg.webp' alt='avatar 1' style='width: 45px; height: 100%;'>";
+//                                    //    items += "  <div>";
+//                                    //    items += "      <p class='small p-2 ms-3 mb-1 rounded-3' style='background-color: #f5f6f7; '>" + chat.comentario + "</p>";
+//                                    //    items += "      <p class='small ms-3 mb-3 rounded-3 text-muted float-end'>" + chat.fecha_Creacion + "</p>";
+//                                    //    items += "  </div>";
+//                                    //    items += "  </div>";
+//                                    //    items += "  <br>";
+//                                    //}
+//                                }
+
+//                                items += "</div>";
+//                                items += "  <div class='text-muted d-flex justify-content-start align-items-center pe-3 pt-3 mt-2' id='contenedor'>";
+//                                items += "      <img src='https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava6-bg.webp' alt='avatar 3' style='width: 40px; height: 100%;'/>";
+//                                items += "      <input type='text' class='form-control form-control-lg' name='comentario' id='comentario' placeholder='Type message'/>";
+//                                items += "      <a class='ms-1 text-muted' href='#!'><i class='fas fa-paperclip'></i></a>";
+//                                items += "      <a class='ms-3 text-muted' href='#!'><i class='fas fa-smile'></i></a>";
+//                                items += "      <a class='ms-3' onclick='crearChat(" + id + ")'><i class='fas fa-paper-plane'></i></a>";
+//                                items += "  </div>";
+//                                items += "</div>";
+
+//                                $("#row").append(items);
+
+//                            },
+
+//                            error: function (error) {
+//                                alert("Ha ocurrido un error: " + error);
+//                            }
+//                        });
+
+//                    }
+//                },
+
+//                error: function (error) {
+//                    alert("Ha ocurrido un error: " + error)
+//                }
+//            });
+//        };
+//        // Start the connection.
+//        $.connection.hub.start().done(function () {
+//            console.log("connection started")
+//            //notifications.onconn();
+//            /*GetAllAdmin();*/
+//            $.ajax({
+//                type: "POST",
+//                url: "/Chat/listarcomentarioPorid_Usuario",
+//                traditional: true,
+//                data: { "id": id },
+
+//                success: function (data) {
+//                    alert("id_UsuarioRespuesta: " + id);
+//                    //array.push(id);
+//                    //var estilos = window.getComputedStyle(document.getElementById("li" + array[0]), null);
+//                    //var background = estilos.getPropertyValue("background-color");
+
+//                    //if (background == "blue") {
+//                    //    let li = document.getElementById("li" + array[0]);
+//                    //    li.style = "background-color: white";
+//                    //} else {
+//                    //    let li = document.getElementById("li" + array[0]);
+//                    //    li.style = "background-color: blue";
+//                    //}
+
+//                    if (data == "Aún no hay comentarios") {
+
+//                        let items = "";
+
+//                        if (document.getElementById("contenido")) {
+//                            document.getElementById("contenido").remove();
+//                        }
+
+
+//                        items += "<div class='col-md-6 col-lg-7 col-xl-8' id='contenido2'>";
+//                        items += "<div class='pt-3 pe-3 overflow-auto' style='position: relative; height: 400px'>";
+
+//                        items += "</div>";
+//                        items += "<div class='text-muted d-flex justify-content-start align-items-center pe-3 pt-3 mt-2' id='contenedor'>";
+//                        items += "<img src='https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava6-bg.webp' alt='avatar 3' style='width: 40px; height: 100%;'>";
+//                        items += "      <input type='text' class='form-control form-control-lg' name='comentario' id='comentario' placeholder='Type message'/>";
+//                        items += "      <a class='ms-1 text-muted' href='#!'><i class='fas fa-paperclip'></i></a>";
+//                        items += "      <a class='ms-3 text-muted' href='#!'><i class='fas fa-smile'></i></a>";
+//                        items += "      <a class='ms-3' onclick='crearChat(" + id + ")'><i class='fas fa-paper-plane'></i></a>";
+//                        items += "</div>";
+//                        items += "</div>";
+
+//                        $("#row").append(items);
+
+//                    } else {
+
+//                        $.ajax({
+//                            type: "GET",
+//                            url: "/Chat/GetMessages2",
+//                            traditional: true,
+//                            data: { "id": id },
+
+//                            success: function (data) {
+//                                let items = "";
+
+//                                items += "<div class='col-md-6 col-lg-7 col-xl-8' id='contenido'>";
+//                                items += "  <div class='pt-3 pe-3 overflow-auto' style='position: relative; height: 400px'>";
+
+//                                let array = [];
+
+//                                for (let i = 0; i < data.length; i++) {
+//                                    const chat = data[i];
+//                                    array.push(chat.id_Usuario);
+//                                }
+
+
+//                                for (let i = 0; i < data.length; i++) {
+//                                    const chat = data[i];
+//                                    /*alert("Primero " + array[i] + " Segundo " + array[i + 1]);*/
+//                                    if (array[i] == id) {
+//                                        items += "<div class='d-flex flex-row justify-content-end'>";
+//                                        items += "  <div>";
+//                                        items += "      <p class='small p-2 me-3 mb-1 text-white rounded-3 bg-primary'>" + chat.comentario + "</p>";
+//                                        items += "      <p class='small me-3 mb-3 rounded-3 text-muted'>" + chat.fecha_Creacion + "</p>";
+//                                        items += "  </div>";
+//                                        items += "      <img src='https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava6-bg.webp' alt='avatar 1' style='width: 45px; height: 100%;'/>";
+//                                        items += "</div>";
+//                                    } else {
+//                                        items += "  <div class='d-flex flex-row justify-content-start'>";
+//                                        items += "      <img src='https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava6-bg.webp' alt='avatar 1' style='width: 45px; height: 100%;'/>";
+//                                        items += "  <div>";
+//                                        items += "      <p class='small p-2 ms-3 mb-1 rounded-3' style='background-color: #f5f6f7; '>" + chat.comentario + "</p>";
+//                                        items += "      <p class='small ms-3 mb-3 rounded-3 text-muted float-end'>" + chat.fecha_Creacion + "</p>";
+//                                        items += "  </div>";
+//                                        items += "  </div>";
+
+//                                    }
+
+//                                    /*                                alert(chat.id_Usuario);*/
+//                                    //if ((i+1) % 2 == 0) {
+//                                    //    items += "<div class='d-flex flex-row justify-content-end'>";
+//                                    //    items += "  <div>";
+//                                    //    items += "      <p class='small p-2 me-3 mb-1 text-white rounded-3 bg-primary'>" + chat.comentario + "</p>";
+//                                    //    items += "      <p class='small me-3 mb-3 rounded-3 text-muted'>" + chat.fecha_Creacion + "</p>";
+//                                    //    items += "  </div>";
+//                                    //    items += "      <img src='https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava6-bg.webp' alt='avatar 1' style='width: 45px; height: 100%;'/>";
+//                                    //    items += "</div>";
+
+//                                    //} else {
+//                                    //    items += "  <div class='d-flex flex-row justify-content-start'>";
+//                                    //    items += "      <img src='https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava6-bg.webp' alt='avatar 1' style='width: 45px; height: 100%;'/>";
+//                                    //    items += "  <div>";
+//                                    //    items += "      <p class='small p-2 ms-3 mb-1 rounded-3' style='background-color: #f5f6f7; '>" + chat.comentario + "</p>";
+//                                    //    items += "      <p class='small ms-3 mb-3 rounded-3 text-muted float-end'>" + chat.fecha_Creacion + "</p>";
+//                                    //    items += "  </div>";
+//                                    //    items += "  </div>";
+//                                    //}
+
+//                                    //if ((i + 1) % 2 == 0) {
+//                                    //    items += "  <div class='d-flex flex-row justify-content-end'>";
+//                                    //    items += "  <div>";
+//                                    //    items += "      <p class='small p-2 me-3 mb-1 text-white rounded-3 bg-primary'>" + chat.comentario + "</p>";
+//                                    //    items += "      <p class='small me-3 mb-3 rounded-3 text-muted'>" + chat.fecha_Creacion + "</p>";
+//                                    //    items += "  </div>";
+//                                    //    items += "      <img src='https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava6-bg.webp' alt='avatar 1' style='width: 45px; height: 100%;'>";
+//                                    //    items += "  </div>";
+//                                    //    items += "  <br>";
+//                                    //} else {
+//                                    //    items += "  <div class='d-flex flex-row justify-content-start'>";
+//                                    //    items += "      <img src='https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava6-bg.webp' alt='avatar 1' style='width: 45px; height: 100%;'>";
+//                                    //    items += "  <div>";
+//                                    //    items += "      <p class='small p-2 ms-3 mb-1 rounded-3' style='background-color: #f5f6f7; '>" + chat.comentario + "</p>";
+//                                    //    items += "      <p class='small ms-3 mb-3 rounded-3 text-muted float-end'>" + chat.fecha_Creacion + "</p>";
+//                                    //    items += "  </div>";
+//                                    //    items += "  </div>";
+//                                    //    items += "  <br>";
+//                                    //}
+//                                }
+
+//                                items += "</div>";
+//                                items += "  <div class='text-muted d-flex justify-content-start align-items-center pe-3 pt-3 mt-2' id='contenedor'>";
+//                                items += "      <img src='https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava6-bg.webp' alt='avatar 3' style='width: 40px; height: 100%;'/>";
+//                                items += "      <input type='text' class='form-control form-control-lg' name='comentario' id='comentario' placeholder='Type message'/>";
+//                                items += "      <a class='ms-1 text-muted' href='#!'><i class='fas fa-paperclip'></i></a>";
+//                                items += "      <a class='ms-3 text-muted' href='#!'><i class='fas fa-smile'></i></a>";
+//                                items += "      <a class='ms-3' onclick='crearChat(" + id + ")'><i class='fas fa-paper-plane'></i></a>";
+//                                items += "  </div>";
+//                                items += "</div>";
+
+//                                $("#row").append(items);
+
+//                            },
+
+//                            error: function (error) {
+//                                alert("Ha ocurrido un error: " + error);
+//                            }
+//                        });
+
+//                    }
+//                },
+
+//                error: function (error) {
+//                    alert("Ha ocurrido un error: " + error)
+//                }
+//            });
+//        }).fail(function (e) {
+//            alert(e);
+//        });
+
+    }
+
+    function crearChat(id) {
+
+        $.ajax({
+            type: "POST",
+            url: "/Chat/Index",
+            traditional: true,
+            data: { "id": id, "comentario": document.getElementById("comentario").value },
+
+            success: function (data) {
+                alert("Se ha guardado");
+            },
+
+            error: function (error) {
+                alert("Ha ocurrido un error: " + error);
+            }
+        });
+
+    }
+
+    function chat() {
+        // Reference the auto-generated proxy for the hub.
+        var chat = $.connection.chatHub;
+        // Create a function that the hub can call back to display messages.
+        chat.client.addNewMessageToPage = function (name, message) {
+            // Add the message to the page.
+            $('#discussion').append('<li><strong>' + htmlEncode(name)
+                + '</strong>: ' + htmlEncode(message) + '</li>');
+        };
+        // Get the user name and store it to prepend to messages.
+        $('#displayname').val(prompt('Enter your name:', ''));
+        // Set initial focus to message input box.
+        $('#message').focus();
+        // Start the connection.
+        $.connection.hub.start().done(function () {
+            $('#sendmessage').click(function () {
+                // Call the Send method on the hub.
+                chat.server.send($('#displayname').val(), $('#message').val());
+                // Clear text box and reset focus for next comment.
+                $('#message').val('').focus();
+            });
+        });
+    }
+
+</script>

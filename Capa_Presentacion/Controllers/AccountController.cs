@@ -108,6 +108,22 @@ namespace Capa_Presentacion.Controllers
             return Json(nombre, JsonRequestBehavior.AllowGet);
         }
 
+        public ActionResult listarEmailPorid_Usuario(int id)
+        {
+            var id_Usuario = _Negocio.Proc_listarEmailPorid_Usuario(id);
+            return Json(id_Usuario, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult validar(string email)
+        {
+            var result = "";
+            if (User.Identity.Name == email)
+            {
+                result = "Es igual";
+            }
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
         // GET: Account/Admin
         public ActionResult Admin()
         {
@@ -223,7 +239,7 @@ namespace Capa_Presentacion.Controllers
                 // TODO: Add update logic here
                 _Negocio.Proc_actualizarUsuario(usuario);
 
-                return RedirectToAction("Usuario", "Account");
+                return RedirectToAction("Usuarios", "Account");
             }
             catch
             {
@@ -257,7 +273,7 @@ namespace Capa_Presentacion.Controllers
                 }
 
                 _Negocio.Proc_eliminarUsuario(id);
-                return RedirectToAction("Usuario", "Account");
+                return RedirectToAction("Usuarios", "Account");
             }
             catch
             {

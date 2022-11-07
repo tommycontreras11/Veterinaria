@@ -81,23 +81,23 @@
             {
                 if (Session["Rol"].ToString() == "1" && Session["Rol"].ToString() != null)
                 {
-                    <input type="text" id="message" />
-                    <input type="button" id="sendmessage" value="Send" />
+                    @*<input type="text" id="message" />
+                    <input type="button" id="sendmessage" value="Send" />*@
                     <div class="table-responsive" id="table"></div>
                     @*<input type="hidden" id="displayname" />*@
                 }
                 else if (Session["Rol"].ToString() == "2" && Session["Rol"].ToString() != null)
                 {
-                    <ul id="discussion">
-                    </ul>
+                    @*<ul id="discussion">
+                    </ul>*@
                 }
             }
         </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.js"></script>
-    <script src="~/Scripts/jquery.signalR-2.4.3.min.js"></script>
-    <script src="~/signalr/hubs"></script>
+    @*<script src="~/Scripts/jquery.signalR-2.4.3.min.js"></script>
+    <script src="~/signalr/hubs"></script>*@
 </body>
 </html>
 
@@ -114,12 +114,12 @@
 
 
         if (@Session["Rol"].ToString() == "1" && @Session["Rol"].ToString() != null) {
-            chat();
+/*            chat();*/
             listarTodaCitaPorfecha_Cita();
         }
         else if (@Session["Rol"].ToString() == "2" && @Session["Rol"].ToString() != null) {
             listarid_UsuarioVeterinarioPorid_Usuario();
-            chat();
+/*            chat();*/
         }
         
     });
@@ -153,70 +153,75 @@
                             }
 
                             $.ajax({
-                                type: "POST",
-                                url: "/Account/Proc_listarnombre_CompletoPorid_Usuario",
-                                traditional: true,
-                                data: { "id": id_Usuario },
+                                type: "GET",
+                                url: "/Cita/listarCitaPorfecha_Cita",
+                                dataType: "JSON",
+                                contentType: "application/json; charset=utf-8",
+                                cache: false,
 
-                                success: function (data_Usuario) {
+                                success: function (data) {
 
-                                    for (let i = 0; i < data_Usuario.length; i++) {
-                                        alert(data_Usuario[i]);
-                                    }
+                                    if (data == "Aún no es el día de la cita o pasó") {
+                                        alert(data);
+                                    } else {
+                                        $.ajax({
+                                            type: "POST",
+                                            url: "/Account/Proc_listarnombre_CompletoPorid_Usuario",
+                                            traditional: true,
+                                            data: { "id": id_Usuario },
 
-                                    $.ajax({
-                                        type: "GET",
-                                        url: "/Cita/listarCitaPorfecha_Cita",
-                                        dataType: "JSON",
-                                        contentType: "application/json; charset=utf-8",
-                                        cache: false,
+                                            success: function (data_Usuario) {
 
-                                        success: function (data) {
-                                            alert(data);
-                                        },
-
-                                        error: function (error) {
-                                            alert("Ha ocurrido un error: " + error);
-                                        }
-                                    });
-
-                                    $.ajax({
-                                        type: "POST",
-                                        url: "/Account/Proc_listarnombre_CompletoPorid_Usuario",
-                                        traditional: true,
-                                        data: { "id": id_Doctor },
-
-                                        success: function (data_Doctor) {
+                                                for (let i = 0; i < data_Usuario.length; i++) {
+                                                    alert(data_Usuario[i]);
+                                                }
 
 
-                                            let items = "";
+                                                $.ajax({
+                                                    type: "POST",
+                                                    url: "/Account/Proc_listarnombre_CompletoPorid_Usuario",
+                                                    traditional: true,
+                                                    data: { "id": id_Doctor },
 
-                                            items += "<div class='card text-center'>";
-                                            items += "<div class='card-header'>Información de la mascota</div>";
-                                            items += "<div class='card-body'>";
+                                                    success: function (data_Doctor) {
 
-                                            for (let i = 0; i < cita.length; i++) {
-                                                const citaUsuario = cita[i];
 
-                                                items += "<p class='card-text'>Usuario: " + data_Usuario[i] + "</p>";
-                                                items += "<p class='card-text'>Doctor: " + data_Doctor[i] + "</p>";
-                                                items += "<p class='card-text'>Servicio: " + citaUsuario.servicio + "</p>";
-                                                items += "<p class='card-text'>Fecha cita: " + citaUsuario.fecha_Cita + "</p>";
+                                                        let items = "";
 
+                                                        items += "<div class='card text-center'>";
+                                                        items += "<div class='card-header'>Información de la mascota</div>";
+                                                        items += "<div class='card-body'>";
+
+                                                        for (let i = 0; i < cita.length; i++) {
+                                                            const citaUsuario = cita[i];
+
+                                                            items += "<p class='card-text'>Usuario: " + data_Usuario[i] + "</p>";
+                                                            items += "<p class='card-text'>Doctor: " + data_Doctor[i] + "</p>";
+                                                            items += "<p class='card-text'>Servicio: " + citaUsuario.servicio + "</p>";
+                                                            items += "<p class='card-text'>Fecha cita: " + citaUsuario.fecha_Cita + "</p>";
+                                                            items += "<td><a href='Procesar?id=" + citaUsuario.id_Cita + "' class='btn btn-primary'>Ver cita</a></td>";
+                                                        }
+                                                        //DateTime.Now.ToString("dd/MM/yyyy HH:mm tt")
+                                                        items += "</div>";
+                                                        items += "<div class='card-footer text-muted'>2 days ago</div>";
+                                                        items += "</div>";
+
+                                                        $(".col-md-12").append(items);
+                                                    },
+
+                                                    error: function (error) {
+                                                        alert("Ha ocurrido un error: " + error);
+                                                    }
+                                                });
+
+                                            },
+
+                                            error: function (error) {
+                                                alert("Ha ocurrido un error: " + error);
                                             }
-                                            //DateTime.Now.ToString("dd/MM/yyyy HH:mm tt")
-                                            items += "</div>";
-                                            items += "<div class='card-footer text-muted'>2 days ago</div>";
-                                            items += "</div>";
+                                        });
 
-                                            $(".col-md-12").append(items);
-                                        },
-
-                                        error: function (error) {
-                                            alert("Ha ocurrido un error: " + error);
-                                        }
-                                    });
-
+                                    }
                                 },
 
                                 error: function (error) {
@@ -245,132 +250,151 @@
 
         $.ajax({
             type: "GET",
-            url: "/Cita/listarTodaCitaPorfecha_Cita",
+            url: "/Cita/listarCitaPorfecha_Cita",
             dataType: "JSON",
             contentType: "application/json; charset=utf-8",
             cache: false,
 
             success: function (data) {
 
-                for (let i = 0; i < data.length; i++) {
-                    const cita = data[i];
-                    id_UsuarioMascota.push(cita.id_Usuario);
-                    id_UsuarioCita.push(cita.id_Usuario);
-                    id_UsuarioDoctor.push(cita.id_UsuarioVeterinario);
-                }
+                if (data == "Aún no es el día de la cita o pasó") {
+                    alert(data);
+                } else {
+                    $.ajax({
+                        type: "GET",
+                        url: "/Cita/listarTodaCitaPorfecha_Cita",
+                        dataType: "JSON",
+                        contentType: "application/json; charset=utf-8",
+                        cache: false,
 
-                $.ajax({
-                    type: "POST",
-                    url: "/Mascota/listarTodoNombre_MascotaPorid_Usuario",
-                    traditional: true,
-                    data: { "id": id_UsuarioMascota },
+                        success: function (data) {
 
-                    success: function (mascota) {
-                        alert(mascota);
-                        $.ajax({
-                            type: "POST",
-                            url: "/Account/Proc_listarnombre_CompletoPorid_Usuario",
-                            traditional: true,
-                            data: { "id": id_UsuarioCita },
-
-                            success: function (usuario) {
-                                alert(usuario);
-                                $.ajax({
-                                    type: "POST",
-                                    url: "/Account/Proc_listarnombre_CompletoPorid_Usuario",
-                                    traditional: true,
-                                    data: { "id": id_UsuarioDoctor },
-
-                                    success: function (doctor) {
-                                        alert(doctor);
-                                        let items = "";
-
-                                        items += "<table class='table table-bordered table-hover'>";
-                                        items += "<thead class='table-dark'>";
-                                        items += "<tr>";
-                                        items += "<th>Usuario</th>";
-                                        items += "<th>Mascota</th>";
-                                        items += "<th>Doctor</th>";
-                                        items += "<th>Servicio</th>";
-                                        items += "<th>Acciones</th>";
-                                        items += "</tr>";
-                                        items += "<thead>";
-                                        items += "<tbody>";
-
-                                        for (let i = 0; i < data.length; i++) {
-                                            const cita = data[i];
-
-                                            items += "<tr>";
-                                            items += "<td>" + usuario[i] + "</td>";
-                                            items += "<td>" + mascota[i] + "</td>";
-                                            items += "<td>" + doctor[i] + "</td>";
-                                            items += "<td>" + cita.servicio + "</td>";
-                                            items += "<td><a href='Procesar?id=" + cita.id_Cita + "' class='btn btn-primary'>Procesar</a></td>";
-                                            items += "</tr>";
-                                        }
-
-                                        items += "</tbody>";
-                                        items += "</table>";
-
-                                        $("#table").append(items);
-                                    },
-
-                                    error: function (error) {
-                                        alert("Ha ocurrido un error: " + error);
-                                    }
-                                });
-
-                            },
-
-                            error: function (error) {
-                                alert("Ha ocurrido un error: " + error);
+                            for (let i = 0; i < data.length; i++) {
+                                const cita = data[i];
+                                id_UsuarioMascota.push(cita.id_Usuario);
+                                id_UsuarioCita.push(cita.id_Usuario);
+                                id_UsuarioDoctor.push(cita.id_UsuarioVeterinario);
                             }
-                        });
 
-                    },
+                            $.ajax({
+                                type: "POST",
+                                url: "/Mascota/listarTodoNombre_MascotaPorid_Usuario",
+                                traditional: true,
+                                data: { "id": id_UsuarioMascota },
 
-                    error: function (error) {
-                        alert("Ha ocurrido un error: " + error);
-                    }
-                });
+                                success: function (mascota) {
+                                    alert(mascota);
+                                    $.ajax({
+                                        type: "POST",
+                                        url: "/Account/Proc_listarnombre_CompletoPorid_Usuario",
+                                        traditional: true,
+                                        data: { "id": id_UsuarioCita },
 
+                                        success: function (usuario) {
+                                            alert(usuario);
+                                            $.ajax({
+                                                type: "POST",
+                                                url: "/Account/Proc_listarnombre_CompletoPorid_Usuario",
+                                                traditional: true,
+                                                data: { "id": id_UsuarioDoctor },
+
+                                                success: function (doctor) {
+                                                    alert(doctor);
+                                                    let items = "";
+
+                                                    items += "<table class='table table-bordered table-hover'>";
+                                                    items += "<thead class='table-dark'>";
+                                                    items += "<tr>";
+                                                    items += "<th>Usuario</th>";
+                                                    items += "<th>Mascota</th>";
+                                                    items += "<th>Doctor</th>";
+                                                    items += "<th>Servicio</th>";
+                                                    items += "<th>Acciones</th>";
+                                                    items += "</tr>";
+                                                    items += "<thead>";
+                                                    items += "<tbody>";
+
+                                                    for (let i = 0; i < data.length; i++) {
+                                                        const cita = data[i];
+
+                                                        items += "<tr>";
+                                                        items += "<td>" + usuario[i] + "</td>";
+                                                        items += "<td>" + mascota[i] + "</td>";
+                                                        items += "<td>" + doctor[i] + "</td>";
+                                                        items += "<td>" + cita.servicio + "</td>";
+                                                        items += "<td><a href='Procesar?id=" + cita.id_Cita + "' class='btn btn-primary'>Procesar</a></td>";
+                                                        items += "</tr>";
+                                                    }
+
+                                                    items += "</tbody>";
+                                                    items += "</table>";
+
+                                                    $("#table").append(items);
+                                                },
+
+                                                error: function (error) {
+                                                    alert("Ha ocurrido un error: " + error);
+                                                }
+                                            });
+
+                                        },
+
+                                        error: function (error) {
+                                            alert("Ha ocurrido un error: " + error);
+                                        }
+                                    });
+
+                                },
+
+                                error: function (error) {
+                                    alert("Ha ocurrido un error: " + error);
+                                }
+                            });
+
+                        },
+
+                        error: function (error) {
+                            alert("Ha ocurrido un error: " + error);
+                        }
+                    });
+                }
             },
 
-            error: function (error) { 
+            error: function (error) {
                 alert("Ha ocurrido un error: " + error);
             }
         });
 
     }
 
-    function chat() {
-        // Reference the auto-generated proxy for the hub.
-        var chat = $.connection.chatHub;
-        // Create a function that the hub can call back to display messages.
-        chat.client.addNewMessageToPage = function (name, message) {
-            // Add the message to the page.
-            $('#discussion').append('<li><strong>' + htmlEncode(name)
-                + '</strong>: ' + htmlEncode(message) + '</li>');
-        };
-        // Get the user name and store it to prepend to messages.
-        $('#displayname').val(prompt('Enter your name:', ''));
-        // Set initial focus to message input box.
-        $('#message').focus();
-        // Start the connection.
-        $.connection.hub.start().done(function () {
-            $('#sendmessage').click(function () {
-                // Call the Send method on the hub.
-                chat.server.send($('#displayname').val(), $('#message').val());
-                // Clear text box and reset focus for next comment.
-                $('#message').val('').focus();
-            });
-        });
-    }
+    //function chat() {
+    //    // Reference the auto-generated proxy for the hub.
+    //    var chat = $.connection.chatHub;
+    //    // Create a function that the hub can call back to display messages.
+    //    chat.client.addNewMessageToPage = function (name, message) {
+    //        // Add the message to the page.
+    //        $('#discussion').append('<li><strong>' + htmlEncode(name)
+    //            + '</strong>: ' + htmlEncode(message) + '</li>');
+    //    };
+    //    // Get the user name and store it to prepend to messages.
+    //    $('#displayname').val(prompt('Enter your name:', ''));
+    //    // Set initial focus to message input box.
+    //    $('#message').focus();
+    //    // Start the connection.
+    //    $.connection.hub.start().done(function () {
+    //        $('#sendmessage').click(function () {
+    //            // Call the Send method on the hub.
+    //            chat.server.send($('#displayname').val(), $('#message').val());
+    //            // Clear text box and reset focus for next comment.
+    //            $('#message').val('').focus();
+    //        });
+    //    });
+    //}
 
-    // This optional function html-encodes messages for display in the page.
-    function htmlEncode(value) {
-        var encodedValue = $('<div />').text(value).html();
-        return encodedValue;
-    }
+    //// This optional function html-encodes messages for display in the page.
+    //function htmlEncode(value) {
+    //    var encodedValue = $('<div />').text(value).html();
+    //    return encodedValue;
+    //}
 
 </script>

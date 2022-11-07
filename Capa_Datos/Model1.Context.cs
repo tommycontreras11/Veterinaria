@@ -15,7 +15,7 @@ namespace Capa_Datos
     using System.Data.Entity.Core.Objects;
     using System.Linq;
     using Capa_Entidad;
-
+    
     public partial class VeterinariaEntities : DbContext
     {
         public VeterinariaEntities()
@@ -36,6 +36,7 @@ namespace Capa_Datos
         public virtual DbSet<Cita> Cita { get; set; }
         public virtual DbSet<Servicio> Servicio { get; set; }
         public virtual DbSet<Consejo> Consejo { get; set; }
+        public virtual DbSet<Chat> Chat { get; set; }
     
         public virtual int Proc_actualizarUsuario(Nullable<int> id_Usuario, string nombre_Completo, string direccion, string ciudad, string telefono, string email, string password)
         {
@@ -719,6 +720,76 @@ namespace Capa_Datos
                 new ObjectParameter("fecha_Cita", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Proc_listarTodaCitaPorfecha_Cita_Result>("Proc_listarTodaCitaPorfecha_Cita", fecha_CitaParameter);
+        }
+    
+        public virtual int Proc_actualizarCitaPorid_Cita(Nullable<int> id_Cita)
+        {
+            var id_CitaParameter = id_Cita.HasValue ?
+                new ObjectParameter("id_Cita", id_Cita) :
+                new ObjectParameter("id_Cita", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("Proc_actualizarCitaPorid_Cita", id_CitaParameter);
+        }
+    
+        public virtual int Proc_crearChat(Nullable<int> id_Usuario, Nullable<int> id_UsuarioRespuesta, string comentario, string fecha_Creacion)
+        {
+            var id_UsuarioParameter = id_Usuario.HasValue ?
+                new ObjectParameter("id_Usuario", id_Usuario) :
+                new ObjectParameter("id_Usuario", typeof(int));
+    
+            var id_UsuarioRespuestaParameter = id_UsuarioRespuesta.HasValue ?
+                new ObjectParameter("id_UsuarioRespuesta", id_UsuarioRespuesta) :
+                new ObjectParameter("id_UsuarioRespuesta", typeof(int));
+    
+            var comentarioParameter = comentario != null ?
+                new ObjectParameter("comentario", comentario) :
+                new ObjectParameter("comentario", typeof(string));
+    
+            var fecha_CreacionParameter = fecha_Creacion != null ?
+                new ObjectParameter("fecha_Creacion", fecha_Creacion) :
+                new ObjectParameter("fecha_Creacion", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("Proc_crearChat", id_UsuarioParameter, id_UsuarioRespuestaParameter, comentarioParameter, fecha_CreacionParameter);
+        }
+    
+        public virtual ObjectResult<Proc_listarChat_Result> Proc_listarChat()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Proc_listarChat_Result>("Proc_listarChat");
+        }
+    
+        public virtual ObjectResult<string> Proc_listarcomentarioPorid_Usuario(Nullable<int> id_Usuario, Nullable<int> id_UsuarioRespuesta)
+        {
+            var id_UsuarioParameter = id_Usuario.HasValue ?
+                new ObjectParameter("id_Usuario", id_Usuario) :
+                new ObjectParameter("id_Usuario", typeof(int));
+    
+            var id_UsuarioRespuestaParameter = id_UsuarioRespuesta.HasValue ?
+                new ObjectParameter("id_UsuarioRespuesta", id_UsuarioRespuesta) :
+                new ObjectParameter("id_UsuarioRespuesta", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<string>("Proc_listarcomentarioPorid_Usuario", id_UsuarioParameter, id_UsuarioRespuestaParameter);
+        }
+    
+        public virtual ObjectResult<Proc_listarChatPorid_Usuario_Result> Proc_listarChatPorid_Usuario(Nullable<int> id_Usuario, Nullable<int> id_UsuarioRespuesta)
+        {
+            var id_UsuarioParameter = id_Usuario.HasValue ?
+                new ObjectParameter("id_Usuario", id_Usuario) :
+                new ObjectParameter("id_Usuario", typeof(int));
+    
+            var id_UsuarioRespuestaParameter = id_UsuarioRespuesta.HasValue ?
+                new ObjectParameter("id_UsuarioRespuesta", id_UsuarioRespuesta) :
+                new ObjectParameter("id_UsuarioRespuesta", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Proc_listarChatPorid_Usuario_Result>("Proc_listarChatPorid_Usuario", id_UsuarioParameter, id_UsuarioRespuestaParameter);
+        }
+    
+        public virtual ObjectResult<string> Proc_listarEmailPorid_Usuario(Nullable<int> id_Usuario)
+        {
+            var id_UsuarioParameter = id_Usuario.HasValue ?
+                new ObjectParameter("id_Usuario", id_Usuario) :
+                new ObjectParameter("id_Usuario", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<string>("Proc_listarEmailPorid_Usuario", id_UsuarioParameter);
         }
     }
 }

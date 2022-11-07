@@ -63,6 +63,27 @@ namespace Capa_Datos
             }
         }
 
+        public List<string> email = new List<string>();
+        /*----------Proc_listarEmailPorid_Usuario----------*/
+        public List<string> Proc_listarEmailPorid_Usuario(int id)
+        {
+            using (var db = new VeterinariaEntities())
+            {
+                var existencia = db.Database.SqlQuery<string>("EXEC Proc_listarEmailPorid_Usuario @id_Usuario",
+                    new SqlParameter("@id_Usuario", id)).ToList();
+
+                if (existencia.Count == 0)
+                {
+                    email.Add("Error");
+                }
+                else
+                {
+                    email.AddRange(existencia);
+                }
+                return email;
+            }
+        }
+
         public List<string> nombre_Completo = new List<string>();
         /*----------Proc_listarnombre_CompletoPorid_Usuario----------*/
         public List<string> Proc_listarnombre_CompletoPorid_Usuario(List<int> id) 
@@ -77,6 +98,15 @@ namespace Capa_Datos
                     nombre_Completo.AddRange(existencia);
                 }
                 return nombre_Completo;
+            }
+        }
+
+        /*----------Proc_listarnombre_CompletoPorid_Usuario----------*/
+        public string Proc_listarnombre_CompletoPorid_Usuario(int id)
+        {
+            using (var db = new VeterinariaEntities())
+            {
+                return db.Proc_listarnombre_CompletoPorid_Usuario(id).FirstOrDefault();
             }
         }
 
@@ -335,7 +365,7 @@ namespace Capa_Datos
         {
             using (var db = new VeterinariaEntities()) 
             {
-                db.Proc_crearMascota(mascota.id_Usuario, mascota.id_Tipo, mascota.id_Raza, mascota.nombre_Completo, mascota.sexo, mascota.peso, mascota.foto, DateTime.Now.ToString("dd/MM/yyyy hh:mm tt"), null);
+                db.Proc_crearMascota(mascota.id_Usuario, mascota.id_Tipo, mascota.id_Raza, mascota.nombre_Completo, mascota.sexo, mascota.peso, mascota.foto, DateTime.Now.ToString("dd/MM/yyyy hh:mm tt"), DateTime.Now.ToString("dd/MM/yyyy hh:mm tt"));
                 db.SaveChanges();
             }
         }
@@ -587,6 +617,16 @@ namespace Capa_Datos
             }
         }
 
+        /*----------Proc_actualizarCitaPorid_Cita----------*/
+        public void Proc_actualizarCitaPorid_Cita(int id_Cita) 
+        {
+            using (var db = new VeterinariaEntities()) 
+            {
+                db.Proc_actualizarCitaPorid_Cita(id_Cita);
+                db.SaveChanges();
+            }
+        }
+
         /*----------Proc_crearCita----------*/
         public void Proc_crearCita(Cita cita) 
         {
@@ -735,38 +775,60 @@ namespace Capa_Datos
         /*----------Fin de los procedimientos almacenados de la tabla Consejo----------*/
 
 
-        /*----------Tabla Consejo_Mascota----------*/
+        /*----------Tabla Chat----------*/
 
 
         /*----------Procedimientos almacenados----------*/
 
-        /*----------Proc_listarConsejo_Mascota----------*/
-        //public List<Proc_listarConsejo_Mascota_Result> Proc_listarConsejo_Mascota()
-        //{
-        //    using (var db = new VeterinariaEntities())
-        //    {
-        //        return db.Proc_listarConsejo_Mascota().ToList();
-        //    }
-        //}
+        /*----------Proc_listarChat----------*/
+        public List<Proc_listarChat_Result> Proc_listarChat()
+        {
+            using (var db = new VeterinariaEntities())
+            {
+                return db.Proc_listarChat().ToList();
+            }
+        }
 
-        ///*----------Proc_listarConsejo_MascotaPorid_Consejo_Mascota----------*/
-        //public Proc_listarConsejo_MascotaPorid_Consejo_Mascota_Result Proc_listarConsejo_MascotaPorid_Consejo_Mascota(int id_Consejo_Mascota)
-        //{
-        //    using (var db = new VeterinariaEntities())
-        //    {
-        //        return db.Proc_listarConsejo_MascotaPorid_Consejo_Mascota(id_Consejo_Mascota).FirstOrDefault();
-        //    }
-        //}
+        /*----------Proc_listarChatPorid_Usuario----------*/
+        public List<Proc_listarChatPorid_Usuario_Result> Proc_listarChatPorid_Usuario(int id_Usuario, int id_UsuarioRespuesta)
+        {
+            using (var db = new VeterinariaEntities())
+            {
+                return db.Proc_listarChatPorid_Usuario(id_Usuario, id_UsuarioRespuesta).ToList();
+            }
+        }
 
-        ///*----------Proc_crearConsejo----------*/
-        //public void Proc_crearConsejo_Mascota(Consejo_Mascota consejo_Mascota)
-        //{
-        //    using (var db = new VeterinariaEntities())
-        //    {
-        //        db.Proc_crearConsejo_Mascota(consejo_Mascota.id_Consejo, consejo_Mascota.id_Tipo, consejo_Mascota.id_Raza);
-        //        db.SaveChanges();
-        //    }
-        //}
+        public List<string> comentario = new List<string>();
+        /*----------Proc_listarcomentarioPorid_Usuario----------*/
+        public List<string> Proc_listarcomentarioPorid_Usuario(int id_Usuario, int id_UsuarioVeterinario) 
+        {
+            using (var db = new VeterinariaEntities()) 
+            {
+                var existencia = db.Database.SqlQuery<string>("EXEC Proc_listarcomentarioPorid_Usuario @id_Usuario, @id_UsuarioVeterinario",
+                    new SqlParameter("@id_Usuario", id_Usuario),
+                    new SqlParameter("@id_UsuarioVeterinario", id_UsuarioVeterinario)).ToList();
+
+                if (existencia.Count == 0) 
+                {
+                    comentario.Add("Aún no hay comentarios");
+                }
+                else 
+                {
+                    comentario.AddRange(existencia);
+                }
+                return comentario;
+            }
+        }
+
+        /*----------Proc_crearChat----------*/
+        public void Proc_crearChat(Chat chat)
+        {
+            using (var db = new VeterinariaEntities())
+            {
+                db.Proc_crearChat(chat.id_Usuario, chat.id_UsuarioRespuesta, chat.comentario, DateTime.Now.ToString("dd/MM/yyyy HH:mm tt"));
+                db.SaveChanges();
+            }
+        }
 
         ///*----------Proc_actualizarConsejo----------*/
         //public void Proc_actualizarConsejo_Mascota(Consejo_Mascota consejo_Mascota)

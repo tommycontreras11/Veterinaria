@@ -20,6 +20,21 @@ namespace Capa_Presentacion.Controllers
             return View();
         }
 
+        // GET: Cita/Procesar
+        public ActionResult Procesar(int id)
+        {
+            ViewBag.id_Cita = id;
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult Procesar()
+        {
+            ViewBag.id_Cita = "Cita " + Request.Form["id"];
+            _Negocio.Proc_actualizarCitaPorid_Cita(int.Parse(Request.Form["id"]));
+            return View();
+        }
+
         // GET: Cita/Citas
         public ActionResult Citas()
         {

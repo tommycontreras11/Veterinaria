@@ -48,8 +48,20 @@ namespace Capa_Negocio
             return _Datos.Proc_listarid_UsuarioPorEmail(email);
         }
 
+        /*----------Proc_listarEmailPorid_Usuario----------*/
+        public List<string> Proc_listarEmailPorid_Usuario(int id)
+        {
+            return _Datos.Proc_listarEmailPorid_Usuario(id);
+        }
+
         /*----------Proc_listarnombre_CompletoPorid_Usuario----------*/
         public List<string> Proc_listarnombre_CompletoPorid_Usuario(List<int> id)
+        {
+            return _Datos.Proc_listarnombre_CompletoPorid_Usuario(id);
+        }
+
+        /*----------Proc_listarnombre_CompletoPorid_Usuario----------*/
+        public string Proc_listarnombre_CompletoPorid_Usuario(int id)
         {
             return _Datos.Proc_listarnombre_CompletoPorid_Usuario(id);
         }
@@ -341,6 +353,12 @@ namespace Capa_Negocio
             return _Datos.Proc_listarTodaCitaPorfecha_Cita(fecha);
         }
 
+        /*----------Proc_actualizarCitaPorid_Cita----------*/
+        public void Proc_actualizarCitaPorid_Cita(int id_Cita)
+        {
+            _Datos.Proc_actualizarCitaPorid_Cita(id_Cita);
+        }
+
         /*----------Proc_crearCita----------*/
         public void Proc_crearCita(Cita cita)
         {
@@ -441,28 +459,34 @@ namespace Capa_Negocio
         /*----------Fin de los procedimientos almacenados de la tabla Consejo----------*/
 
 
-        /*----------Tabla Consejo_Mascota----------*/
+        /*----------Tabla Chat----------*/
 
 
         /*----------Procedimientos almacenados----------*/
 
-        /*----------Proc_listarConsejo_Mascota----------*/
-        //public List<Proc_listarConsejo_Mascota_Result> Proc_listarConsejo_Mascota()
-        //{
-        //    return _Datos.Proc_listarConsejo_Mascota();
-        //}
+        /*----------Proc_listarChat----------*/
+        public List<Proc_listarChat_Result> Proc_listarChat()
+        {
+            return _Datos.Proc_listarChat();
+        }
 
-        ///*----------Proc_listarConsejo_MascotaPorid_Consejo_Mascota----------*/
-        //public Proc_listarConsejo_MascotaPorid_Consejo_Mascota_Result Proc_listarConsejo_MascotaPorid_Consejo_Mascota(int id_Consejo_Mascota)
-        //{
-        //    return _Datos.Proc_listarConsejo_MascotaPorid_Consejo_Mascota(id_Consejo_Mascota);
-        //}
+        /*----------Proc_listarChatPorid_Usuario----------*/
+        public List<Proc_listarChatPorid_Usuario_Result> Proc_listarChatPorid_Usuario(int id_Usuario, int id_UsuarioRespuesta)
+        {
+            return _Datos.Proc_listarChatPorid_Usuario(id_Usuario, id_UsuarioRespuesta);
+        }
 
-        ///*----------Proc_crearConsejo----------*/
-        //public void Proc_crearConsejo_Mascota(Consejo_Mascota consejo_Mascota)
-        //{
-        //    _Datos.Proc_crearConsejo_Mascota(consejo_Mascota);
-        //}
+        /*----------Proc_listarcomentarioPorid_Usuario----------*/
+        public List<string> Proc_listarcomentarioPorid_Usuario(int id_Usuario, int id_UsuarioVeterinario)
+        {
+            return _Datos.Proc_listarcomentarioPorid_Usuario(id_Usuario, id_UsuarioVeterinario);
+        }
+
+        /*----------Proc_crearChat----------*/
+        public void Proc_crearChat(Chat chat)
+        {
+            _Datos.Proc_crearChat(chat);
+        }
 
         ///*----------Proc_actualizarConsejo----------*/
         //public void Proc_actualizarConsejo_Mascota(Consejo_Mascota consejo_Mascota)

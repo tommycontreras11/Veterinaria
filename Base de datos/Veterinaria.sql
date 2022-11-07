@@ -62,6 +62,15 @@ BEGIN
 	SELECT id_Usuario FROM Usuario WHERE email = @email
 END
 
+----------Proc_listarEmailPorid_Usuario----------
+CREATE PROCEDURE Proc_listarEmailPorid_Usuario
+	@id_Usuario int
+AS
+BEGIN
+	SELECT email FROM Usuario WHERE id_Usuario = @id_Usuario
+END
+
+
 ----------Proc_listarnombre_CompletoPorid_Usuario----------
 CREATE PROCEDURE Proc_listarnombre_CompletoPorid_Usuario
 	@id_Usuario int
@@ -260,6 +269,14 @@ CREATE PROCEDURE Proc_listarTodaCitaPorfecha_Cita
 AS
 BEGIN
 	SELECT * FROM Cita WHERE fecha_Cita = @fecha_Cita AND comprobar_Cita = 0 ORDER BY id_Cita ASC
+END
+
+----------Proc_actualizarCitaPorid_Cita----------
+CREATE PROCEDURE Proc_actualizarCitaPorid_Cita
+	@id_Cita int
+AS
+BEGIN
+	UPDATE Cita SET comprobar_Cita = 1 WHERE id_Cita = id_Cita
 END
 
 ----------Proc_crearCita----------
@@ -667,45 +684,63 @@ END
 ----------Fin de los procedimientos almacenados de la tabla Consejo----------
 
 
-----------Tabla Consejo_Mascota----------
+----------Tabla Chat----------
 
---CREATE TABLE Consejo_Mascota(
---	id_Consejo_Mascota int primary key identity(1,1),
---	id_Consejo int not null,
---	id_Tipo int not null,
---	id_Raza int not null,
---	CONSTRAINT FK_Consejo_Mascota_Consejo_id_Consejo FOREIGN KEY (id_Consejo) REFERENCES Consejo (id_Consejo) ON UPDATE CASCADE ON DELETE CASCADE,
---	CONSTRAINT FK_Consejo_Mascota_TipoMascota_id_Tipo FOREIGN KEY (id_Tipo) REFERENCES TipoMascota (id_Tipo) ON UPDATE CASCADE ON DELETE CASCADE,
---	CONSTRAINT FK_Consejo_Mascota_RazaMascota_id_Raza FOREIGN KEY (id_Raza) REFERENCES RazaMascota (id_Raza) ON UPDATE CASCADE ON DELETE CASCADE
---);
+CREATE TABLE Chat(
+	id_Chat int primary key identity(1,1),
+	id_Usuario int not null,
+	id_UsuarioRespuesta int not null,
+	comentario varchar(max) not null,
+	fecha_Creacion varchar(50) not null,
+	CONSTRAINT FK_Chat_Usuario_id_Usuario FOREIGN KEY (id_Usuario) REFERENCES Usuario (id_Usuario) ON UPDATE CASCADE ON DELETE CASCADE
+);
+SELECT * FROM Chat
+EXEC Proc_crearChat  4, 1, 'buenas noches', '26/10/2022 22:49'
+----------Procedimientos almacenados----------
 
+----------Proc_listarChat----------
+CREATE PROCEDURE Proc_listarChat
+AS
+BEGIN
+	SELECT * FROM Chat
+END
 
-------------Procedimientos almacenados----------
+----------Proc_listarChatPorid_ChatUsuario----------
+CREATE PROCEDURE Proc_listarChatPorid_ChatUsuario
+	@id_ChatUsuario int
+AS
+BEGIN
+	SELECT * FROM Chat WHERE id_ChatUsuario = @id_ChatUsuario
+END
 
-------------Proc_listarConsejo_Mascota----------
---CREATE PROCEDURE Proc_listarConsejo_Mascota
---AS
---BEGIN
---	SELECT * FROM Consejo_Mascota
---END
+----------Proc_listarChatPorid_Usuario----------
+CREATE PROCEDURE Proc_listarChatPorid_Usuario
+	@id_Usuario int,
+	@id_UsuarioRespuesta int
+AS
+BEGIN
+	SELECT * FROM Chat WHERE (id_Usuario = @id_Usuario AND id_UsuarioRespuesta = @id_UsuarioRespuesta) OR (id_UsuarioRespuesta = @id_Usuario AND id_Usuario = @id_UsuarioRespuesta)
+END
 
-------------Proc_listarConsejo_MascotaPorid_Consejo_Mascota----------
---CREATE PROCEDURE Proc_listarConsejo_MascotaPorid_Consejo_Mascota
---	@id_Consejo_Mascota int
---AS
---BEGIN
---	SELECT * FROM Consejo_Mascota WHERE id_Consejo_Mascota = @id_Consejo_Mascota
---END
+----------Proc_listarcomentarioPorid_Usuario----------
+CREATE PROCEDURE Proc_listarcomentarioPorid_Usuario
+	@id_Usuario int,
+	@id_UsuarioRespuesta int
+AS
+BEGIN
+	SELECT comentario FROM Chat WHERE id_Usuario = @id_Usuario AND id_UsuarioRespuesta = @id_UsuarioRespuesta
+END
 
-------------Proc_crearConsejo_Mascota----------
---CREATE PROCEDURE Proc_crearConsejo_Mascota
---	@id_Consejo int,
---	@id_Tipo int,
---	@id_Raza int
---AS
---BEGIN
---	INSERT INTO Consejo_Mascota (id_Consejo, id_Tipo, id_Raza) VALUES (@id_Consejo, @id_Tipo, @id_Raza)
---END
+----------Proc_crearChat----------
+CREATE PROCEDURE Proc_crearChat
+	@id_Usuario int,
+	@id_UsuarioRespuesta int,
+	@comentario varchar(max),
+	@fecha_Creacion varchar(50)
+AS
+BEGIN
+	INSERT INTO Chat (id_Usuario, id_UsuarioRespuesta, comentario, fecha_Creacion) VALUES (@id_Usuario, @id_UsuarioRespuesta, @comentario, @fecha_Creacion)
+END
 
 ------------Proc_actualizarConsejo_Mascota----------
 --CREATE PROCEDURE Proc_actualizarConsejo_Mascota

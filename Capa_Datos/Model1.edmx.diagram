@@ -21,6 +21,8 @@
         <EntityTypeShape EntityType="VeterinariaModel.Consejo" Width="1.5" PointX="5.25" PointY="8.875" />
         <AssociationConnector Association="VeterinariaModel.FK_Consejo_RazaMascota_id_Raza" />
         <AssociationConnector Association="VeterinariaModel.FK_Consejo_TipoMascota_id_Tipo" />
+        <EntityTypeShape EntityType="VeterinariaModel.Chat" Width="1.5" PointX="5.25" PointY="0.75" />
+        <AssociationConnector Association="VeterinariaModel.FK_Chat_Usuario_id_Usuario" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

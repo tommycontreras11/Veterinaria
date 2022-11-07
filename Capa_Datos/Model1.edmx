@@ -5,6 +5,16 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="VeterinariaModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Chat">
+          <Key>
+            <PropertyRef Name="id_Chat" />
+          </Key>
+          <Property Name="id_Chat" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="id_Usuario" Type="int" Nullable="false" />
+          <Property Name="id_UsuarioRespuesta" Type="int" Nullable="false" />
+          <Property Name="comentario" Type="varchar(max)" Nullable="false" />
+          <Property Name="fecha_Creacion" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
         <EntityType Name="Cita">
           <Key>
             <PropertyRef Name="id_Cita" />
@@ -93,6 +103,20 @@ advertencia 6002: La tabla o vista 'Veterinaria.dbo.Rol_Usuario' no tiene defini
           <Property Name="email" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="password" Type="varchar" MaxLength="100" Nullable="false" />
         </EntityType>
+        <Association Name="FK_Chat_Usuario_id_Usuario">
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Chat" Type="Self.Chat" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="id_Usuario" />
+            </Principal>
+            <Dependent Role="Chat">
+              <PropertyRef Name="id_Usuario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Cita_Mascota_id_Mascota">
           <End Role="Mascota" Type="Self.Mascota" Multiplicity="1" />
           <End Role="Cita" Type="Self.Cita" Multiplicity="*" />
@@ -226,6 +250,9 @@ advertencia 6002: La tabla o vista 'Veterinaria.dbo.Rol_Usuario' no tiene defini
           <Parameter Name="fecha_Modificacion" Type="varchar" Mode="In" />
           <Parameter Name="comprobar_Cita" Type="bit" Mode="In" />
         </Function>
+        <Function Name="Proc_actualizarCitaPorid_Cita" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="id_Cita" Type="int" Mode="In" />
+        </Function>
         <Function Name="Proc_actualizarConsejo" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="id_Consejo" Type="int" Mode="In" />
           <Parameter Name="id_Tipo" Type="int" Mode="In" />
@@ -268,6 +295,12 @@ advertencia 6002: La tabla o vista 'Veterinaria.dbo.Rol_Usuario' no tiene defini
           <Parameter Name="telefono" Type="varchar" Mode="In" />
           <Parameter Name="email" Type="varchar" Mode="In" />
           <Parameter Name="password" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="Proc_crearChat" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="id_Usuario" Type="int" Mode="In" />
+          <Parameter Name="id_UsuarioRespuesta" Type="int" Mode="In" />
+          <Parameter Name="comentario" Type="varchar(max)" Mode="In" />
+          <Parameter Name="fecha_Creacion" Type="varchar" Mode="In" />
         </Function>
         <Function Name="Proc_crearCita" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="id_Usuario" Type="int" Mode="In" />
@@ -344,6 +377,11 @@ advertencia 6002: La tabla o vista 'Veterinaria.dbo.Rol_Usuario' no tiene defini
           <Parameter Name="id_Uusuario" Type="int" Mode="In" />
         </Function>
         <Function Name="Proc_listarAdmin" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="Proc_listarChat" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="Proc_listarChatPorid_Usuario" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="id_Usuario" Type="int" Mode="In" />
+          <Parameter Name="id_UsuarioRespuesta" Type="int" Mode="In" />
+        </Function>
         <Function Name="Proc_listarCita" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="Proc_listarCitaPorfecha_Cita" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="fecha_Cita" Type="varchar" Mode="In" />
@@ -354,9 +392,16 @@ advertencia 6002: La tabla o vista 'Veterinaria.dbo.Rol_Usuario' no tiene defini
         <Function Name="Proc_listarCitaPorid_Usuario" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="id_Usuario" Type="int" Mode="In" />
         </Function>
+        <Function Name="Proc_listarcomentarioPorid_Usuario" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="id_Usuario" Type="int" Mode="In" />
+          <Parameter Name="id_UsuarioRespuesta" Type="int" Mode="In" />
+        </Function>
         <Function Name="Proc_listarConsejo" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="Proc_listarConsejoPorid_Consejo" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="id_Consejo" Type="int" Mode="In" />
+        </Function>
+        <Function Name="Proc_listarEmailPorid_Usuario" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="id_Usuario" Type="int" Mode="In" />
         </Function>
         <Function Name="Proc_listarFotoPorid_Mascota" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="id_Mascota" Type="int" Mode="In" />
@@ -420,6 +465,7 @@ advertencia 6002: La tabla o vista 'Veterinaria.dbo.Rol_Usuario' no tiene defini
           <Parameter Name="password" Type="varchar" Mode="In" />
         </Function>
         <EntityContainer Name="VeterinariaModelStoreContainer">
+          <EntitySet Name="Chat" EntityType="Self.Chat" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Cita" EntityType="Self.Cita" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Consejo" EntityType="Self.Consejo" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Mascota" EntityType="Self.Mascota" Schema="dbo" store:Type="Tables" />
@@ -434,6 +480,10 @@ advertencia 6002: La tabla o vista 'Veterinaria.dbo.Rol_Usuario' no tiene defini
     [Rol_Usuario].[id_Usuario] AS [id_Usuario]
     FROM [dbo].[Rol_Usuario] AS [Rol_Usuario]</DefiningQuery>
           </EntitySet>
+          <AssociationSet Name="FK_Chat_Usuario_id_Usuario" Association="Self.FK_Chat_Usuario_id_Usuario">
+            <End Role="Usuario" EntitySet="Usuario" />
+            <End Role="Chat" EntitySet="Chat" />
+          </AssociationSet>
           <AssociationSet Name="FK_Cita_Mascota_id_Mascota" Association="Self.FK_Cita_Mascota_id_Mascota">
             <End Role="Mascota" EntitySet="Mascota" />
             <End Role="Cita" EntitySet="Cita" />
@@ -718,7 +768,33 @@ advertencia 6002: La tabla o vista 'Veterinaria.dbo.Rol_Usuario' no tiene defini
             <Parameter Name="comprobar_Cita" Mode="In" Type="Boolean" />
           </FunctionImport>
           <FunctionImport Name="Proc_listarTodaCitaPorfecha_Cita" ReturnType="Collection(VeterinariaModel.Proc_listarTodaCitaPorfecha_Cita_Result)">
-            <Parameter Name="fecha_Cita" Mode="In" Type="String" />
+          <Parameter Name="fecha_Cita" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="Proc_actualizarCitaPorid_Cita">
+          <Parameter Name="id_Cita" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="Proc_crearChat">
+            <Parameter Name="id_Usuario" Mode="In" Type="Int32" />
+            <Parameter Name="id_UsuarioRespuesta" Mode="In" Type="Int32" />
+            <Parameter Name="comentario" Mode="In" Type="String" />
+            <Parameter Name="fecha_Creacion" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="Proc_listarChat" ReturnType="Collection(VeterinariaModel.Proc_listarChat_Result)" />
+          <FunctionImport Name="Proc_listarcomentarioPorid_Usuario" ReturnType="Collection(String)">
+            <Parameter Name="id_Usuario" Mode="In" Type="Int32" />
+            <Parameter Name="id_UsuarioRespuesta" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <EntitySet Name="Chat" EntityType="VeterinariaModel.Chat" />
+          <AssociationSet Name="FK_Chat_Usuario_id_Usuario" Association="VeterinariaModel.FK_Chat_Usuario_id_Usuario">
+            <End Role="Usuario" EntitySet="Usuario" />
+            <End Role="Chat" EntitySet="Chat" />
+          </AssociationSet>
+          <FunctionImport Name="Proc_listarChatPorid_Usuario" ReturnType="Collection(VeterinariaModel.Proc_listarChatPorid_Usuario_Result)">
+            <Parameter Name="id_Usuario" Mode="In" Type="Int32" />
+            <Parameter Name="id_UsuarioRespuesta" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="Proc_listarEmailPorid_Usuario" ReturnType="Collection(String)">
+            <Parameter Name="id_Usuario" Mode="In" Type="Int32" />
           </FunctionImport>
           </EntityContainer>
         <EntityType Name="Rol">
@@ -743,6 +819,7 @@ advertencia 6002: La tabla o vista 'Veterinaria.dbo.Rol_Usuario' no tiene defini
           <NavigationProperty Name="Rol" Relationship="VeterinariaModel.Rol_Usuario" FromRole="Usuario" ToRole="Rol" />
           <NavigationProperty Name="Mascota" Relationship="VeterinariaModel.FK_Mascota_Usuario_id_Usuario" FromRole="Usuario" ToRole="Mascota" />
           <NavigationProperty Name="Cita" Relationship="VeterinariaModel.FK_Cita_Usuario_id_Usuario" FromRole="Usuario" ToRole="Cita" />
+          <NavigationProperty Name="Chat" Relationship="VeterinariaModel.FK_Chat_Usuario_id_Usuario" FromRole="Usuario" ToRole="Chat" />
         </EntityType>
         <Association Name="Rol_Usuario">
           <End Type="VeterinariaModel.Rol" Role="Rol" Multiplicity="*" />
@@ -1067,6 +1144,45 @@ advertencia 6002: La tabla o vista 'Veterinaria.dbo.Rol_Usuario' no tiene defini
           <Property Type="String" Name="fecha_Creacion" Nullable="false" MaxLength="50" />
           <Property Type="String" Name="fecha_Modificacion" Nullable="true" MaxLength="50" />
           <Property Type="Boolean" Name="comprobar_Cita" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="Proc_listarChat_Result">
+          <Property Type="Int32" Name="id_Chat" Nullable="false" />
+          <Property Type="Int32" Name="id_Usuario" Nullable="false" />
+          <Property Type="Int32" Name="id_UsuarioRespuesta" Nullable="false" />
+          <Property Type="String" Name="comentario" Nullable="false" />
+          <Property Type="String" Name="fecha_Creacion" Nullable="false" MaxLength="50" />
+        </ComplexType>
+        <EntityType Name="Chat">
+          <Key>
+            <PropertyRef Name="id_Chat" />
+          </Key>
+          <Property Name="id_Chat" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="id_Usuario" Type="Int32" Nullable="false" />
+          <Property Name="id_UsuarioRespuesta" Type="Int32" Nullable="false" />
+          <Property Name="comentario" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="fecha_Creacion" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Usuario" Relationship="VeterinariaModel.FK_Chat_Usuario_id_Usuario" FromRole="Chat" ToRole="Usuario" />
+        </EntityType>
+        <Association Name="FK_Chat_Usuario_id_Usuario">
+          <End Type="VeterinariaModel.Usuario" Role="Usuario" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="VeterinariaModel.Chat" Role="Chat" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="id_Usuario" />
+            </Principal>
+            <Dependent Role="Chat">
+              <PropertyRef Name="id_Usuario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <ComplexType Name="Proc_listarChatPorid_Usuario_Result">
+          <Property Type="Int32" Name="id_Chat" Nullable="false" />
+          <Property Type="Int32" Name="id_Usuario" Nullable="false" />
+          <Property Type="Int32" Name="id_UsuarioRespuesta" Nullable="false" />
+          <Property Type="String" Name="comentario" Nullable="false" />
+          <Property Type="String" Name="fecha_Creacion" Nullable="false" MaxLength="50" />
         </ComplexType>
         </Schema>
     </edmx:ConceptualModels>
@@ -1442,6 +1558,43 @@ advertencia 6002: La tabla o vista 'Veterinaria.dbo.Rol_Usuario' no tiene defini
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="Proc_actualizarCitaPorid_Cita" FunctionName="VeterinariaModel.Store.Proc_actualizarCitaPorid_Cita" />
+          <FunctionImportMapping FunctionImportName="Proc_crearChat" FunctionName="VeterinariaModel.Store.Proc_crearChat" />
+          <FunctionImportMapping FunctionImportName="Proc_listarChat" FunctionName="VeterinariaModel.Store.Proc_listarChat">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="VeterinariaModel.Proc_listarChat_Result">
+                <ScalarProperty Name="id_Chat" ColumnName="id_Chat" />
+                <ScalarProperty Name="id_Usuario" ColumnName="id_Usuario" />
+                <ScalarProperty Name="id_UsuarioRespuesta" ColumnName="id_UsuarioRespuesta" />
+                <ScalarProperty Name="comentario" ColumnName="comentario" />
+                <ScalarProperty Name="fecha_Creacion" ColumnName="fecha_Creacion" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="Proc_listarcomentarioPorid_Usuario" FunctionName="VeterinariaModel.Store.Proc_listarcomentarioPorid_Usuario" />
+          <EntitySetMapping Name="Chat">
+            <EntityTypeMapping TypeName="VeterinariaModel.Chat">
+              <MappingFragment StoreEntitySet="Chat">
+                <ScalarProperty Name="fecha_Creacion" ColumnName="fecha_Creacion" />
+                <ScalarProperty Name="comentario" ColumnName="comentario" />
+                <ScalarProperty Name="id_UsuarioRespuesta" ColumnName="id_UsuarioRespuesta" />
+                <ScalarProperty Name="id_Usuario" ColumnName="id_Usuario" />
+                <ScalarProperty Name="id_Chat" ColumnName="id_Chat" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="Proc_listarChatPorid_Usuario" FunctionName="VeterinariaModel.Store.Proc_listarChatPorid_Usuario">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="VeterinariaModel.Proc_listarChatPorid_Usuario_Result">
+                <ScalarProperty Name="id_Chat" ColumnName="id_Chat" />
+                <ScalarProperty Name="id_Usuario" ColumnName="id_Usuario" />
+                <ScalarProperty Name="id_UsuarioRespuesta" ColumnName="id_UsuarioRespuesta" />
+                <ScalarProperty Name="comentario" ColumnName="comentario" />
+                <ScalarProperty Name="fecha_Creacion" ColumnName="fecha_Creacion" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="Proc_listarEmailPorid_Usuario" FunctionName="VeterinariaModel.Store.Proc_listarEmailPorid_Usuario" />
           </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

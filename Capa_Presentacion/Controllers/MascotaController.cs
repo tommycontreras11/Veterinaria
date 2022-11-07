@@ -215,7 +215,7 @@ namespace Capa_Presentacion.Controllers
             {
                 _Negocio.Proc_actualizarMascota(mascota);
 
-                return RedirectToAction("Mascota", "Mascota");
+                return RedirectToAction("Mascotas", "Mascota");
             }
 
             return View(mascota);
@@ -245,7 +245,7 @@ namespace Capa_Presentacion.Controllers
                     return RedirectToAction("Login", "Account");
                 }
                 _Negocio.Proc_eliminarMascota(id);
-                return RedirectToAction("Mascota", "Mascota");
+                return RedirectToAction("Mascotas", "Mascota");
             }
             catch
             {
