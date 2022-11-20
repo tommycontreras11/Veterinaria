@@ -14,17 +14,19 @@ namespace Capa_Entidad
     
     public partial class Cita
     {
+        public Cita()
+        {
+            this.Cita_Usuario = new HashSet<Cita_Usuario>();
+        }
+    
         public int id_Cita { get; set; }
-        public int id_Usuario { get; set; }
-        public int id_Mascota { get; set; }
-        public int id_UsuarioVeterinario { get; set; }
+        public string mascota { get; set; }
         public string servicio { get; set; }
         public string fecha_Cita { get; set; }
         public string fecha_Creacion { get; set; }
         public string fecha_Modificacion { get; set; }
         public bool comprobar_Cita { get; set; }
     
-        public virtual Mascota Mascota { get; set; }
-        public virtual Usuario Usuario { get; set; }
+        public virtual ICollection<Cita_Usuario> Cita_Usuario { get; set; }
     }
 }

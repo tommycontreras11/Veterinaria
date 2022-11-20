@@ -11,12 +11,11 @@ namespace Capa_Entidad
 {
     using System;
     
-    public partial class Proc_listarChatPorid_Usuario_Result
+    public partial class Proc_listarCita_UsuarioPorid_Cita_Result
     {
-        public int id_Chat { get; set; }
+        public int id_Cita { get; set; }
         public int id_Usuario { get; set; }
-        public int id_UsuarioRespuesta { get; set; }
-        public string comentario { get; set; }
-        public string fecha_Creacion { get; set; }
+        public int id_Mascota { get; set; }
+        public int id_UsuarioVeterinario { get; set; }
     }
 }

@@ -9,8 +9,7 @@ using System.Web.Helpers;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Drawing;
-using Microsoft.Ajax.Utilities;
-using System.Security.Cryptography.X509Certificates;
+using Capa_Presentacion.Extensions;
 
 namespace Capa_Presentacion.Controllers
 {
@@ -130,30 +129,46 @@ namespace Capa_Presentacion.Controllers
 
                 ViewBag.mensaje = Request.Files[0];
                 string fecha = DateTime.Now.ToString("dd/MM/yyyy HH:mm tt");
-                mascota.id_Usuario = int.Parse(Request.Form["usuario"]);
-                mascota.id_Tipo = int.Parse(Request.Form["tipoMascota"]);
-                mascota.id_Raza = int.Parse(Request.Form["razaMascota"]);
+
+                Mascota_Usuario mascota_Usuario = new Mascota_Usuario();
+
                 mascota.sexo = Request.Form["sexo"];
                 
                 HttpPostedFileBase fileBase = Request.Files[0];
 
                 if (fileBase.ContentLength == 0)
                 {
-                    ModelState.AddModelError("Foto", "Es necesario elegir una foto");
+                    this.AddNotification("Es necesario elegir una foto", NotificationType.WARNING);
                 }
                 else 
                 {
-                    if (fileBase.FileName.EndsWith(".jpg")) 
+                    if (fileBase.ContentLength > 233472)
                     {
-                        WebImage image = new WebImage(fileBase.InputStream);
-
-                        mascota.foto = image.GetBytes();
-
-                        _Negocio.Proc_crearMascota(mascota);
+                        this.AddNotification("No se permite imagenes con más de 228 kilobytes", NotificationType.WARNING);
                     }
-                    else 
+                    else
                     {
-                        ModelState.AddModelError("Foto", "El sistema solo acepta fotos con formato JPG");
+                        if (fileBase.FileName.EndsWith(".jpg"))
+                        {
+                            WebImage image = new WebImage(fileBase.InputStream);
+
+                            mascota.foto = image.GetBytes();
+
+                            _Negocio.Proc_crearMascota(mascota);
+
+                            mascota_Usuario.id_Mascota = _Negocio.Proc_listarid_MascotaPornombre_Completo(mascota.nombre_Completo);
+                            mascota_Usuario.id_Usuario = int.Parse(Request.Form["usuario"]);
+                            mascota_Usuario.id_Tipo = int.Parse(Request.Form["tipoMascota"]);
+                            mascota_Usuario.id_Raza = int.Parse(Request.Form["razaMascota"]);
+                            _Negocio.Proc_crearMascota_Usuario(mascota_Usuario);
+
+                            this.AddNotification("Se ha creado la mascota exitosamente", NotificationType.SUCCESS);
+                        }
+                        else
+                        {
+                            this.AddNotification("El sistema solo acepta fotos con formato JPG", NotificationType.WARNING);
+                        }
+
                     }
                 }
 
@@ -199,22 +214,30 @@ namespace Capa_Presentacion.Controllers
             }
             else
             {
-                if (fileBase.FileName.EndsWith(".jpg"))
+                if (fileBase.ContentLength > 233472)
                 {
-                    WebImage image = new WebImage(fileBase.InputStream);
-                    
-                    mascota.foto = image.GetBytes();
+                    this.AddNotification("No se permite imagenes con más de 228 kilobytes", NotificationType.WARNING);
                 }
                 else
                 {
-                    ModelState.AddModelError("Foto", "El sistema solo acepta fotos con formato JPG");
+                    if (fileBase.FileName.EndsWith(".jpg"))
+                    {
+                        WebImage image = new WebImage(fileBase.InputStream);
+
+                        mascota.foto = image.GetBytes();
+                    }
+                    else
+                    {
+                        this.AddNotification("El sistema solo acepta fotos con formato JPG", NotificationType.WARNING);
+                    }
                 }
+
             }
 
             if (ModelState.IsValid)
             {
                 _Negocio.Proc_actualizarMascota(mascota);
-
+                this.AddNotification("Se ha actualizado la mascota exitosamente", NotificationType.SUCCESS);
                 return RedirectToAction("Mascotas", "Mascota");
             }
 
@@ -230,27 +253,21 @@ namespace Capa_Presentacion.Controllers
         // POST: Mascota/Delete/5
         public ActionResult Delete(int id)
         {
-            try
+            // TODO: Add delete logic here
+            if (User.Identity.IsAuthenticated)
             {
-                // TODO: Add delete logic here
-                if (User.Identity.IsAuthenticated)
+                if (account.IsValid(User.Identity.Name) == 2)
                 {
-                    if (account.IsValid(User.Identity.Name) == 2)
-                    {
-                        return RedirectToAction("Index", "Home");
-                    }
+                    return RedirectToAction("Index", "Home");
                 }
-                else
-                {
-                    return RedirectToAction("Login", "Account");
-                }
-                _Negocio.Proc_eliminarMascota(id);
-                return RedirectToAction("Mascotas", "Mascota");
             }
-            catch
+            else
             {
-                return View();
+                return RedirectToAction("Login", "Account");
             }
+            _Negocio.Proc_eliminarMascota(id);
+            this.AddNotification("Se ha eliminado la mascota exitosamente", NotificationType.SUCCESS);
+            return RedirectToAction("Mascotas", "Mascota");
         }
     }
 }

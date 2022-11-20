@@ -16,13 +16,11 @@ namespace Capa_Entidad
     {
         public Mascota()
         {
-            this.Cita = new HashSet<Cita>();
+            this.Cita_Usuario = new HashSet<Cita_Usuario>();
+            this.Mascota_Usuario = new HashSet<Mascota_Usuario>();
         }
     
         public int id_Mascota { get; set; }
-        public int id_Usuario { get; set; }
-        public int id_Tipo { get; set; }
-        public int id_Raza { get; set; }
         public string nombre_Completo { get; set; }
         public string sexo { get; set; }
         public string peso { get; set; }
@@ -30,9 +28,7 @@ namespace Capa_Entidad
         public string fecha_Ingreso { get; set; }
         public string fecha_Modificacion { get; set; }
     
-        public virtual RazaMascota RazaMascota { get; set; }
-        public virtual TipoMascota TipoMascota { get; set; }
-        public virtual Usuario Usuario { get; set; }
-        public virtual ICollection<Cita> Cita { get; set; }
+        public virtual ICollection<Cita_Usuario> Cita_Usuario { get; set; }
+        public virtual ICollection<Mascota_Usuario> Mascota_Usuario { get; set; }
     }
 }

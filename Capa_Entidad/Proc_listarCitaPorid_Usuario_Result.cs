@@ -14,13 +14,13 @@ namespace Capa_Entidad
     public partial class Proc_listarCitaPorid_Usuario_Result
     {
         public int id_Cita { get; set; }
-        public int id_Usuario { get; set; }
-        public int id_Mascota { get; set; }
-        public int id_UsuarioVeterinario { get; set; }
+        public string mascota { get; set; }
         public string servicio { get; set; }
         public string fecha_Cita { get; set; }
         public string fecha_Creacion { get; set; }
         public string fecha_Modificacion { get; set; }
-        public Nullable<bool> comprobar_Cita { get; set; }
+        public bool comprobar_Cita { get; set; }
+        public int id_Usuario { get; set; }
+        public int id_UsuarioVeterinario { get; set; }
     }
 }

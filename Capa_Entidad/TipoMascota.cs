@@ -16,14 +16,14 @@ namespace Capa_Entidad
     {
         public TipoMascota()
         {
-            this.Mascota = new HashSet<Mascota>();
             this.Consejo = new HashSet<Consejo>();
+            this.Mascota_Usuario = new HashSet<Mascota_Usuario>();
         }
     
         public int id_Tipo { get; set; }
         public string tipo { get; set; }
     
-        public virtual ICollection<Mascota> Mascota { get; set; }
         public virtual ICollection<Consejo> Consejo { get; set; }
+        public virtual ICollection<Mascota_Usuario> Mascota_Usuario { get; set; }
     }
 }

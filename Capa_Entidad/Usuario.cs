@@ -17,9 +17,8 @@ namespace Capa_Entidad
         public Usuario()
         {
             this.Rol = new HashSet<Rol>();
-            this.Mascota = new HashSet<Mascota>();
-            this.Cita = new HashSet<Cita>();
-            this.Chat = new HashSet<Chat>();
+            this.Mascota_Usuario = new HashSet<Mascota_Usuario>();
+            this.Cita_Usuario = new HashSet<Cita_Usuario>();
         }
     
         public int id_Usuario { get; set; }
@@ -27,12 +26,12 @@ namespace Capa_Entidad
         public string direccion { get; set; }
         public string ciudad { get; set; }
         public string telefono { get; set; }
+        public byte[] foto { get; set; }
         public string email { get; set; }
         public string password { get; set; }
     
         public virtual ICollection<Rol> Rol { get; set; }
-        public virtual ICollection<Mascota> Mascota { get; set; }
-        public virtual ICollection<Cita> Cita { get; set; }
-        public virtual ICollection<Chat> Chat { get; set; }
+        public virtual ICollection<Mascota_Usuario> Mascota_Usuario { get; set; }
+        public virtual ICollection<Cita_Usuario> Cita_Usuario { get; set; }
     }
 }

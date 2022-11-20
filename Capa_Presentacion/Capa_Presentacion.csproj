@@ -73,6 +73,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Data.Entity" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Security" />
     <Reference Include="System.Web.DynamicData" />
@@ -151,13 +152,16 @@
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\ChatController.cs" />
     <Compile Include="Controllers\CitaController.cs" />
+    <Compile Include="Controllers\Cita_UsuarioController.cs" />
     <Compile Include="Controllers\ConsejoController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MascotaController.cs" />
+    <Compile Include="Controllers\Mascota_UsuarioController.cs" />
     <Compile Include="Controllers\RazaMascotaController.cs" />
     <Compile Include="Controllers\Rol_UsuarioController.cs" />
     <Compile Include="Controllers\ServicioController.cs" />
     <Compile Include="Controllers\TipoMascotaController.cs" />
+    <Compile Include="Extensions\NotificationExtensions.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -173,6 +177,7 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="css\style_menu.css" />
     <Content Include="css\style.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
@@ -242,7 +247,7 @@
     <Content Include="Views\Consejo\Create.cshtml" />
     <Content Include="Views\Consejo\Edit.cshtml" />
     <Content Include="Views\Consejo\Delete.cshtml" />
-    <Content Include="Views\Rol_Usuario\Rol_Usuarios.cshtml" />
+    <Content Include="Views\Rol_Usuario\Index.cshtml" />
     <Content Include="Views\Rol_Usuario\Edit.cshtml" />
     <Content Include="Views\Rol_Usuario\Delete.cshtml" />
     <Content Include="Views\Servicio\Servicios.cshtml" />
@@ -254,7 +259,13 @@
     <Content Include="Views\Home\Chat.cshtml" />
     <Content Include="Views\Cita\Procesar.cshtml" />
     <Content Include="Views\Chat\Index.cshtml" />
-    <Content Include="Views\Chat\Chat.cshtml" />
+    <Content Include="Views\Shared\_Notifications.cshtml" />
+    <Content Include="Views\Mascota_Usuario\Edit.cshtml" />
+    <Content Include="Views\Mascota_Usuario\Delete.cshtml" />
+    <Content Include="Views\Cita_Usuario\Delete.cshtml" />
+    <Content Include="Views\Cita_Usuario\Edit.cshtml" />
+    <Content Include="Views\Mascota_Usuario\Index.cshtml" />
+    <Content Include="Views\Cita_Usuario\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

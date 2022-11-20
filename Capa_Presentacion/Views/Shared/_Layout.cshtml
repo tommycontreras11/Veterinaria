@@ -4,7 +4,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - Mi aplicación ASP.NET</title>
+    <title>Veterinaria Manatí</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://getbootstrap.com/docs/5.2/assets/css/docs.css">
     <link rel="stylesheet" href="~/css/style.css" />
@@ -271,8 +271,44 @@
                                     <li class="nav-item">
                                         <a class="nav-link" style="font-size: calc(5px + 2vmin);" href="/Home/">Home</a>
                                     </li>
+                                    
+                                    <li class="nav-item dropdown" style="font-size: calc(5px + 2vmin);">
+                                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                            Cita
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            <li><a class="dropdown-item" href="/Cita/Citas">Ver Citas</a></li>
+                                            <li><a class="dropdown-item" href="/Cita_Usuario/">Ver Cita-Usuarios</a></li>
+                                            <li><a class="dropdown-item" href="/Cita/">Procesar Citas</a></li>
+                                        </ul>
+                                    </li>
+                                    <li class="nav-item dropdown" style="font-size: calc(5px + 2vmin);">
+                                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                            Mascota
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            <li><a class="dropdown-item" href="/Mascota/Mascotas">Ver Mascotas</a></li>
+                                            <li><a class="dropdown-item" href="/Mascota_Usuario/">Ver Mascota-Usuarios</a></li>
+                                            <li><a class="dropdown-item" href="/RazaMascota/Razas">Ver Raza de Mascotas</a></li>
+                                            <li><a class="dropdown-item" href="/TipoMascota/Tipos">Ver Tipo de Mascotas</a></li>
+                                            <li><a class="dropdown-item" href="/Consejo/Consejos">Ver Consejos</a></li>
+                                            <li><a class="dropdown-item" href="/Servicio/Servicios">Ver Servicios</a></li>
+                                        </ul>
+                                    </li>
+
                                     <li class="nav-item">
-                                        <a class="nav-link" style="font-size: calc(5px + 2vmin);" href="/Account/Usuarios">Usuarios</a>
+                                        <a class="nav-link" style="font-size: calc(5px + 2vmin);" href="/Chat/">Chat</a>
+                                    </li>
+                                    <li class="nav-item dropdown" style="font-size: calc(5px + 2vmin);">
+                                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                            Cuenta
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            <li><a class="dropdown-item" href="/Account/Perfil">Perfil</a></li>
+                                            <li><a class="dropdown-item" href="/Account/Usuarios">Usuarios</a></li>
+                                            <li><a class="dropdown-item" href="/Admin/Admins">Administración</a></li>
+                                            <li><a class="dropdown-item" href="/Rol_Usuario/">Rol de Usuarios</a></li>
+                                        </ul>
                                     </li>
                                 </ul>
                             }
@@ -281,6 +317,21 @@
                                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                                     <li class="nav-item">
                                         <a class="nav-link" style="font-size: calc(5px + 2vmin);" href="/Home/">Home</a>
+                                    </li>
+                                    <li class="nav-item dropdown" style="font-size: calc(5px + 2vmin);">
+                                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                            Cita
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            <li><a class="dropdown-item" href="/Cita/Create">Gestionar Cita</a></li>
+                                            <li><a class="dropdown-item" href="/Cita/">Ver Cita</a></li>
+                                        </ul>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" style="font-size: calc(5px + 2vmin);" href="/Mascota/Create">Mascota</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" style="font-size: calc(5px + 2vmin);" href="/Chat/">Chat</a>
                                     </li>
                                 </ul>
                             }
@@ -298,7 +349,22 @@
                         {
                             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                                 <li class="nav-item">
-                                    <a class="nav-link" style="font-size: calc(5px + 2vmin);" href="/Home/">Home</a>
+                                        <a class="nav-link" style="font-size: calc(5px + 2vmin);" href="/Home/">Home</a>
+                                </li>
+                                <li class="nav-item dropdown" style="font-size: calc(5px + 2vmin);">
+                                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        Cita
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" href="/Cita/Create">Gestionar Cita</a></li>
+                                        <li><a class="dropdown-item" href="/Cita/">Ver Cita</a></li>
+                                    </ul>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" style="font-size: calc(5px + 2vmin);" href="/Mascota/Create">Mascota</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" style="font-size: calc(5px + 2vmin);" href="/Chat/">Chat</a>
                                 </li>
                             </ul>
                             <ul class="nav navbar-nav navbar-right">

@@ -18,6 +18,7 @@ namespace Capa_Entidad
         public string direccion { get; set; }
         public string ciudad { get; set; }
         public string telefono { get; set; }
+        public byte[] foto { get; set; }
         public string email { get; set; }
         public string password { get; set; }
     }

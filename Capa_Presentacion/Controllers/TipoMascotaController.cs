@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using Capa_Negocio;
 using Capa_Entidad;
+using Capa_Presentacion.Extensions;
 
 namespace Capa_Presentacion.Controllers
 {
@@ -76,6 +77,7 @@ namespace Capa_Presentacion.Controllers
             {
                 // TODO: Add insert logic here
                 _Negocio.Proc_crearTipoMascota(tipoMascota);
+                this.AddNotification("Se ha creado el tipo de mascota exitosamente", NotificationType.SUCCESS);
                 return View();
             }
             catch
@@ -111,7 +113,8 @@ namespace Capa_Presentacion.Controllers
             {
                 // TODO: Add update logic here
                 _Negocio.Proc_actualizarTipoMascota(tipoMascota);
-                return View();
+                this.AddNotification("Se ha actualizado el tipo de mascota exitosamente", NotificationType.SUCCESS);
+                return RedirectToAction("Tipos", "TipoMascota");
             }
             catch
             {
@@ -128,27 +131,21 @@ namespace Capa_Presentacion.Controllers
         // POST: TipoMascota/Delete/5
         public ActionResult Delete(int id)
         {
-            try
+            // TODO: Add delete logic here
+            if (User.Identity.IsAuthenticated)
             {
-                // TODO: Add delete logic here
-                if (User.Identity.IsAuthenticated)
+                if (account.IsValid(User.Identity.Name) == 2)
                 {
-                    if (account.IsValid(User.Identity.Name) == 2)
-                    {
-                        return RedirectToAction("Index", "Home");
-                    }
+                    return RedirectToAction("Index", "Home");
                 }
-                else
-                {
-                    return RedirectToAction("Login", "Account");
-                }
-                _Negocio.Proc_eliminarTipoMascota(id);
-                return RedirectToAction("Tipo", "TipoMascota");
             }
-            catch
+            else
             {
-                return View();
+                return RedirectToAction("Login", "Account");
             }
+            _Negocio.Proc_eliminarTipoMascota(id);
+            this.AddNotification("Se ha eliminado el tipo de mascota exitosamente", NotificationType.SUCCESS);
+            return RedirectToAction("Tipos", "TipoMascota");
         }
     }
 }

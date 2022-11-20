@@ -14,14 +14,14 @@ namespace Capa_Entidad
     public partial class Proc_listarMascotaPorid_Usuario_Result
     {
         public int id_Mascota { get; set; }
-        public int id_Usuario { get; set; }
-        public int id_Tipo { get; set; }
-        public int id_Raza { get; set; }
         public string nombre_Completo { get; set; }
         public string sexo { get; set; }
         public string peso { get; set; }
         public byte[] foto { get; set; }
         public string fecha_Ingreso { get; set; }
         public string fecha_Modificacion { get; set; }
+        public int id_Raza { get; set; }
+        public int id_Tipo { get; set; }
+        public int id_Usuario { get; set; }
     }
 }

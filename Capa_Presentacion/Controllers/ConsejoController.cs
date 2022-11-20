@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using Capa_Negocio;
 using Capa_Entidad;
+using Capa_Presentacion.Extensions;
 
 namespace Capa_Presentacion.Controllers
 {
@@ -30,6 +31,12 @@ namespace Capa_Presentacion.Controllers
         public ActionResult listarConsejo()
         {
             var consejo = _Negocio.Proc_listarConsejo();
+            return Json(consejo, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult listarConsejoPorid_Tipo_id_Raza(int id_Tipo, int id_Raza) 
+        {
+            var consejo = _Negocio.Proc_listarConsejoPorid_Tipo_id_Raza(id_Tipo, id_Raza);
             return Json(consejo, JsonRequestBehavior.AllowGet);
         }
 
@@ -60,6 +67,7 @@ namespace Capa_Presentacion.Controllers
                 consejo.id_Tipo = int.Parse(Request.Form["tipoMascota"]);
                 consejo.id_Raza = int.Parse(Request.Form["razaMascota"]);
                 _Negocio.Proc_crearConsejo(consejo);
+                this.AddNotification("Se ha creado el consejo exitosamente", NotificationType.SUCCESS);
                 return View();
             }
             catch
@@ -94,6 +102,7 @@ namespace Capa_Presentacion.Controllers
             {
                 // TODO: Add update logic here
                 _Negocio.Proc_actualizarConsejo(consejo);
+                this.AddNotification("Se ha actualizado el consejo exitosamente", NotificationType.SUCCESS);
                 return RedirectToAction("Consejos", "Consejo");
             }
             catch
@@ -112,27 +121,21 @@ namespace Capa_Presentacion.Controllers
         //[HttpPost]
         public ActionResult Delete(int id)
         {
-            try
+            // TODO: Add delete logic here
+            if (User.Identity.IsAuthenticated)
             {
-                // TODO: Add delete logic here
-                if (User.Identity.IsAuthenticated)
+                if (account.IsValid(User.Identity.Name) == 2)
                 {
-                    if (account.IsValid(User.Identity.Name) == 2)
-                    {
-                        return RedirectToAction("Index", "Home");
-                    }
+                    return RedirectToAction("Index", "Home");
                 }
-                else
-                {
-                    return RedirectToAction("Login", "Account");
-                }
-                _Negocio.Proc_eliminarConsejo(id);
-                return RedirectToAction("Consejos", "Consejo");
             }
-            catch
+            else
             {
-                return View();
+                return RedirectToAction("Login", "Account");
             }
+            _Negocio.Proc_eliminarConsejo(id);
+            this.AddNotification("Se ha eliminado el consejo exitosamente", NotificationType.SUCCESS);
+            return RedirectToAction("Consejos", "Consejo");
         }
     }
 }

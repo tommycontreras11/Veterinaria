@@ -20,6 +20,7 @@ namespace Capa_Presentacion
             BundleConfig.RegisterBundles(BundleTable.Bundles);
 
             SqlDependency.Start(ConfigurationManager.ConnectionStrings["CustomVeterinariaEntities"].ConnectionString);
+        
         }
     }
 }

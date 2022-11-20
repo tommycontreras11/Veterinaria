@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using Capa_Negocio;
 using Capa_Entidad;
+using Capa_Presentacion.Extensions;
 
 namespace Capa_Presentacion.Controllers
 {
@@ -76,7 +77,7 @@ namespace Capa_Presentacion.Controllers
             {
                 _Negocio.Proc_crearRazaMascota(razaMascota);
                 // TODO: Add insert logic here
-                
+                this.AddNotification("Se ha creado la raza de mascota exitosamente", NotificationType.SUCCESS);
                 return View();
             }
             catch
@@ -112,6 +113,7 @@ namespace Capa_Presentacion.Controllers
             {
                 // TODO: Add update logic here
                 _Negocio.Proc_actualizarRazaMascota(razaMascota);
+                this.AddNotification("Se ha actualizado la raza de mascota exitosamente", NotificationType.SUCCESS);
                 return RedirectToAction("Razas", "RazaMascota");
             }
             catch
@@ -129,28 +131,22 @@ namespace Capa_Presentacion.Controllers
         // POST: RazaMascota/Delete/5
         public ActionResult Delete(int id)
         {
-            try
+            // TODO: Add delete logic here
+            if (User.Identity.IsAuthenticated)
             {
-                // TODO: Add delete logic here
-                if (User.Identity.IsAuthenticated)
+                if (account.IsValid(User.Identity.Name) == 2)
                 {
-                    if (account.IsValid(User.Identity.Name) == 2)
-                    {
-                        return RedirectToAction("Index", "Home");
-                    }
+                    return RedirectToAction("Index", "Home");
                 }
-                else
-                {
-                    return RedirectToAction("Login", "Account");
-                }
+            }
+            else
+            {
+                return RedirectToAction("Login", "Account");
+            }
 
-                _Negocio.Proc_eliminarRazaMascota(id);
-                return RedirectToAction("Razas", "RazaMascota");
-            }
-            catch
-            {
-                return View();
-            }
+            _Negocio.Proc_eliminarRazaMascota(id);
+            this.AddNotification("Se ha eliminado la raza de mascota exitosamente", NotificationType.SUCCESS);
+            return RedirectToAction("Razas", "RazaMascota");
         }
     }
 }

@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using Capa_Negocio;
 using Capa_Entidad;
 using System.Web.Services.Description;
+using Capa_Presentacion.Extensions;
 
 namespace Capa_Presentacion.Controllers
 {
@@ -60,6 +61,7 @@ namespace Capa_Presentacion.Controllers
                 // TODO: Add insert logic here
                 
                 _Negocio.Proc_crearServicio(servicio);
+                this.AddNotification("Se ha creado el servicio exitosamente", NotificationType.SUCCESS);
                 return View();
             }
             catch
@@ -94,6 +96,7 @@ namespace Capa_Presentacion.Controllers
             {
                 // TODO: Add update logic here
                 _Negocio.Proc_actualizarServicio(servicio);
+                this.AddNotification("Se ha actualizado el servicio exitosamente", NotificationType.SUCCESS);
                 return RedirectToAction("Servicios", "Servicio");
             }
             catch
@@ -112,27 +115,21 @@ namespace Capa_Presentacion.Controllers
         //[HttpPost]
         public ActionResult Delete(int id)
         {
-            try
+            // TODO: Add delete logic here
+            if (User.Identity.IsAuthenticated)
             {
-                // TODO: Add delete logic here
-                if (User.Identity.IsAuthenticated)
+                if (account.IsValid(User.Identity.Name) == 2)
                 {
-                    if (account.IsValid(User.Identity.Name) == 2)
-                    {
-                        return RedirectToAction("Index", "Home");
-                    }
+                    return RedirectToAction("Index", "Home");
                 }
-                else
-                {
-                    return RedirectToAction("Login", "Account");
-                }
-                _Negocio.Proc_eliminarServicio(id);
-                return RedirectToAction("Servicios", "Servicio");
             }
-            catch
+            else
             {
-                return View();
+                return RedirectToAction("Login", "Account");
             }
+            _Negocio.Proc_eliminarServicio(id);
+            this.AddNotification("Se ha eliminado el servicio exitosamente", NotificationType.SUCCESS);
+            return RedirectToAction("Servicios", "Servicio");
         }
     }
 }

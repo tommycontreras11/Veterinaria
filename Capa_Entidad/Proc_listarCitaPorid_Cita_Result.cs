@@ -14,9 +14,7 @@ namespace Capa_Entidad
     public partial class Proc_listarCitaPorid_Cita_Result
     {
         public int id_Cita { get; set; }
-        public int id_Usuario { get; set; }
-        public int id_Mascota { get; set; }
-        public int id_UsuarioVeterinario { get; set; }
+        public string mascota { get; set; }
         public string servicio { get; set; }
         public string fecha_Cita { get; set; }
         public string fecha_Creacion { get; set; }

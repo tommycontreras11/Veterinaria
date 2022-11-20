@@ -4,166 +4,283 @@
 }
 
 <!DOCTYPE html>
-<html>
+<html lang="en" dir="ltr">
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <meta charset="utf-8" />
+    <meta charset="UTF-8">
+    <title>Veterinaria Manatí</title>
+    <!-- Boxiocns CDN Link -->
+    <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - Mi aplicación ASP.NET</title>
+    <link rel="stylesheet" href="~/css/style_menu.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://getbootstrap.com/docs/5.2/assets/css/docs.css" rel="stylesheet">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 </head>
-<body class="p-0 m-0 border-0 bd-example">
+<body>
+    <div class="sidebar close">
+        <div class="logo-details">
+            <i class='bx bxs-dog'></i>
+            <span class="logo_name">Veterinaria</span>
+        </div>
+        @if (User.Identity.IsAuthenticated)
+        {
 
-    <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #121212;">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="#" style="font-size: calc(10px + 2vmin);">Veterinaria Manatí</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
-                @if (User.Identity.IsAuthenticated)
-                {
-
-                    if (Session["Rol"].ToString() == "1" && Session["Rol"].ToString() != null)
-                    {
-                        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                            <li class="nav-item">
-                                <a class="nav-link" style="font-size: calc(5px + 2vmin);" href="/Home/">Home</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" style="font-size: calc(5px + 2vmin);" href="/Account/Usuarios">Usuarios</a>
-                            </li>
+            if (Session["Rol"].ToString() == "1" && Session["Rol"].ToString() != null)
+            {
+                <ul class="nav-links">
+                    <li>
+                        <a href="/Home">
+                            <i class='bx bx-home'></i>
+                            <span class="link_name">Home</span>
+                        </a>
+                        <ul class="sub-menu blank">
+                            <li><a class="link_name" href="/Home">Home</a></li>
                         </ul>
-                    }
-                    else if (Session["Rol"].ToString() == "2" && Session["Rol"].ToString() != null)
-                    {
-                        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                            <li class="nav-item">
-                                <a class="nav-link" style="font-size: calc(5px + 2vmin);" href="/Home/">Home</a>
-                            </li>
+                    </li>
+                    <li>
+                        <div class="iocn-link">
+                            <a href="#">
+                                <i class='bx bxs-calendar'></i>
+                                <span class="link_name">Cita</span>
+                            </a>
+                            <i class='bx bxs-chevron-down arrow'></i>
+                        </div>
+                        <ul class="sub-menu">
+                            <li><a href="/Cita/Citas">Ver Citas</a></li>
+                            <li><a href="/Cita_Usuario/">Ver Cita-Usuarios</a></li>
+                            <li><a href="/Cita/">Procesar Citas</a></li>
                         </ul>
-                    }
+                    </li>
+                    <li>
+                        <div class="iocn-link">
+                            <a href="#">
+                                <i class='bx bxs-dog'></i>
+                                <span class="link_name">Mascota</span>
+                            </a>
+                            <i class='bx bxs-chevron-down arrow'></i>
+                        </div>
+                        <ul class="sub-menu">
+                            <li><a href="/Mascota/Mascotas">Ver Mascotas</a></li>
+                            <li><a href="/Mascota_Usuario/">Ver Mascota-Usuarios</a></li>
+                            <li><a href="/RazaMascota/Razas">Ver Raza de Mascotas</a></li>
+                            <li><a href="/TipoMascota/Tipos">Ver Tipo de Mascotas</a></li>
+                            <li><a href="/Consejo/Consejos">Ver Consejos</a></li>
+                            <li><a href="/Servicio/Servicios">Ver Servicios</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="/Chat/">
+                            <i class='bx bxs-user-circle'></i>
+                            <span class="link_name">Chat</span>
+                        </a>
+                        <ul class="sub-menu blank">
+                            <li><a class="link_name" href="/Chat/">Chat</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <div class="iocn-link">
+                            <a href="#">
+                                <i class='bx bxs-user-account'></i>
+                                <span class="link_name">Cuenta</span>
+                            </a>
+                            <i class='bx bxs-chevron-down arrow'></i>
+                        </div>
+                        <ul class="sub-menu">
+                            <li><a href="/Account/Perfil">Perfil</a></li>
+                            <li><a href="/Account/Usuarios">Usuarios</a></li>
+                            <li><a href="/Admin/Admins">Administración</a></li>
+                            <li><a href="/Rol_Usuario/">Rol de Usuarios</a></li>
+                        </ul>
+                    </li>
 
-                    <ul class="nav navbar-nav navbar-right">
-                        <li class="nav-item">
-                            <a class="nav-link" style="font-size: calc(5px + 2vmin);" href="/Account/Perfil">@User.Identity.Name</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" style="font-size: calc(5px + 2vmin);" href="/Account/Logout">Cerrar Sesión</a>
-                        </li>
+                    <li>
+                        <div class="profile-details">
+                            <div class="profile-content">
+                                <!--<img src="image/profile.jpg" alt="profileImg">-->
+                            </div>
+                            <div class="name-job">
+                                <div class="profile_name" id="name"></div>
+                                <div class="job" id="rol"></div>
+                            </div>
+                            <a href="/Account/Logout">
+                                <i class='bx bx-log-out'></i>
+                            </a>
+                        </div>
+                    </li>
+                </ul>
+            }
+            else if (Session["Rol"].ToString() == "2" && Session["Rol"].ToString() != null)
+            {
+                <ul class="nav-links">
+                    <li>
+                        <a href="/Home">
+                            <i class='bx bx-home'></i>
+                            <span class="link_name">Home</span>
+                        </a>
+                        <ul class="sub-menu blank">
+                            <li><a class="link_name" href="/Home">Home</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <div class="iocn-link">
+                            <a href="#">
+                                <i class='bx bxs-calendar'></i>
+                                <span class="link_name">Cita</span>
+                            </a>
+                            <i class='bx bxs-chevron-down arrow'></i>
+                        </div>
+                        <ul class="sub-menu">
+                            <li><a href="/Cita/Create">Gestionar Cita</a></li>
+                            <li><a href="/Cita/">Ver Cita</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="/Mascota/Create">
+                            <i class='bx bxs-dog'></i>
+                            <span class="link_name">Mascota</span>
+                        </a>
+                        <ul class="sub-menu blank">
+                            <li><a class="link_name" href="/Mascota/Create">Mascota</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="/Chat/">
+                            <i class='bx bxs-user-circle'></i>
+                            <span class="link_name">Chat</span>
+                        </a>
+                        <ul class="sub-menu blank">
+                            <li><a class="link_name" href="/Chat/">Chat</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="/Account/Perfil">
+                            <i class='bx bxs-user-account'></i>
+                            <span class="link_name">Perfil</span>
+                        </a>
+                        <ul class="sub-menu blank">
+                            <li><a class="link_name" href="/Account/Perfil">Perfil</a></li>
+                        </ul>
+                    </li>
+
+                    <li>
+                        <div class="profile-details">
+                            <div class="profile-content">
+                                <!--<img src="image/profile.jpg" alt="profileImg">-->
+                            </div>
+                            <div class="name-job">
+                                <div class="profile_name" id="name"></div>
+                                <div class="job" id="rol"></div>
+                            </div>
+                            <a href="/Account/Logout">
+                                <i class='bx bx-log-out'></i>
+                            </a>
+                        </div>
+                    </li>
+                </ul>
+            }
+        }
+        else
+        {
+            <ul class="nav-links">
+                <li>
+                    <a href="/Home">
+                        <i class='bx bx-home'></i>
+                        <span class="link_name">Home</span>
+                    </a>
+                    <ul class="sub-menu blank">
+                        <li><a class="link_name" href="/Home">Home</a></li>
                     </ul>
-                }
-                else
-                {
-                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                        <li class="nav-item">
-                            <a class="nav-link" style="font-size: calc(5px + 2vmin);" href="/Home/">Home</a>
-                        </li>
+                </li>
+                <li>
+                    <a href="/Home">
+                        <i class='bx bxs-calendar'></i>
+                        <span class="link_name">Cita</span>
+                    </a>
+                    <ul class="sub-menu blank">
+                        <li><a class="link_name" href="/Cita/Create">Cita</a></li>
                     </ul>
-                    <ul class="nav navbar-nav navbar-right">
-                        <li class="nav-item">
-                            <a class="nav-link" style="font-size: calc(5px + 2vmin);" href="/Account/Login">Iniciar Sesión</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" style="font-size: calc(5px + 2vmin);" href="/Account/Create">Registrarse</a>
-                        </li>
+                </li>
+                <li>
+                    <a href="/Home">
+                        <i class='bx bxs-dog'></i>
+                        <span class="link_name">Mascota</span>
+                    </a>
+                    <ul class="sub-menu blank">
+                        <li><a class="link_name" href="/Mascota/Create">Mascota</a></li>
                     </ul>
-                }
+                </li>
+                <li>
+                    <a href="/Home">
+                        <i class='bx bxs-user-circle'></i>
+                        <span class="link_name">Chat</span>
+                    </a>
+                    <ul class="sub-menu blank">
+                        <li><a class="link_name" href="/Chat/">Chat</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <div class="iocn-link">
+                        <a href="#">
+                            <i class='bx bxs-user-account'></i>
+                            <span class="link_name">Cuenta</span>
+                        </a>
+                        <i class='bx bxs-chevron-down arrow'></i>
+                    </div>
+                    <ul class="sub-menu">
+                        <li><a href="/Account/Login">Iniciar Sesión</a></li>
+                        <li><a href="/Account/Create">Registrarse</a></li>
+                    </ul>
+                </li>
+
+            </ul>
+        }
+    </div>
+    <section class="home-section">
+        <div class="home-content">
+            <i class='bx bx-menu'></i>
+            <div class="container" style="margin-top: 580px">
+                <div class="row vh-100 m-0 justify-content-center align-items-center">
+                    <div class="col-md-12 col-auto">
+
+                        <section style="border-radius: 10px;">
+                            <div class="container py-5" id="contenido_general">
+
+                            </div>
+                        </section>
+                    </div>
+                </div>
             </div>
         </div>
-    </nav>
-    <div class="container">
-        <div class="col-md-12">
-            <h2>Perfil</h2>
-
-        </div>
-    </div>
+    </section>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.js"></script>
-</body>
-</html>
+    <script>
 
-<script>
+        $(document).ready(function () {
+            listarNombreUsuario();
+            listarNombre_MascotaPorid_Usuario();
+            obtenerRolUsuario();
+        });
 
-    $(document).ready(function () {
-        listarNombre_MascotaPorid_Usuario();
-    });
+        function listarNombreUsuario() {
 
-    function listarNombre_MascotaPorid_Usuario() {
+            $.ajax({
+                type: "GET",
+                url: "/Account/listarid_UsuarioPorEmail",
+                dataType: "JSON",
+                contentType: "application/json; charset=utf-8",
+                cache: false,
 
-        $.ajax({
-            type: "GET",
-            url: "/Mascota/listarNombre_MascotaPorid_Usuario",
-            dataType: "JSON",
-            contentType: "application/json; charset=utf-8",
-            cache: false,
-
-            success: function (data) {
-
-                if (data == "Aún no tienes una mascota") {
-                    alert("No tienes");
-                } else {
+                success: function (data) {
 
                     $.ajax({
-                        type: "GET",
-                        url: "/Mascota/listarMascotaPorid_Usuario",
-                        dataType: "JSON",
-                        contentType: "application/json; charset=utf-8",
-                        cache: false,
+                        type: "POST",
+                        url: "/Account/listarNombre_CompletoPorid_Usuario",
+                        traditional: true,
+                        data: { "id": data },
 
-                        success: function (mascota) {
-
-                            $.ajax({
-                                type: "GET",
-                                url: "/TipoMascota/listarSoloTipoMascotaPorid_Tipo",
-                                traditional: true,
-                                data: { "id": JSON.stringify(mascota.id_Tipo).replaceAll("\"", "") },
-
-                                success: function (tipo) {
-
-                                    $.ajax({
-                                        type: "GET",
-                                        url: "/RazaMascota/listarSoloRazaMascotaPorid_Raza",
-                                        traditional: true,
-                                        data: { "id": JSON.stringify(mascota.id_Raza).replaceAll("\"", "") },
-
-                                        success: function (raza) {
-
-                                            let items = "";
-                                            items += "<div class='card text-center'>";
-                                            items += "<div class='card-header'>Información de la mascota</div>";
-                                            items += "<div class='card-body'>";
-
-                                            items += "<h5 class='card-title'>Nombre: " + JSON.stringify(mascota.nombre_Completo).replaceAll("\"", "") + "</h5>";
-                                            items += "<p class='card-text'>Sexo: " + JSON.stringify(mascota.sexo).replaceAll("\"", "") + "</p>";
-                                            items += "<p class='card-text'>Peso: " + JSON.stringify(mascota.peso).replaceAll("\"", "") + "</p>";
-                                            items += "<p class='card-text'>Tipo de mascota: " + tipo + "</p>";
-                                            items += "<p class='card-text'>Raza de mascota: " + raza + "</p>";
-                                            items += "<p class='card-text'>Peso: " + JSON.stringify(mascota.peso).replaceAll("\"", "") + "</p>";
-
-                                            items += "<a href='#' class='btn btn-primary'>Go somewhere</a>";
-
-                                            items += "</div>";
-                                            items += "<div class='card-footer text-muted'>2 days ago</div>";
-                                            items += "</div>";
-
-                                            $(".col-md-12").append(items);
-                                        },
-
-                                        error: function (error) {
-                                            alert("Ha ocurrido un error: " + error);
-                                        }
-                                    });
-
-                                },
-
-                                error: function (error) {
-                                    alert("Ha ocurrido un error: " + error);
-                                }
-                            });
-
-                            
+                        success: function (data) {
+                            $("#name").text(data);
                         },
 
                         error: function (error) {
@@ -171,17 +288,737 @@
                         }
                     });
 
+                },
+
+                error: function (error) {
+                    alert("Ha ocurrido un error: " + error);
                 }
-            },
+            });
 
-            error: function (error) {
-                alert("Ha ocurrido un error: " + error);
-            }
+        }
+
+        function listarNombre_MascotaPorid_Usuario() {
+
+            $.ajax({
+                type: "GET",
+                url: "/Mascota/listarNombre_MascotaPorid_Usuario",
+                dataType: "JSON",
+                contentType: "application/json; charset=utf-8",
+                cache: false,
+
+                success: function (data) {
+
+                    if (data == "Aún no tienes una mascota") {
+                        $.ajax({
+                            type: "GET",
+                            url: "/Account/listarUsuarioPorid_Usuario",
+                            dataType: "JSON",
+                            contentType: "application/json; charset=utf-8",
+                            cache: false,
+
+                            success: function (usuario) {
+
+                                let divPerfilGeneral = "";
+                                let divPerfil = "";
+                                let divContenidoPerfil = "";
+
+                                let divNavegacion = "";
+
+                                divNavegacion += "<div class='row'>";
+                                divNavegacion += "<div class='col'>";
+                                divNavegacion += "<nav aria-label='breadcrumb' class='rounded-3 p-3 mb-4' style='background-color: #EEEEEE'>";
+                                divNavegacion += "<ol class='breadcrumb mb-0'>";
+                                divNavegacion += "<li class='breadcrumb-item'><a href='/Account/Perfil'>Cuenta</a></li>";
+                                divNavegacion += "<li class='breadcrumb-item active' href='/Account/Perfil' aria-current='page'>Perfil de usuario</li>";
+                                divNavegacion += "</ol>";
+                                divNavegacion += "</nav>";
+                                divNavegacion += "</div>";
+                                divNavegacion += "</div>";
+
+                                $("#contenido_general").append(divNavegacion);
+
+                                divPerfilGeneral += "<div class='row' id='perfil_usuario'>";
+                                divPerfilGeneral += "<h5 class='text-center'>Información del usuario</h5>";
+                                divPerfilGeneral += "<div class='col-lg-4' id='perfil'></div>";
+                                divPerfilGeneral += "<div class='col-lg-8' id='contenido'></div>";
+                                divPerfilGeneral += "</div>";
+                                divPerfilGeneral += "</br>";
+
+                                $("#contenido_general").append(divPerfilGeneral);
+
+                                divPerfil += "<div class='card mb-4'>";
+                                divPerfil += "  <div class='card-body text-center'>";
+                                /*                                                                items += "      <img src='https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3.webp' alt='avatar' class='rounded-circle img-fluid' style='width: 150px;'>";*/
+                                divPerfil += "      <img src='/Account/getUnaImage?id=" + usuario.id_Usuario + "' alt='avatar' class='rounded img-fluid' style='width: 350px;'>";
+
+
+                                divPerfil += "      <h5 class='my-3'>" + usuario.nombre_Completo + "</h5>";
+                                //items += "  <div class='d-flex justify-content-center mb-2'>";
+                                //items += "  </div>";
+                                divPerfil += "  </div>";
+                                divPerfil += "</div>";
+
+
+                                divContenidoPerfil += "<div class='card mb-4'>";
+                                divContenidoPerfil += "<div class='card-body'>";
+
+                                divContenidoPerfil += " <div class='row'>";
+                                divContenidoPerfil += "     <div class='col-sm-3'>";
+                                divContenidoPerfil += "         <p class='mb-0'>Nombre Completo</p>";
+                                divContenidoPerfil += "     </div>";
+                                divContenidoPerfil += "     <div class='col-sm-9'>";
+                                divContenidoPerfil += "         <p class='text-muted mb-0'>" + usuario.nombre_Completo + "</p>";
+                                divContenidoPerfil += "     </div>";
+                                divContenidoPerfil += " </div>";
+
+                                divContenidoPerfil += "<hr>";
+
+                                divContenidoPerfil += " <div class='row'>";
+                                divContenidoPerfil += "     <div class='col-sm-3'>";
+                                divContenidoPerfil += "         <p class='mb-0'>Email</p>";
+                                divContenidoPerfil += "     </div>";
+                                divContenidoPerfil += "     <div class='col-sm-9'>";
+                                divContenidoPerfil += "         <p class='text-muted mb-0'>" + usuario.email + "</p>";
+                                divContenidoPerfil += "     </div>";
+                                divContenidoPerfil += " </div>";
+
+                                divContenidoPerfil += "<hr>";
+
+                                divContenidoPerfil += " <div class='row'>";
+                                divContenidoPerfil += "     <div class='col-sm-3'>";
+                                divContenidoPerfil += "         <p class='mb-0'>Teléfono</p>";
+                                divContenidoPerfil += "     </div>";
+                                divContenidoPerfil += "     <div class='col-sm-9'>";
+                                divContenidoPerfil += "         <p class='text-muted mb-0'>" + usuario.telefono + "</p>";
+                                divContenidoPerfil += "     </div>";
+                                divContenidoPerfil += " </div>";
+
+                                divContenidoPerfil += "<hr>";
+
+                                divContenidoPerfil += " <div class='row'>";
+                                divContenidoPerfil += "     <div class='col-sm-3'>";
+                                divContenidoPerfil += "         <p class='mb-0'>Dirección</p>";
+                                divContenidoPerfil += "     </div>";
+                                divContenidoPerfil += "     <div class='col-sm-9'>";
+                                divContenidoPerfil += "         <p class='text-muted mb-0'>" + usuario.direccion + "</p>";
+                                divContenidoPerfil += "     </div>";
+                                divContenidoPerfil += " </div>";
+
+                                divContenidoPerfil += "<hr>";
+
+                                divContenidoPerfil += " <div class='row'>";
+                                divContenidoPerfil += "     <div class='col-sm-3'>";
+                                divContenidoPerfil += "         <p class='mb-0'>Ciudad</p>";
+                                divContenidoPerfil += "     </div>";
+                                divContenidoPerfil += "     <div class='col-sm-9'>";
+                                divContenidoPerfil += "         <p class='text-muted mb-0'>" + usuario.ciudad + "</p>";
+                                divContenidoPerfil += "     </div>";
+                                divContenidoPerfil += " </div>";
+
+                                divContenidoPerfil += "</div>";
+                                divContenidoPerfil += "</div>";
+
+                                //items += "<div class='card text-center'>";
+                                //items += "<div class='card-header'>Información de la mascota</div>";
+                                //items += "<div class='card-body'>";
+
+                                //items += "<h5 class='card-title'>Nombre: " + JSON.stringify(mascota.nombre_Completo).replaceAll("\"", "") + "</h5>";
+                                //items += "<p class='card-text'>Sexo: " + JSON.stringify(mascota.sexo).replaceAll("\"", "") + "</p>";
+                                //items += "<p class='card-text'>Peso: " + JSON.stringify(mascota.peso).replaceAll("\"", "") + "</p>";
+                                //items += "<p class='card-text'>Tipo de mascota: " + tipo + "</p>";
+                                //items += "<p class='card-text'>Raza de mascota: " + raza + "</p>";
+                                //items += "<p class='card-text'>Peso: " + JSON.stringify(mascota.peso).replaceAll("\"", "") + "</p>";
+                                //items += "<p class='card-text'>Consejo de mascota: " + consejo + "</p>";
+                                //items += "<img src='/Mascota/getUnaImage?id=" + JSON.stringify(mascota.id_Mascota).replaceAll("\"", "") + "' width='100' heigth='100'/>";
+                                //items += "<a href='#' class='btn btn-primary'>Go somewhere</a>";
+
+                                //items += "</div>";
+                                //items += "<div class='card-footer text-muted'>2 days ago</div>";
+                                //items += "</div>";
+
+                                //items += "<div class='card mb-4'>";
+                                //items += "  <div class='card-body text-center'>";
+                                ///*                                                                items += "      <img src='https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3.webp' alt='avatar' class='rounded-circle img-fluid' style='width: 150px;'>";*/
+                                //items += "      <img src='/Account/getUnaImage?id=" + usuario.id_Usuario + "' alt='avatar' class='rounded img-fluid' style='width: 350px;'";
+                                //items += "      <h5 class='my-3'>" + usuario.nombre_Completo + "</h5>";
+                                ////items += "  <div class='d-flex justify-content-center mb-2'>";
+                                ////items += "  </div>";
+                                //items += "  </div>";
+                                //items += "</div>";
+
+
+                                //items2 += "<div class='card mb-4'>";
+                                //items2 += "<div class='card-body'>";
+
+                                //items2 += " <div class='row'>";
+                                //items2 += "     <div class='col-sm-3'>";
+                                //items2 += "         <p class='mb-0'>Nombre Completo</p>";
+                                //items2 += "     </div>";
+                                //items2 += "     <div class='col-sm-9'>";
+                                //items2 += "         <p class='text-muted mb-0'>" + usuario.nombre_Completo + "</p>";
+                                //items2 += "     </div>";
+                                //items2 += " </div>";
+
+                                //items2 += "<hr>";
+
+                                //items2 += " <div class='row'>";
+                                //items2 += "     <div class='col-sm-3'>";
+                                //items2 += "         <p class='mb-0'>Email</p>";
+                                //items2 += "     </div>";
+                                //items2 += "     <div class='col-sm-9'>";
+                                //items2 += "         <p class='text-muted mb-0'>" + usuario.email + "</p>";
+                                //items2 += "     </div>";
+                                //items2 += " </div>";
+
+                                //items2 += "<hr>";
+
+                                //items2 += " <div class='row'>";
+                                //items2 += "     <div class='col-sm-3'>";
+                                //items2 += "         <p class='mb-0'>Teléfono</p>";
+                                //items2 += "     </div>";
+                                //items2 += "     <div class='col-sm-9'>";
+                                //items2 += "         <p class='text-muted mb-0'>" + usuario.telefono + "</p>";
+                                //items2 += "     </div>";
+                                //items2 += " </div>";
+
+                                //items2 += "<hr>";
+
+                                //items2 += " <div class='row'>";
+                                //items2 += "     <div class='col-sm-3'>";
+                                //items2 += "         <p class='mb-0'>Dirección</p>";
+                                //items2 += "     </div>";
+                                //items2 += "     <div class='col-sm-9'>";
+                                //items2 += "         <p class='text-muted mb-0'>" + usuario.direccion + "</p>";
+                                //items2 += "     </div>";
+                                //items2 += " </div>";
+
+                                //items2 += "<hr>";
+
+                                //items2 += " <div class='row'>";
+                                //items2 += "     <div class='col-sm-3'>";
+                                //items2 += "         <p class='mb-0'>Ciudad</p>";
+                                //items2 += "     </div>";
+                                //items2 += "     <div class='col-sm-9'>";
+                                //items2 += "         <p class='text-muted mb-0'>" + usuario.ciudad + "</p>";
+                                //items2 += "     </div>";
+                                //items2 += " </div>";
+
+                                //items2 += "</div>";
+                                //items2 += "</div>";
+
+                                $("#perfil").append(divPerfil);
+                                $("#contenido").append(divContenidoPerfil);
+
+                            },
+
+                            error: function (error) {
+                                alert("Ha ocurrido un error: " + error);
+                            }
+                        });
+                    } else {
+
+                        $.ajax({
+                            type: "GET",
+                            url: "/Mascota/listarMascotaPorid_Usuario",
+                            dataType: "JSON",
+                            contentType: "application/json; charset=utf-8",
+                            cache: false,
+
+                            success: function (mascota) {
+
+                                $.ajax({
+                                    type: "GET",
+                                    url: "/TipoMascota/listarSoloTipoMascotaPorid_Tipo",
+                                    traditional: true,
+                                    data: { "id": JSON.stringify(mascota.id_Tipo).replaceAll("\"", "") },
+
+                                    success: function (tipo) {
+
+                                        $.ajax({
+                                            type: "GET",
+                                            url: "/RazaMascota/listarSoloRazaMascotaPorid_Raza",
+                                            traditional: true,
+                                            data: { "id": JSON.stringify(mascota.id_Raza).replaceAll("\"", "") },
+
+                                            success: function (raza) {
+
+                                                $.ajax({
+                                                    type: "POST",
+                                                    url: "/Consejo/listarConsejoPorid_Tipo_id_Raza",
+                                                    traditional: true,
+                                                    data: { "id_Tipo": JSON.stringify(mascota.id_Tipo).replaceAll("\"", ""), "id_Raza": JSON.stringify(mascota.id_Raza).replaceAll("\"", "") },
+
+                                                    success: function (consejo) {
+
+                                                        $.ajax({
+                                                            type: "GET",
+                                                            url: "/Account/listarUsuarioPorid_Usuario",
+                                                            dataType: "JSON",
+                                                            contentType: "application/json; charset=utf-8",
+                                                            cache: false,
+
+                                                            success: function (usuario) {
+
+                                                                let divMascotaGeneral = "";
+                                                                let divConsejoGeneral = "";
+                                                                let divPerfilGeneral = "";
+                                                                let items = "";
+                                                                let divPerfil = "";
+                                                                let divContenidoPerfil = "";
+
+                                                                let items4 = "";
+                                                                let divMascota = "";
+                                                                let divContenidoMascota = "";
+                                                                let divConsejo = "";
+
+                                                                let divNavegacion = "";
+
+                                                                divNavegacion += "<div class='row'>";
+                                                                divNavegacion += "<div class='col'>";
+                                                                divNavegacion += "<nav aria-label='breadcrumb' class='rounded-3 p-3 mb-4' style='background-color: #EEEEEE'>";
+                                                                divNavegacion += "<ol class='breadcrumb mb-0'>";
+                                                                divNavegacion += "<li class='breadcrumb-item'><a href='/Account/Perfil'>Cuenta</a></li>";
+                                                                divNavegacion += "<li class='breadcrumb-item active' href='/Account/Perfil' aria-current='page'>Perfil de usuario</li>";
+                                                                divNavegacion += "</ol>";
+                                                                divNavegacion += "</nav>";
+                                                                divNavegacion += "</div>";
+                                                                divNavegacion += "</div>";
+
+                                                                $("#contenido_general").append(divNavegacion);
+
+                                                                divPerfilGeneral += "<div class='row' id='perfil_usuario'>";
+                                                                divPerfilGeneral += "<h5 class='text-center'>Información del usuario</h5>";
+                                                                divPerfilGeneral += "<div class='col-lg-4' id='perfil'></div>";
+                                                                divPerfilGeneral += "<div class='col-lg-8' id='contenido'></div>";
+                                                                divPerfilGeneral += "</div>";
+                                                                divPerfilGeneral += "</br>";
+
+                                                                $("#contenido_general").append(divPerfilGeneral);
+
+                                                                divMascotaGeneral += "<div class='row' id='perfil_mascota'>";
+                                                                divMascotaGeneral += "<h5 class='text-center'>Información de la mascota</h5>";
+                                                                divMascotaGeneral += "<div class='col-lg-4' id='mascota'></div>";
+                                                                divMascotaGeneral += "<div class='col-lg-8' id='mascota_contenido'></div>";
+                                                                divMascotaGeneral += "</div>";
+                                                                divMascotaGeneral += "</br>";
+
+                                                                $("#contenido_general").append(divMascotaGeneral);
+
+                                                                divConsejoGeneral += "<div class='container'>";
+                                                                divConsejoGeneral += "<div class='row justify-content-center'>";
+                                                                divConsejoGeneral += "<div class='col-auto'>";
+                                                                divConsejoGeneral += "<h5 class='text-center'>Consejos para el cuidado de la mascota</h5>";
+                                                                divConsejoGeneral += "<div class='col-lg-12' id='consejo'>";
+
+                                                                divConsejoGeneral += "</div>";
+                                                                divConsejoGeneral += "</div>";
+                                                                divConsejoGeneral += "</div>";
+                                                                divConsejoGeneral += "</div>";
+                                                                divConsejoGeneral += "</br>";
+                                                                $("#contenido_general").append(divConsejoGeneral);
+
+                                                                //items += "<div class='card text-center'>";
+                                                                //items += "<div class='card-header'>Información de la mascota</div>";
+                                                                //items += "<div class='card-body'>";
+
+                                                                //items += "<h5 class='card-title'>Nombre: " + JSON.stringify(mascota.nombre_Completo).replaceAll("\"", "") + "</h5>";
+                                                                //items += "<p class='card-text'>Sexo: " + JSON.stringify(mascota.sexo).replaceAll("\"", "") + "</p>";
+                                                                //items += "<p class='card-text'>Peso: " + JSON.stringify(mascota.peso).replaceAll("\"", "") + "</p>";
+                                                                //items += "<p class='card-text'>Tipo de mascota: " + tipo + "</p>";
+                                                                //items += "<p class='card-text'>Raza de mascota: " + raza + "</p>";
+                                                                //items += "<p class='card-text'>Peso: " + JSON.stringify(mascota.peso).replaceAll("\"", "") + "</p>";
+                                                                //items += "<p class='card-text'>Consejo de mascota: " + consejo + "</p>";
+                                                                //items += "<img src='/Mascota/getUnaImage?id=" + JSON.stringify(mascota.id_Mascota).replaceAll("\"", "") + "' width='100' heigth='100'/>";
+                                                                //items += "<a href='#' class='btn btn-primary'>Go somewhere</a>";
+
+                                                                //items += "</div>";
+                                                                //items += "<div class='card-footer text-muted'>2 days ago</div>";
+                                                                //items += "</div>";
+
+                                                                divPerfil += "<div class='card mb-4'>";
+                                                                divPerfil += "  <div class='card-body text-center'>";
+                                                                /*                                                                items += "      <img src='https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3.webp' alt='avatar' class='rounded-circle img-fluid' style='width: 150px;'>";*/
+                                                                divPerfil += "      <img src='/Account/getUnaImage?id=" + usuario.id_Usuario + "' alt='avatar' class='rounded img-fluid' style='width: 350px;'>";
+
+
+                                                                divPerfil += "      <h5 class='my-3'>" + usuario.nombre_Completo + "</h5>";
+                                                                //items += "  <div class='d-flex justify-content-center mb-2'>";
+                                                                //items += "  </div>";
+                                                                divPerfil += "  </div>";
+                                                                divPerfil += "</div>";
+
+
+                                                                divContenidoPerfil += "<div class='card mb-4'>";
+                                                                divContenidoPerfil += "<div class='card-body'>";
+
+                                                                divContenidoPerfil += " <div class='row'>";
+                                                                divContenidoPerfil += "     <div class='col-sm-3'>";
+                                                                divContenidoPerfil += "         <p class='mb-0'>Nombre Completo</p>";
+                                                                divContenidoPerfil += "     </div>";
+                                                                divContenidoPerfil += "     <div class='col-sm-9'>";
+                                                                divContenidoPerfil += "         <p class='text-muted mb-0'>" + usuario.nombre_Completo + "</p>";
+                                                                divContenidoPerfil += "     </div>";
+                                                                divContenidoPerfil += " </div>";
+
+                                                                divContenidoPerfil += "<hr>";
+
+                                                                divContenidoPerfil += " <div class='row'>";
+                                                                divContenidoPerfil += "     <div class='col-sm-3'>";
+                                                                divContenidoPerfil += "         <p class='mb-0'>Email</p>";
+                                                                divContenidoPerfil += "     </div>";
+                                                                divContenidoPerfil += "     <div class='col-sm-9'>";
+                                                                divContenidoPerfil += "         <p class='text-muted mb-0'>" + usuario.email + "</p>";
+                                                                divContenidoPerfil += "     </div>";
+                                                                divContenidoPerfil += " </div>";
+
+                                                                divContenidoPerfil += "<hr>";
+
+                                                                divContenidoPerfil += " <div class='row'>";
+                                                                divContenidoPerfil += "     <div class='col-sm-3'>";
+                                                                divContenidoPerfil += "         <p class='mb-0'>Teléfono</p>";
+                                                                divContenidoPerfil += "     </div>";
+                                                                divContenidoPerfil += "     <div class='col-sm-9'>";
+                                                                divContenidoPerfil += "         <p class='text-muted mb-0'>" + usuario.telefono + "</p>";
+                                                                divContenidoPerfil += "     </div>";
+                                                                divContenidoPerfil += " </div>";
+
+                                                                divContenidoPerfil += "<hr>";
+
+                                                                divContenidoPerfil += " <div class='row'>";
+                                                                divContenidoPerfil += "     <div class='col-sm-3'>";
+                                                                divContenidoPerfil += "         <p class='mb-0'>Dirección</p>";
+                                                                divContenidoPerfil += "     </div>";
+                                                                divContenidoPerfil += "     <div class='col-sm-9'>";
+                                                                divContenidoPerfil += "         <p class='text-muted mb-0'>" + usuario.direccion + "</p>";
+                                                                divContenidoPerfil += "     </div>";
+                                                                divContenidoPerfil += " </div>";
+
+                                                                divContenidoPerfil += "<hr>";
+
+                                                                divContenidoPerfil += " <div class='row'>";
+                                                                divContenidoPerfil += "     <div class='col-sm-3'>";
+                                                                divContenidoPerfil += "         <p class='mb-0'>Ciudad</p>";
+                                                                divContenidoPerfil += "     </div>";
+                                                                divContenidoPerfil += "     <div class='col-sm-9'>";
+                                                                divContenidoPerfil += "         <p class='text-muted mb-0'>" + usuario.ciudad + "</p>";
+                                                                divContenidoPerfil += "     </div>";
+                                                                divContenidoPerfil += " </div>";
+
+                                                                divContenidoPerfil += "</div>";
+                                                                divContenidoPerfil += "</div>";
+
+                                                                //let items3 = "";
+
+                                                                //items3 += "<div class='card mb-4'>";
+                                                                //items3 += "<div class='card-body'>";
+
+                                                                //items3 += " <div class='row'>";
+                                                                //items3 += "     <div class='col-sm-3'>";
+                                                                //items3 += "         <p class='mb-0'>Nombre Completo</p>";
+                                                                //items3 += "     </div>";
+                                                                //items3 += "     <div class='col-sm-9'>";
+                                                                //items3 += "         <p class='text-muted mb-0'>" + usuario.nombre_Completo + "</p>";
+                                                                //items3 += "     </div>";
+                                                                //items3 += " </div>";
+
+                                                                //items3 += "<hr>";
+
+                                                                //items3 += " <div class='row'>";
+                                                                //items3 += "     <div class='col-sm-3'>";
+                                                                //items3 += "         <p class='mb-0'>Email</p>";
+                                                                //items3 += "     </div>";
+                                                                //items3 += "     <div class='col-sm-9'>";
+                                                                //items3 += "         <p class='text-muted mb-0'>" + usuario.email + "</p>";
+                                                                //items3 += "     </div>";
+                                                                //items3 += " </div>";
+
+                                                                //items3 += "<hr>";
+
+                                                                //items3 += " <div class='row'>";
+                                                                //items3 += "     <div class='col-sm-3'>";
+                                                                //items3 += "         <p class='mb-0'>Teléfono</p>";
+                                                                //items3 += "     </div>";
+                                                                //items3 += "     <div class='col-sm-9'>";
+                                                                //items3 += "         <p class='text-muted mb-0'>" + usuario.telefono + "</p>";
+                                                                //items3 += "     </div>";
+                                                                //items3 += " </div>";
+
+                                                                //items3 += "<hr>";
+
+                                                                //items3 += " <div class='row'>";
+                                                                //items3 += "     <div class='col-sm-3'>";
+                                                                //items3 += "         <p class='mb-0'>Dirección</p>";
+                                                                //items3 += "     </div>";
+                                                                //items3 += "     <div class='col-sm-9'>";
+                                                                //items3 += "         <p class='text-muted mb-0'>" + usuario.direccion + "</p>";
+                                                                //items3 += "     </div>";
+                                                                //items3 += " </div>";
+
+                                                                //items3 += "<hr>";
+
+                                                                //items3 += " <div class='row'>";
+                                                                //items3 += "     <div class='col-sm-3'>";
+                                                                //items3 += "         <p class='mb-0'>Ciudad</p>";
+                                                                //items3 += "     </div>";
+                                                                //items3 += "     <div class='col-sm-9'>";
+                                                                //items3 += "         <p class='text-muted mb-0'>" + usuario.ciudad + "</p>";
+                                                                //items3 += "     </div>";
+                                                                //items3 += " </div>";
+
+                                                                //items3 += "</div>";
+                                                                //items3 += "</div>";
+
+
+                                                                divMascota += "<div class='card mb-4'>";
+                                                                divMascota += "  <div class='card-body text-center'>";
+                                                                /*                                                                items += "      <img src='https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3.webp' alt='avatar' class='rounded-circle img-fluid' style='width: 150px;'>";*/
+                                                                divMascota += "      <img src='/Mascota/getUnaImage?id=" + JSON.stringify(mascota.id_Mascota).replaceAll("\"", "") + "' alt='avatar' class='rounded img-fluid' style='width: 350px;'>";
+                                                                divMascota += "      <h5 class='my-3'>" + JSON.stringify(mascota.nombre_Completo).replaceAll("\"", "") + "</h5>";
+                                                                //items += "  <div class='d-flex justify-content-center mb-2'>";
+                                                                //items += "  </div>";
+                                                                divMascota += "  </div>";
+                                                                divMascota += "</div>";
+
+
+                                                                divContenidoMascota += "<div class='card mb-4'>";
+                                                                divContenidoMascota += "<div class='card-body'>";
+
+                                                                divContenidoMascota += " <div class='row'>";
+                                                                divContenidoMascota += "     <div class='col-sm-3'>";
+                                                                divContenidoMascota += "         <p class='mb-0'>Nombre Completo</p>";
+                                                                divContenidoMascota += "     </div>";
+                                                                divContenidoMascota += "     <div class='col-sm-9'>";
+                                                                divContenidoMascota += "         <p class='text-muted mb-0'>" + JSON.stringify(mascota.nombre_Completo).replaceAll("\"", "") + "</p>";
+                                                                divContenidoMascota += "     </div>";
+                                                                divContenidoMascota += " </div>";
+
+                                                                divContenidoMascota += "<hr>";
+
+                                                                divContenidoMascota += " <div class='row'>";
+                                                                divContenidoMascota += "     <div class='col-sm-3'>";
+                                                                divContenidoMascota += "         <p class='mb-0'>Sexo</p>";
+                                                                divContenidoMascota += "     </div>";
+                                                                divContenidoMascota += "     <div class='col-sm-9'>";
+                                                                divContenidoMascota += "         <p class='text-muted mb-0'>" + JSON.stringify(mascota.sexo).replaceAll("\"", "") + "</p>";
+                                                                divContenidoMascota += "     </div>";
+                                                                divContenidoMascota += " </div>";
+
+                                                                divContenidoMascota += "<hr>";
+
+                                                                divContenidoMascota += " <div class='row'>";
+                                                                divContenidoMascota += "     <div class='col-sm-3'>";
+                                                                divContenidoMascota += "         <p class='mb-0'>Peso</p>";
+                                                                divContenidoMascota += "     </div>";
+                                                                divContenidoMascota += "     <div class='col-sm-9'>";
+                                                                divContenidoMascota += "         <p class='text-muted mb-0'>" + JSON.stringify(mascota.peso).replaceAll("\"", "") + "</p>";
+                                                                divContenidoMascota += "     </div>";
+                                                                divContenidoMascota += " </div>";
+
+                                                                divContenidoMascota += "<hr>";
+
+                                                                divContenidoMascota += " <div class='row'>";
+                                                                divContenidoMascota += "     <div class='col-sm-3'>";
+                                                                divContenidoMascota += "         <p class='mb-0'>Tipo Mascota</p>";
+                                                                divContenidoMascota += "     </div>";
+                                                                divContenidoMascota += "     <div class='col-sm-9'>";
+                                                                divContenidoMascota += "         <p class='text-muted mb-0'>" + tipo + "</p>";
+                                                                divContenidoMascota += "     </div>";
+                                                                divContenidoMascota += " </div>";
+
+                                                                divContenidoMascota += "<hr>";
+
+                                                                divContenidoMascota += " <div class='row'>";
+                                                                divContenidoMascota += "     <div class='col-sm-3'>";
+                                                                divContenidoMascota += "         <p class='mb-0'>Raza Mascota</p>";
+                                                                divContenidoMascota += "     </div>";
+                                                                divContenidoMascota += "     <div class='col-sm-9'>";
+                                                                divContenidoMascota += "         <p class='text-muted mb-0'>" + raza + "</p>";
+                                                                divContenidoMascota += "     </div>";
+                                                                divContenidoMascota += " </div>";
+
+                                                                divContenidoMascota += "</div>";
+                                                                divContenidoMascota += "</div>";
+
+                                                                //items3 += "<div class='card mb-4'>";
+                                                                //items3 += "<h5 class='card-header text-center'>Información de la mascota</h5>";
+                                                                //items3 += "<div class='card-body'>";
+
+                                                                //items3 += "<div class='d-flex'>";
+                                                                //items3 += "<div class='flex-shrink-1'>";
+                                                                //items3 += "<img src='/Mascota/getUnaImage?id=" + JSON.stringify(mascota.id_Mascota).replaceAll("\"", "") + "' class='rounded' width='280' height='200' alt='...'>";
+                                                                //items3 += "</div>";
+                                                                //items3 += "<div class='flex-grow-1 ms-3'>";
+                                                                //items3 += "<p>Nombre: " + JSON.stringify(mascota.nombre_Completo).replaceAll("\"", "") + "</p>";
+                                                                //items3 += "<p>Sexo: " + JSON.stringify(mascota.sexo).replaceAll("\"", "") + "</p>";
+                                                                //items3 += "<p>Peso: " + JSON.stringify(mascota.peso).replaceAll("\"", "") + "</p>";
+                                                                //items3 += "<p>Tipo de Mascota: " + tipo + "</p>";
+                                                                //items3 += "<p>Raza de Mascota: " + raza + "</p>";
+                                                                //items3 += "</div>";
+
+                                                                //items3 += "</div>";
+
+                                                                //items3 += "</div>";
+                                                                //items3 += "</div>";
+
+
+                                                                divConsejo += "<div class='card mb-4'>";
+                                                                divConsejo += "<div class='card-body'>";
+
+                                                                divConsejo += "<div class='d-flex'>";
+                                                                divConsejo += "<div class='flex-shrink-1'>";
+                                                                divConsejo += "<div class='list-group list-group-light' id='list-tab' role='tablist'>";
+
+                                                                for (let i = 0; i < consejo.length; i++) {
+                                                                    if (i == 0) {
+                                                                        divConsejo += "<a class='list-group-item list-group-item-action active px-3 border-0' id='list-consejo-list" + i + "' data-bs-toggle='tab' data-bs-target='#list-consejo" + i + "' role='tab' aria-controls='list-consejo" + i + "'>Consejo " + i + "</a>";
+                                                                    } else {
+                                                                        divConsejo += "<a class='list-group-item list-group-item-action px-3 border-0' id='list-consejo-list" + i + "' data-bs-toggle='tab' data-bs-target='#list-consejo" + i + "' role='tab' aria-controls='list-consejo" + i + "'>Consejo " + i + "</a>";
+
+                                                                    }
+                                                                }
+
+                                                                /*                                                                items4 += "</div>";*/
+                                                                divConsejo += "</div>";
+                                                                divConsejo += "</div>";
+                                                                divConsejo += "<div class='flex-grow-1 ms-3'>";
+
+                                                                divConsejo += "<div class='col-12'>";
+                                                                divConsejo += "<div class='tab-content' id='nav-tabContent'>";
+                                                                for (let i = 0; i < consejo.length; i++) {
+                                                                    if (i == 0) {
+                                                                        divConsejo += "<div class='tab-pane fade show active' id='list-consejo" + i + "' role='tabpanel' aria-labelledby='list-consejo-list" + i + "'>" + consejo[i] + "</div>";
+                                                                    } else {
+                                                                        divConsejo += "<div class='tab-pane fade show' id='list-consejo" + i + "' role='tabpanel' aria-labelledby='list-consejo-list" + i + "'>" + consejo[i] + "</div>";
+                                                                    }
+                                                                }
+
+                                                                divConsejo += "</div>";
+                                                                divConsejo += "</div>";
+                                                                divConsejo += "</div>";
+
+                                                                divConsejo += "</div>";
+
+                                                                divConsejo += "</div>";
+
+                                                                divConsejo += "</div>";
+                                                                divConsejo += "</div>";
+
+                                                                //items4 += "<div class='row'>";
+                                                                //items4 += "<div class='col-4'>";
+
+                                                                $("#perfil").append(divPerfil);
+                                                                $("#contenido").append(divContenidoPerfil);
+
+                                                                $("#mascota").append(divMascota);
+                                                                $("#mascota_contenido").append(divContenidoMascota);
+                                                                $("#consejo").append(divConsejo);
+
+                                                            },
+
+                                                            error: function (error) {
+                                                                alert("Ha ocurrido un error: " + error);
+                                                            }
+                                                        });
+
+                                                    },
+
+                                                    error: function (error) {
+                                                        alert("Ha ocurrid un error: " + error);
+                                                    }
+                                                });
+
+
+                                            },
+
+                                            error: function (error) {
+                                                alert("Ha ocurrido un error: " + error);
+                                            }
+                                        });
+
+                                    },
+
+                                    error: function (error) {
+                                        alert("Ha ocurrido un error: " + error);
+                                    }
+                                });
+
+
+                            },
+
+                            error: function (error) {
+                                alert("Ha ocurrido un error: " + error);
+                            }
+                        });
+
+                    }
+                },
+
+                error: function (error) {
+                    alert("Ha ocurrido un error: " + error);
+                }
+            });
+
+        }
+
+        function obtenerRolUsuario() {
+
+            $.ajax({
+                type: "GET",
+                url: "/Account/listarid_UsuarioPorEmail",
+                dataType: "JSON",
+                contentType: "application/json; charset=utf-8",
+                cache: false,
+
+                success: function (data) {
+
+                    $.ajax({
+                        type: "POST",
+                        url: "/Account/listarid_RolPorid_Usuario",
+                        traditional: true,
+                        data: { "id": data },
+
+                        success: function (data) {
+
+                            let rol = "";
+                            if (data == 1) {
+                                rol += "Administrador";
+                            } else if (data == 2) {
+                                rol += "Usuario";
+                            }
+
+                            $("#rol").text(rol);
+                        },
+
+                        error: function (error) {
+                            alert("Ha ocurrido un error: " + error);
+                        }
+                    });
+
+                },
+
+                error: function (error) {
+                    alert("Ha ocurrido un error: " + error);
+                }
+            });
+
+        }
+
+        let arrow = document.querySelectorAll(".arrow");
+        for (var i = 0; i < arrow.length; i++) {
+            arrow[i].addEventListener("click", (e) => {
+                let arrowParent = e.target.parentElement.parentElement;//selecting main parent of arrow
+                arrowParent.classList.toggle("showMenu");
+            });
+        }
+        let sidebar = document.querySelector(".sidebar");
+        let sidebarBtn = document.querySelector(".bx-menu");
+        console.log(sidebarBtn);
+        sidebarBtn.addEventListener("click", () => {
+            sidebar.classList.toggle("close");
         });
-
-    }
-
-</script>
+    </script>
+</body>
+</html>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")

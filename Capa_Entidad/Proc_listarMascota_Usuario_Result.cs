@@ -10,16 +10,12 @@
 namespace Capa_Entidad
 {
     using System;
-    using System.Collections.Generic;
     
-    public partial class Chat
+    public partial class Proc_listarMascota_Usuario_Result
     {
-        public int id_Chat { get; set; }
+        public int id_Mascota { get; set; }
         public int id_Usuario { get; set; }
-        public int id_UsuarioRespuesta { get; set; }
-        public string comentario { get; set; }
-        public string fecha_Creacion { get; set; }
-    
-        public virtual Usuario Usuario { get; set; }
+        public int id_Tipo { get; set; }
+        public int id_Raza { get; set; }
     }
 }

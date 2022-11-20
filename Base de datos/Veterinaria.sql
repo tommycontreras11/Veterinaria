@@ -1,6 +1,7 @@
 CREATE DATABASE Veterinaria;
 USE Veterinaria;
 
+
 ----------Tabla Usuario----------
 
 CREATE TABLE Usuario(
@@ -9,6 +10,7 @@ CREATE TABLE Usuario(
 	direccion varchar(150) not null,
 	ciudad varchar(150) not null,
 	telefono varchar(10) not null,
+	foto varbinary(max) null,
 	email varchar(100) not null,
 	password varchar(100) not null
 );
@@ -36,14 +38,14 @@ END
 CREATE PROCEDURE Proc_listarUsuario
 AS
 BEGIN
-	SELECT usuario.id_Usuario, usuario.nombre_Completo, usuario.direccion, usuario.ciudad, usuario.telefono, usuario.email, usuario.password FROM Usuario as usuario INNER JOIN Rol_Usuario as rol on rol.id_Usuario = usuario.id_Usuario WHERE id_Rol = 2
+	SELECT usuario.id_Usuario, usuario.nombre_Completo, usuario.direccion, usuario.ciudad, usuario.telefono, usuario.foto, usuario.email, usuario.password FROM Usuario as usuario INNER JOIN Rol_Usuario as rol on rol.id_Usuario = usuario.id_Usuario WHERE id_Rol = 2
 END
 
 ----------Proc_listarAdmin----------
 CREATE PROCEDURE Proc_listarAdmin
 AS
 BEGIN
-	SELECT usuario.id_Usuario, usuario.nombre_Completo, usuario.direccion, usuario.ciudad, usuario.telefono, usuario.email, usuario.password FROM Usuario as usuario INNER JOIN Rol_Usuario as rol on rol.id_Usuario = usuario.id_Usuario WHERE id_Rol = 1
+	SELECT usuario.id_Usuario, usuario.nombre_Completo, usuario.direccion, usuario.ciudad, usuario.telefono, usuario.foto, usuario.email, usuario.password FROM Usuario as usuario INNER JOIN Rol_Usuario as rol on rol.id_Usuario = usuario.id_Usuario WHERE id_Rol = 1
 END
 
 ----------Proc_listarUsuarioPorid_Usuario----------
@@ -70,7 +72,6 @@ BEGIN
 	SELECT email FROM Usuario WHERE id_Usuario = @id_Usuario
 END
 
-
 ----------Proc_listarnombre_CompletoPorid_Usuario----------
 CREATE PROCEDURE Proc_listarnombre_CompletoPorid_Usuario
 	@id_Usuario int
@@ -79,18 +80,42 @@ BEGIN
 	SELECT nombre_Completo FROM Usuario WHERE id_Usuario = @id_Usuario
 END
 
+----------Proc_listarNombreAdmin----------
+CREATE PROCEDURE Proc_listarNombreCompletoAdmin
+AS
+BEGIN
+	SELECT usuario.id_Usuario, usuario.nombre_Completo FROM Usuario as usuario INNER JOIN Rol_Usuario as rol on rol.id_Usuario = usuario.id_Usuario WHERE id_Rol = 1
+END
+
+----------Proc_listarFotoPorid_Usuario----------
+CREATE PROCEDURE Proc_listarFotoPorid_Usuario
+	@id_Usuario int
+AS
+BEGIN
+	SELECT foto FROM Usuario WHERE id_Usuario = @id_Usuario
+END
+
+----------Proc_listarFotoPorNombreUsuario----------
+CREATE PROCEDURE Proc_listarFotoPorNombreUsuario
+	@nombre_Completo varchar(150)
+AS
+BEGIN
+	SELECT foto FROM Usuario WHERE nombre_Completo = @nombre_Completo
+END
+
 ----------Proc_crearUsuario----------
 CREATE PROCEDURE Proc_crearUsuario
 	@nombre_Completo varchar(150),
 	@direccion varchar(150),
 	@ciudad varchar(150),
 	@telefono varchar(10),
+	@foto varbinary(max),
 	@email varchar(100),
 	@password varchar(100)
 
 AS
 BEGIN
-	INSERT INTO Usuario (nombre_Completo, direccion, ciudad, telefono, email, password) VALUES (@nombre_Completo, @direccion, @ciudad, @telefono, @email, @password)  
+	INSERT INTO Usuario (nombre_Completo, direccion, ciudad, telefono, foto, email, password) VALUES (@nombre_Completo, @direccion, @ciudad, @telefono, @foto, @email, @password)  
 END
 
 ----------Proc_actualizarUsuario----------
@@ -100,12 +125,13 @@ CREATE PROCEDURE Proc_actualizarUsuario
 	@direccion varchar(150),
 	@ciudad varchar(150),
 	@telefono varchar(10),
+	@foto varbinary(max),
 	@email varchar(100),
 	@password varchar(100)
 
 AS
 BEGIN
-	UPDATE Usuario SET nombre_Completo = @nombre_Completo, direccion = @direccion, ciudad = @ciudad, telefono = @telefono, email = @email, password = @password WHERE id_Usuario = @id_Usuario  
+	UPDATE Usuario SET nombre_Completo = @nombre_Completo, direccion = @direccion, ciudad = @ciudad, telefono = @telefono, foto = @foto, email = @email, password = @password WHERE id_Usuario = @id_Usuario  
 END
 
 ----------Proc_eliminarUsuario----------
@@ -209,18 +235,13 @@ END
 
 CREATE TABLE Cita(
 	id_Cita int primary key identity(1,1),
-	id_Usuario int not null,
-	id_Mascota int not null,
-	id_UsuarioVeterinario int not null,
+	mascota varchar(50) not null,
 	servicio varchar(50) not null,
 	fecha_Cita varchar(50) not null,
 	fecha_Creacion varchar(50) not null,
 	fecha_Modificacion varchar(50) null,
-	comprobar_Cita bit not null,
-	CONSTRAINT FK_Cita_Usuario_id_Usuario FOREIGN KEY (id_Usuario) REFERENCES Usuario (id_Usuario) ON UPDATE NO ACTION ON DELETE NO ACTION,
-	CONSTRAINT FK_Cita_Mascota_id_Mascota FOREIGN KEY (id_Mascota) REFERENCES Mascota (id_Mascota) ON UPDATE NO ACTION ON DELETE NO ACTION
+	comprobar_Cita bit not null
 );
-
 
 ----------Procedimientos almacenados----------
 
@@ -228,7 +249,7 @@ CREATE TABLE Cita(
 CREATE PROCEDURE Proc_listarCita
 AS
 BEGIN
-	SELECT * FROM Cita
+	SELECT cita.id_Cita, cita.mascota, cita.servicio, cita.fecha_Cita, cita.fecha_Creacion, cita.fecha_Modificacion, cita.comprobar_Cita, cita_Usuario.id_Mascota, cita_Usuario.id_Usuario, cita_Usuario.id_UsuarioVeterinario FROM Cita as cita INNER JOIN Cita_Usuario as cita_Usuario on cita_Usuario.id_Cita = cita.id_Cita
 END
 
 ----------Proc_listarCitaPorid_Cita----------
@@ -244,7 +265,7 @@ CREATE PROCEDURE Proc_listarCitaPorfecha_Cita
 	@fecha_Cita varchar(50)
 AS
 BEGIN
-	SELECT fecha_Cita FROM Cita WHERE fecha_Cita = @fecha_Cita AND comprobar_Cita = 0
+	SELECT fecha_Cita FROM Cita as cita WHERE fecha_Cita = @fecha_Cita AND comprobar_Cita = 0
 END
 
 ----------Proc_listarservicioPorid_Usuario----------
@@ -252,7 +273,7 @@ CREATE PROCEDURE Proc_listarservicioPorid_Usuario
 	@id_Usuario int
 AS
 BEGIN
-	SELECT servicio FROM Cita WHERE id_Usuario = @id_Usuario
+	SELECT cita.servicio FROM Cita as cita INNER JOIN Cita_Usuario as cita_Usuario on cita_Usuario.id_Usuario = @id_Usuario AND cita.id_Cita = cita_Usuario.id_Cita
 END
 
 ----------Proc_listarCitaPorid_Usuario----------
@@ -260,7 +281,7 @@ CREATE PROCEDURE Proc_listarCitaPorid_Usuario
 	@id_Usuario int
 AS
 BEGIN
-	SELECT * FROM Cita WHERE id_Usuario = @id_Usuario
+	SELECT cita.id_Cita, cita.mascota, cita.servicio, cita.fecha_Cita, cita.fecha_Creacion, cita.fecha_Modificacion, cita.comprobar_Cita, cita_Usuario.id_Usuario, cita_Usuario.id_UsuarioVeterinario FROM Cita as cita INNER JOIN Cita_Usuario as cita_Usuario on cita_Usuario.id_Usuario = @id_Usuario AND cita.id_Cita = cita_Usuario.id_Cita
 END
 
 ----------Proc_listarTodaCitaPorfecha_Cita----------
@@ -268,7 +289,40 @@ CREATE PROCEDURE Proc_listarTodaCitaPorfecha_Cita
 	@fecha_Cita varchar(50)
 AS
 BEGIN
-	SELECT * FROM Cita WHERE fecha_Cita = @fecha_Cita AND comprobar_Cita = 0 ORDER BY id_Cita ASC
+	SELECT cita.id_Cita, cita.mascota, cita.servicio, cita.fecha_Cita, cita.fecha_Creacion, cita.fecha_Modificacion, cita.comprobar_Cita, cita_Usuario.id_Mascota, cita_Usuario.id_Usuario, cita_Usuario.id_UsuarioVeterinario FROM Cita as cita INNER JOIN Cita_Usuario as cita_Usuario on cita_Usuario.id_Cita = cita.id_Cita WHERE cita.fecha_Cita = @fecha_Cita AND cita.comprobar_Cita = 0 ORDER BY cita.id_Cita ASC
+END
+
+----------Proc_listarCitaPorid_Usuario_id_UsuarioVeterinario----------
+CREATE PROCEDURE Proc_listarCitaPorid_Usuario_id_UsuarioVeterinario
+	@id_Usuario int
+AS
+BEGIN
+	SELECT cita.id_Cita, cita.mascota, cita.servicio, cita.fecha_Cita, cita.fecha_Creacion, cita.fecha_Modificacion, cita.comprobar_Cita, cita_Usuario.id_Mascota, cita_Usuario.id_Usuario, cita_Usuario.id_UsuarioVeterinario FROM Cita AS cita INNER JOIN Cita_Usuario AS cita_Usuario ON (cita_Usuario.id_Usuario = @id_Usuario OR cita_Usuario.id_UsuarioVeterinario = @id_Usuario) AND cita.comprobar_Cita = 0 AND cita.id_Cita = cita_Usuario.id_Cita
+END
+
+----------Proc_listarservicioPorid_Usuario_id_UsuarioVeterinario----------
+CREATE PROCEDURE Proc_listarservicioPorid_Usuario_id_UsuarioVeterinario
+	@id_Usuario int
+AS
+BEGIN
+	SELECT cita.servicio FROM Cita AS cita INNER JOIN Cita_Usuario AS cita_Usuario ON (cita_Usuario.id_Usuario = @id_Usuario OR cita_Usuario.id_UsuarioVeterinario = @id_Usuario) AND cita.comprobar_Cita = 0 AND cita.id_Cita = cita_Usuario.id_Cita
+END
+
+----------Proc_listarCitaPorMascota----------
+CREATE PROCEDURE Proc_listarCitaPorMascota
+	@id_Cita int
+AS
+BEGIN
+	SELECT * FROM Cita WHERE id_Cita = @id_Cita
+END
+
+----------Proc_listarCitaPorfecha_Cita_id_Usuario----------
+CREATE PROCEDURE Proc_listarCitaPorfecha_Cita_id_Usuario
+	@fecha_Cita varchar(50),
+	@id_Usuario int
+AS
+BEGIN
+	SELECT cita.comprobar_Cita FROM Cita as cita INNER JOIN Cita_Usuario as cita_Usuario on cita_Usuario.id_Usuario = @id_Usuario AND cita.id_Cita = cita_Usuario.id_Cita WHERE (cita.fecha_Cita = @fecha_Cita)
 END
 
 ----------Proc_actualizarCitaPorid_Cita----------
@@ -276,14 +330,28 @@ CREATE PROCEDURE Proc_actualizarCitaPorid_Cita
 	@id_Cita int
 AS
 BEGIN
-	UPDATE Cita SET comprobar_Cita = 1 WHERE id_Cita = id_Cita
+	UPDATE Cita SET comprobar_Cita = 1 WHERE id_Cita = @id_Cita
+END
+
+----------Proc_comprobarCantidadCita----------
+CREATE PROCEDURE Proc_comprobarCantidadCita
+	@fecha_Cita varchar(50)
+AS
+BEGIN
+	SELECT COUNT(id_Cita) FROM Cita WHERE fecha_Cita = @fecha_Cita AND comprobar_Cita = 0;
+END
+
+----------Proc_listarid_CitaPorMascota----------
+CREATE PROCEDURE Proc_listarid_CitaPorMascota
+	@mascota varchar(50)
+AS
+BEGIN
+	SELECT id_Cita FROM Cita WHERE mascota = @mascota;
 END
 
 ----------Proc_crearCita----------
 CREATE PROCEDURE Proc_crearCita
-	@id_Usuario int,
-	@id_Mascota int,
-	@id_UsuarioVeterinario int,
+	@mascota varchar(50),
 	@servicio varchar(50),
 	@fecha_Cita varchar(50),
 	@fecha_Creacion varchar(50),
@@ -291,15 +359,13 @@ CREATE PROCEDURE Proc_crearCita
 	@comprobar_Cita bit
 AS
 BEGIN
-	INSERT INTO Cita (id_Usuario, id_Mascota, id_UsuarioVeterinario, servicio, fecha_Cita, fecha_Creacion, fecha_Modificacion, comprobar_Cita) VALUES (@id_Usuario, @id_Mascota, @id_UsuarioVeterinario, @servicio, @fecha_Cita, @fecha_Creacion, @fecha_Modificacion, @comprobar_Cita)
+	INSERT INTO Cita (mascota, servicio, fecha_Cita, fecha_Creacion, fecha_Modificacion, comprobar_Cita) VALUES (@mascota, @servicio, @fecha_Cita, @fecha_Creacion, @fecha_Modificacion, @comprobar_Cita)
 END
 
 ----------Proc_actualizarCita----------
 CREATE PROCEDURE Proc_actualizarCita
 	@id_Cita int,
-	@id_Usuario int,
-	@id_Mascota int,
-	@id_UsuarioVeterinario int,
+	@mascota varchar(50),
 	@servicio varchar(50),
 	@fecha_Cita varchar(50),
 	@fecha_Creacion varchar(50),
@@ -307,7 +373,7 @@ CREATE PROCEDURE Proc_actualizarCita
 	@comprobar_Cita bit
 AS
 BEGIN
-	UPDATE Cita SET id_Usuario = @id_Usuario, id_Mascota = @id_Mascota, id_UsuarioVeterinario = @id_UsuarioVeterinario, servicio = @servicio, fecha_Cita = @fecha_Cita, fecha_Creacion = @fecha_Creacion, fecha_Modificacion = @fecha_Modificacion, comprobar_Cita = @comprobar_Cita WHERE id_Cita = @id_Cita
+	UPDATE Cita SET mascota = @mascota, servicio = @servicio, fecha_Cita = @fecha_Cita, fecha_Creacion = @fecha_Creacion, fecha_Modificacion = @fecha_Modificacion, comprobar_Cita = @comprobar_Cita WHERE id_Cita = @id_Cita
 END
 
 ----------Proc_eliminarCita----------
@@ -317,39 +383,83 @@ AS
 BEGIN
 	DELETE FROM Cita WHERE id_Cita = @id_Cita
 END
-
+drop procedure Proc_eliminarCita
 
 ----------Fin de los procedimientos almacenados de la tabla Cita----------
 
 
-----------Tabla Rol----------
+----------Tabla Cita_Usuario----------
 
---CREATE TABLE Cita_Usuario(
---	id_Cita int,
---	id_Usuario int,
---	id_Animal int,
---	CONSTRAINT FK_Cita_Usuario_Cita_id_Cita FOREIGN KEY (id_Cita) REFERENCES Cita (id_Cita) ON UPDATE CASCADE ON DELETE CASCADE,
---	CONSTRAINT FK_Cita_Usuario_Usuario_id_Usuario FOREIGN KEY (id_Usuario) REFERENCES Usuario (id_Usuario) ON UPDATE CASCADE ON DELETE CASCADE,
---	CONSTRAINT FK_Cita_Usuario_Animal_id_Animal FOREIGN KEY (id_Animal) REFERENCES Animal (id_Animal) ON UPDATE CASCADE ON DELETE CASCADE,
---);
+CREATE TABLE Cita_Usuario(
+	id_Cita int not null,
+	id_Usuario int not null,
+	id_Mascota int not null,
+	id_UsuarioVeterinario int not null,
+	CONSTRAINT FK_Cita_Usuario_Cita_id_Cita FOREIGN KEY (id_Cita) REFERENCES Cita (id_Cita) ON UPDATE CASCADE ON DELETE CASCADE,
+	CONSTRAINT FK_Cita_Usuario_Usuario_id_Usuario FOREIGN KEY (id_Usuario) REFERENCES Usuario (id_Usuario) ON UPDATE CASCADE ON DELETE CASCADE,
+	CONSTRAINT FK_Cita_Usuario_Mascota_id_Mascota FOREIGN KEY (id_Mascota) REFERENCES Mascota (id_Mascota) ON UPDATE NO ACTION ON DELETE NO ACTION
+);
+
+----------Procedimientos almacenados----------
+
+----------Proc_listarCita_Usuario----------
+CREATE PROCEDURE Proc_listarCita_Usuario
+AS
+BEGIN
+	SELECT * FROM Cita_Usuario
+END
+
+----------Proc_listarCita_UsuarioPorid_Cita----------
+CREATE PROCEDURE Proc_listarCita_UsuarioPorid_Cita
+	@id_Cita int
+AS
+BEGIN
+	SELECT * FROM Cita_Usuario WHERE id_Cita = @id_Cita
+END
+
+----------Proc_crearCita_Usuario----------
+CREATE PROCEDURE Proc_crearCita_Usuario
+	@id_Cita int,
+	@id_Usuario int,
+	@id_Mascota int,
+	@id_UsuarioVeterinario int
+AS
+BEGIN
+	INSERT INTO Cita_Usuario (id_Cita, id_Usuario, id_Mascota, id_UsuarioVeterinario) VALUES (@id_Cita, @id_Usuario, @id_Mascota, @id_UsuarioVeterinario)
+END
+
+----------Proc_actualizarCita_Usuario----------
+CREATE PROCEDURE Proc_actualizarCita_Usuario
+	@id_Cita int,
+	@id_Usuario int,
+	@id_Mascota int,
+	@id_UsuarioVeterinario int
+AS
+BEGIN
+	UPDATE Cita_Usuario SET id_Usuario = @id_Usuario, id_Mascota = @id_Mascota, id_UsuarioVeterinario = @id_UsuarioVeterinario WHERE id_Cita = @id_Cita
+END
+
+----------Proc_eliminarCita_Usuario----------
+CREATE PROCEDURE Proc_eliminarCita_Usuario
+	@id_Cita int
+AS
+BEGIN
+	DELETE FROM Cita_Usuario WHERE id_Cita = @id_Cita
+END
+
+----------Fin de los procedimientos almacenados de la tabla Cita_Usuario----------
 
 
 ----------Tabla Mascota----------
 
 CREATE TABLE Mascota(
 	id_Mascota int primary key identity(1,1),
-	id_Usuario int not null,
-	id_Tipo int not null,
-	id_Raza int not null,
 	nombre_Completo varchar(50) not null,
 	sexo varchar(9) not null,
 	peso varchar(50) not null,
 	foto varbinary(max) not null,
 	fecha_Ingreso varchar(50) not null,
-	fecha_Modificacion varchar(50) null,
-	CONSTRAINT FK_Mascota_Usuario_id_Usuario FOREIGN KEY (id_Usuario) REFERENCES Usuario (id_Usuario) ON UPDATE CASCADE ON DELETE CASCADE,
-	CONSTRAINT FK_Mascota_TipoMascota_id_Tipo FOREIGN KEY (id_Tipo) REFERENCES TipoMascota (id_Tipo) ON UPDATE CASCADE ON DELETE CASCADE,
-	CONSTRAINT FK_Mascota_RazaMascota_id_Raza FOREIGN KEY (id_Raza) REFERENCES RazaMascota (id_Raza) ON UPDATE CASCADE ON DELETE CASCADE
+	fecha_Modificacion varchar(50) null
 );
 
 
@@ -359,7 +469,7 @@ CREATE TABLE Mascota(
 CREATE PROCEDURE Proc_listarMascota
 AS
 BEGIN
-	SELECT * FROM Mascota
+	SELECT mascota.id_Mascota, mascota.nombre_Completo, mascota.sexo, mascota.peso, mascota.foto, mascota.fecha_Ingreso, mascota.fecha_Modificacion, mascota_Usuario.id_Raza, mascota_Usuario.id_Tipo, mascota_Usuario.id_Usuario FROM Mascota as mascota INNER JOIN Mascota_Usuario as mascota_Usuario on mascota_Usuario.id_Mascota = mascota.id_Mascota
 END
 
 ----------Proc_listarMascotaPorid_Mascota----------
@@ -383,7 +493,7 @@ CREATE PROCEDURE Proc_listarMascotaPorid_Usuario
 	@id_Usuario int
 AS
 BEGIN
-	SELECT * FROM Mascota WHERE id_Usuario = @id_Usuario
+	SELECT mascota.id_Mascota, mascota.nombre_Completo, mascota.sexo, mascota.peso, mascota.foto, mascota.fecha_Ingreso, mascota.fecha_Modificacion, mascota_Usuario.id_Raza, mascota_Usuario.id_Tipo, mascota_Usuario.id_Usuario FROM Mascota as mascota INNER JOIN Mascota_Usuario as mascota_Usuario on mascota_Usuario.id_Usuario = @id_Usuario AND mascota.id_Mascota = mascota_Usuario.id_Mascota
 END
 
 ----------Proc_listarNombre_MascotaPorid_Usuario----------
@@ -391,7 +501,7 @@ CREATE PROCEDURE Proc_listarNombre_MascotaPorid_Usuario
 	@id_Usuario int
 AS
 BEGIN
-	SELECT nombre_Completo FROM Mascota WHERE id_Usuario = @id_Usuario
+	SELECT mascota.nombre_Completo FROM Mascota as mascota INNER JOIN Mascota_Usuario as mascota_Usuario on mascota_Usuario.id_Usuario = @id_Usuario AND mascota_Usuario.id_Mascota = mascota.id_Mascota
 END
 
 ----------Proc_listarid_MascotaPornombre_Completo----------
@@ -404,9 +514,6 @@ END
 
 ----------Proc_crearMascota----------
 CREATE PROCEDURE Proc_crearMascota
-	@id_Usuario int,
-	@id_Tipo int,
-	@id_Raza int,
 	@nombre_Completo varchar(50),
 	@sexo varchar(9),
 	@peso varchar(50),
@@ -415,15 +522,12 @@ CREATE PROCEDURE Proc_crearMascota
 	@fecha_Modificacion varchar(50)
 AS
 BEGIN
-	INSERT INTO Mascota (id_Usuario, id_Tipo, id_Raza, nombre_Completo, sexo, peso, foto, fecha_Ingreso, fecha_Modificacion) VALUES (@id_Usuario, @id_Tipo, @id_Raza, @nombre_Completo, @sexo, @peso, @foto, @fecha_Ingreso, @fecha_Modificacion)
+	INSERT INTO Mascota (nombre_Completo, sexo, peso, foto, fecha_Ingreso, fecha_Modificacion) VALUES (@nombre_Completo, @sexo, @peso, @foto, @fecha_Ingreso, @fecha_Modificacion)
 END
 
 ----------Proc_actualizarMascota----------
 CREATE PROCEDURE Proc_actualizarMascota
 	@id_Mascota int,
-	@id_Usuario int,
-	@id_Tipo int,
-	@id_Raza int,
 	@nombre_Completo varchar(50),
 	@sexo varchar(9),
 	@peso varchar(50),
@@ -432,7 +536,7 @@ CREATE PROCEDURE Proc_actualizarMascota
 	@fecha_Modificacion varchar(50)
 AS
 BEGIN
-	UPDATE Mascota SET id_Usuario = @id_Usuario, id_Tipo = @id_Tipo, id_Raza = @id_Raza, nombre_Completo = @nombre_Completo, sexo = @sexo, peso = @peso, foto = @foto, fecha_Ingreso = @fecha_Ingreso, fecha_Modificacion = @fecha_Modificacion WHERE id_Mascota = @id_Mascota
+	UPDATE Mascota SET nombre_Completo = @nombre_Completo, sexo = @sexo, peso = @peso, foto = @foto, fecha_Ingreso = @fecha_Ingreso, fecha_Modificacion = @fecha_Modificacion WHERE id_Mascota = @id_Mascota
 END
 
 ----------Proc_eliminarMascota----------
@@ -443,7 +547,72 @@ BEGIN
 	DELETE FROM Mascota WHERE id_Mascota = @id_Mascota
 END
 
+
 ----------Fin de los procedimientos almacenados de la tabla Mascota----------
+
+
+----------Tabla Mascota_Usuario----------
+
+CREATE TABLE Mascota_Usuario(
+	id_Mascota int not null,
+	id_Usuario int not null,
+	id_Tipo int not null,
+	id_Raza int not null,
+	CONSTRAINT FK_Mascota_Usuario_Mascota_id_Mascota FOREIGN KEY (id_Mascota) REFERENCES Mascota (id_Mascota) ON UPDATE CASCADE ON DELETE CASCADE,
+	CONSTRAINT FK_Mascota_Usuario_Usuario_id_Usuario FOREIGN KEY (id_Usuario) REFERENCES Usuario (id_Usuario) ON UPDATE CASCADE ON DELETE CASCADE,
+	CONSTRAINT FK_Mascota_Usuario_TipoMascota_id_Tipo FOREIGN KEY (id_Tipo) REFERENCES TipoMascota (id_Tipo) ON UPDATE CASCADE ON DELETE CASCADE,
+	CONSTRAINT FK_Mascota_Usuario_RazaMascota_id_Raza FOREIGN KEY (id_Raza) REFERENCES RazaMascota (id_Raza) ON UPDATE CASCADE ON DELETE CASCADE
+);
+
+
+----------Procedimientos almacenados----------
+
+----------Proc_listarMascota_Usuario----------
+CREATE PROCEDURE Proc_listarMascota_Usuario
+AS
+BEGIN
+	SELECT * FROM Mascota_Usuario
+END
+
+----------Proc_listarMascota_UsuarioPorid_Mascota----------
+CREATE PROCEDURE Proc_listarMascota_UsuarioPorid_Mascota
+	@id_Mascota int
+AS
+BEGIN
+	SELECT * FROM Mascota_Usuario WHERE id_Mascota = @id_Mascota
+END
+
+----------Proc_crearMascota_Usuario----------
+CREATE PROCEDURE Proc_crearMascota_Usuario
+	@id_Mascota int,
+	@id_Usuario int,
+	@id_Tipo int,
+	@id_Raza int
+AS
+BEGIN
+	INSERT INTO Mascota_Usuario (id_Mascota, id_Usuario, id_Tipo, id_Raza) VALUES (@id_Mascota, @id_Usuario, @id_Tipo, @id_Raza)
+END
+
+----------Proc_actualizarMascota_Usuario----------
+CREATE PROCEDURE Proc_actualizarMascota_Usuario
+	@id_Mascota int,
+	@id_Usuario int,
+	@id_Tipo int,
+	@id_Raza int
+AS
+BEGIN
+	UPDATE Mascota_Usuario SET id_Usuario = @id_Usuario, id_Tipo = @id_Tipo, id_Raza = @id_Raza WHERE id_Mascota = @id_Mascota
+END
+
+----------Proc_eliminarMascota_Usuario----------
+CREATE PROCEDURE Proc_eliminarMascota_Usuario
+	@id_Mascota int
+AS
+BEGIN
+	DELETE FROM Mascota_Usuario WHERE id_Mascota = @id_Mascota
+END
+
+----------Fin de los procedimientos almacenados de la tabla Mascota_Usuario----------
 
 
 ----------Tabla TipoMascota----------
@@ -651,6 +820,15 @@ BEGIN
 	SELECT * FROM Consejo WHERE id_Consejo = @id_Consejo
 END
 
+----------Proc_listarConsejoPorid_Tipo_id_Raza----------
+CREATE PROCEDURE Proc_listarConsejoPorid_Tipo_id_Raza
+	@id_Tipo int,
+	@id_Raza int
+AS
+BEGIN
+	SELECT descripcion FROM Consejo WHERE id_Tipo = @id_Tipo AND id_Raza = @id_Raza
+END
+
 ----------Proc_crearConsejo----------
 CREATE PROCEDURE Proc_crearConsejo
 	@id_Tipo int,
@@ -682,81 +860,3 @@ END
 
 
 ----------Fin de los procedimientos almacenados de la tabla Consejo----------
-
-
-----------Tabla Chat----------
-
-CREATE TABLE Chat(
-	id_Chat int primary key identity(1,1),
-	id_Usuario int not null,
-	id_UsuarioRespuesta int not null,
-	comentario varchar(max) not null,
-	fecha_Creacion varchar(50) not null,
-	CONSTRAINT FK_Chat_Usuario_id_Usuario FOREIGN KEY (id_Usuario) REFERENCES Usuario (id_Usuario) ON UPDATE CASCADE ON DELETE CASCADE
-);
-SELECT * FROM Chat
-EXEC Proc_crearChat  4, 1, 'buenas noches', '26/10/2022 22:49'
-----------Procedimientos almacenados----------
-
-----------Proc_listarChat----------
-CREATE PROCEDURE Proc_listarChat
-AS
-BEGIN
-	SELECT * FROM Chat
-END
-
-----------Proc_listarChatPorid_ChatUsuario----------
-CREATE PROCEDURE Proc_listarChatPorid_ChatUsuario
-	@id_ChatUsuario int
-AS
-BEGIN
-	SELECT * FROM Chat WHERE id_ChatUsuario = @id_ChatUsuario
-END
-
-----------Proc_listarChatPorid_Usuario----------
-CREATE PROCEDURE Proc_listarChatPorid_Usuario
-	@id_Usuario int,
-	@id_UsuarioRespuesta int
-AS
-BEGIN
-	SELECT * FROM Chat WHERE (id_Usuario = @id_Usuario AND id_UsuarioRespuesta = @id_UsuarioRespuesta) OR (id_UsuarioRespuesta = @id_Usuario AND id_Usuario = @id_UsuarioRespuesta)
-END
-
-----------Proc_listarcomentarioPorid_Usuario----------
-CREATE PROCEDURE Proc_listarcomentarioPorid_Usuario
-	@id_Usuario int,
-	@id_UsuarioRespuesta int
-AS
-BEGIN
-	SELECT comentario FROM Chat WHERE id_Usuario = @id_Usuario AND id_UsuarioRespuesta = @id_UsuarioRespuesta
-END
-
-----------Proc_crearChat----------
-CREATE PROCEDURE Proc_crearChat
-	@id_Usuario int,
-	@id_UsuarioRespuesta int,
-	@comentario varchar(max),
-	@fecha_Creacion varchar(50)
-AS
-BEGIN
-	INSERT INTO Chat (id_Usuario, id_UsuarioRespuesta, comentario, fecha_Creacion) VALUES (@id_Usuario, @id_UsuarioRespuesta, @comentario, @fecha_Creacion)
-END
-
-------------Proc_actualizarConsejo_Mascota----------
---CREATE PROCEDURE Proc_actualizarConsejo_Mascota
---	@id_Consejo_Mascota int,
---	@id_Consejo int,
---	@id_Tipo int,
---	@id_Raza int
---AS
---BEGIN
---	UPDATE Consejo_Mascota SET id_Consejo = @id_Consejo, id_Tipo = @id_Tipo, id_Raza = @id_Raza WHERE id_Consejo_Mascota = @id_Consejo_Mascota
---END
-
-------------Proc_eliminarConsejo_Mascota----------
---CREATE PROCEDURE Proc_eliminarConsejo_Mascota
---	@id_Consejo_Mascota int
---AS
---BEGIN
---	DELETE FROM Consejo_Mascota WHERE id_Consejo_Mascota = @id_Consejo_Mascota
---END

@@ -29,47 +29,15 @@ namespace Capa_Datos
         }
     
         public virtual DbSet<Rol> Rol { get; set; }
-        public virtual DbSet<Usuario> Usuario { get; set; }
         public virtual DbSet<RazaMascota> RazaMascota { get; set; }
         public virtual DbSet<TipoMascota> TipoMascota { get; set; }
-        public virtual DbSet<Mascota> Mascota { get; set; }
-        public virtual DbSet<Cita> Cita { get; set; }
         public virtual DbSet<Servicio> Servicio { get; set; }
         public virtual DbSet<Consejo> Consejo { get; set; }
-        public virtual DbSet<Chat> Chat { get; set; }
-    
-        public virtual int Proc_actualizarUsuario(Nullable<int> id_Usuario, string nombre_Completo, string direccion, string ciudad, string telefono, string email, string password)
-        {
-            var id_UsuarioParameter = id_Usuario.HasValue ?
-                new ObjectParameter("id_Usuario", id_Usuario) :
-                new ObjectParameter("id_Usuario", typeof(int));
-    
-            var nombre_CompletoParameter = nombre_Completo != null ?
-                new ObjectParameter("nombre_Completo", nombre_Completo) :
-                new ObjectParameter("nombre_Completo", typeof(string));
-    
-            var direccionParameter = direccion != null ?
-                new ObjectParameter("direccion", direccion) :
-                new ObjectParameter("direccion", typeof(string));
-    
-            var ciudadParameter = ciudad != null ?
-                new ObjectParameter("ciudad", ciudad) :
-                new ObjectParameter("ciudad", typeof(string));
-    
-            var telefonoParameter = telefono != null ?
-                new ObjectParameter("telefono", telefono) :
-                new ObjectParameter("telefono", typeof(string));
-    
-            var emailParameter = email != null ?
-                new ObjectParameter("email", email) :
-                new ObjectParameter("email", typeof(string));
-    
-            var passwordParameter = password != null ?
-                new ObjectParameter("password", password) :
-                new ObjectParameter("password", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("Proc_actualizarUsuario", id_UsuarioParameter, nombre_CompletoParameter, direccionParameter, ciudadParameter, telefonoParameter, emailParameter, passwordParameter);
-        }
+        public virtual DbSet<Usuario> Usuario { get; set; }
+        public virtual DbSet<Mascota> Mascota { get; set; }
+        public virtual DbSet<Mascota_Usuario> Mascota_Usuario { get; set; }
+        public virtual DbSet<Cita> Cita { get; set; }
+        public virtual DbSet<Cita_Usuario> Cita_Usuario { get; set; }
     
         public virtual int Proc_crearRol(string nombre)
         {
@@ -93,35 +61,6 @@ namespace Capa_Datos
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("Proc_crearRol_Usuario", id_RolParameter, id_UsuarioParameter);
         }
     
-        public virtual int Proc_crearUsuario(string nombre_Completo, string direccion, string ciudad, string telefono, string email, string password)
-        {
-            var nombre_CompletoParameter = nombre_Completo != null ?
-                new ObjectParameter("nombre_Completo", nombre_Completo) :
-                new ObjectParameter("nombre_Completo", typeof(string));
-    
-            var direccionParameter = direccion != null ?
-                new ObjectParameter("direccion", direccion) :
-                new ObjectParameter("direccion", typeof(string));
-    
-            var ciudadParameter = ciudad != null ?
-                new ObjectParameter("ciudad", ciudad) :
-                new ObjectParameter("ciudad", typeof(string));
-    
-            var telefonoParameter = telefono != null ?
-                new ObjectParameter("telefono", telefono) :
-                new ObjectParameter("telefono", typeof(string));
-    
-            var emailParameter = email != null ?
-                new ObjectParameter("email", email) :
-                new ObjectParameter("email", typeof(string));
-    
-            var passwordParameter = password != null ?
-                new ObjectParameter("password", password) :
-                new ObjectParameter("password", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("Proc_crearUsuario", nombre_CompletoParameter, direccionParameter, ciudadParameter, telefonoParameter, emailParameter, passwordParameter);
-        }
-    
         public virtual int Proc_eliminarUsuario(Nullable<int> id_Uusuario)
         {
             var id_UusuarioParameter = id_Uusuario.HasValue ?
@@ -138,24 +77,6 @@ namespace Capa_Datos
                 new ObjectParameter("id_Usuario", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("Proc_listarid_RolPorid_Usuario", id_UsuarioParameter);
-        }
-    
-        public virtual ObjectResult<Nullable<int>> Proc_listarid_UsuarioPorEmail(string email)
-        {
-            var emailParameter = email != null ?
-                new ObjectParameter("email", email) :
-                new ObjectParameter("email", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("Proc_listarid_UsuarioPorEmail", emailParameter);
-        }
-    
-        public virtual ObjectResult<Proc_listarUsuarioPorid_Usuario_Result> Proc_listarUsuarioPorid_Usuario(Nullable<int> id_Usuario)
-        {
-            var id_UsuarioParameter = id_Usuario.HasValue ?
-                new ObjectParameter("id_Usuario", id_Usuario) :
-                new ObjectParameter("id_Usuario", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Proc_listarUsuarioPorid_Usuario_Result>("Proc_listarUsuarioPorid_Usuario", id_UsuarioParameter);
         }
     
         public virtual ObjectResult<Proc_loguearse_Result> Proc_loguearse(string email, string password)
@@ -297,162 +218,6 @@ namespace Capa_Datos
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<string>("Proc_listarSoloRazaMascotaPorid_Raza", id_RazaParameter);
         }
     
-        public virtual int Proc_crearMascota(Nullable<int> id_Usuario, Nullable<int> id_Tipo, Nullable<int> id_Raza, string nombre_Completo, string sexo, string peso, byte[] foto, string fecha_Ingreso, string fecha_Modificacion)
-        {
-            var id_UsuarioParameter = id_Usuario.HasValue ?
-                new ObjectParameter("id_Usuario", id_Usuario) :
-                new ObjectParameter("id_Usuario", typeof(int));
-    
-            var id_TipoParameter = id_Tipo.HasValue ?
-                new ObjectParameter("id_Tipo", id_Tipo) :
-                new ObjectParameter("id_Tipo", typeof(int));
-    
-            var id_RazaParameter = id_Raza.HasValue ?
-                new ObjectParameter("id_Raza", id_Raza) :
-                new ObjectParameter("id_Raza", typeof(int));
-    
-            var nombre_CompletoParameter = nombre_Completo != null ?
-                new ObjectParameter("nombre_Completo", nombre_Completo) :
-                new ObjectParameter("nombre_Completo", typeof(string));
-    
-            var sexoParameter = sexo != null ?
-                new ObjectParameter("sexo", sexo) :
-                new ObjectParameter("sexo", typeof(string));
-    
-            var pesoParameter = peso != null ?
-                new ObjectParameter("peso", peso) :
-                new ObjectParameter("peso", typeof(string));
-    
-            var fotoParameter = foto != null ?
-                new ObjectParameter("foto", foto) :
-                new ObjectParameter("foto", typeof(byte[]));
-    
-            var fecha_IngresoParameter = fecha_Ingreso != null ?
-                new ObjectParameter("fecha_Ingreso", fecha_Ingreso) :
-                new ObjectParameter("fecha_Ingreso", typeof(string));
-    
-            var fecha_ModificacionParameter = fecha_Modificacion != null ?
-                new ObjectParameter("fecha_Modificacion", fecha_Modificacion) :
-                new ObjectParameter("fecha_Modificacion", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("Proc_crearMascota", id_UsuarioParameter, id_TipoParameter, id_RazaParameter, nombre_CompletoParameter, sexoParameter, pesoParameter, fotoParameter, fecha_IngresoParameter, fecha_ModificacionParameter);
-        }
-    
-        public virtual ObjectResult<Proc_listarMascota_Result> Proc_listarMascota()
-        {
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Proc_listarMascota_Result>("Proc_listarMascota");
-        }
-    
-        public virtual ObjectResult<Proc_listarMascotaPorid_Mascota_Result> Proc_listarMascotaPorid_Mascota(Nullable<int> id_Mascota)
-        {
-            var id_MascotaParameter = id_Mascota.HasValue ?
-                new ObjectParameter("id_Mascota", id_Mascota) :
-                new ObjectParameter("id_Mascota", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Proc_listarMascotaPorid_Mascota_Result>("Proc_listarMascotaPorid_Mascota", id_MascotaParameter);
-        }
-    
-        public virtual int Proc_actualizarCita(Nullable<int> id_Cita, Nullable<int> id_Usuario, Nullable<int> id_Mascota, Nullable<int> id_UsuarioVeterinario, string servicio, string fecha_Cita, string fecha_Creacion, string fecha_Modificacion, Nullable<bool> comprobar_Cita)
-        {
-            var id_CitaParameter = id_Cita.HasValue ?
-                new ObjectParameter("id_Cita", id_Cita) :
-                new ObjectParameter("id_Cita", typeof(int));
-    
-            var id_UsuarioParameter = id_Usuario.HasValue ?
-                new ObjectParameter("id_Usuario", id_Usuario) :
-                new ObjectParameter("id_Usuario", typeof(int));
-    
-            var id_MascotaParameter = id_Mascota.HasValue ?
-                new ObjectParameter("id_Mascota", id_Mascota) :
-                new ObjectParameter("id_Mascota", typeof(int));
-    
-            var id_UsuarioVeterinarioParameter = id_UsuarioVeterinario.HasValue ?
-                new ObjectParameter("id_UsuarioVeterinario", id_UsuarioVeterinario) :
-                new ObjectParameter("id_UsuarioVeterinario", typeof(int));
-    
-            var servicioParameter = servicio != null ?
-                new ObjectParameter("servicio", servicio) :
-                new ObjectParameter("servicio", typeof(string));
-    
-            var fecha_CitaParameter = fecha_Cita != null ?
-                new ObjectParameter("fecha_Cita", fecha_Cita) :
-                new ObjectParameter("fecha_Cita", typeof(string));
-    
-            var fecha_CreacionParameter = fecha_Creacion != null ?
-                new ObjectParameter("fecha_Creacion", fecha_Creacion) :
-                new ObjectParameter("fecha_Creacion", typeof(string));
-    
-            var fecha_ModificacionParameter = fecha_Modificacion != null ?
-                new ObjectParameter("fecha_Modificacion", fecha_Modificacion) :
-                new ObjectParameter("fecha_Modificacion", typeof(string));
-    
-            var comprobar_CitaParameter = comprobar_Cita.HasValue ?
-                new ObjectParameter("comprobar_Cita", comprobar_Cita) :
-                new ObjectParameter("comprobar_Cita", typeof(bool));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("Proc_actualizarCita", id_CitaParameter, id_UsuarioParameter, id_MascotaParameter, id_UsuarioVeterinarioParameter, servicioParameter, fecha_CitaParameter, fecha_CreacionParameter, fecha_ModificacionParameter, comprobar_CitaParameter);
-        }
-    
-        public virtual ObjectResult<Proc_listarCita_Result> Proc_listarCita()
-        {
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Proc_listarCita_Result>("Proc_listarCita");
-        }
-    
-        public virtual ObjectResult<Proc_listarCitaPorid_Cita_Result> Proc_listarCitaPorid_Cita(Nullable<int> id_Cita)
-        {
-            var id_CitaParameter = id_Cita.HasValue ?
-                new ObjectParameter("id_Cita", id_Cita) :
-                new ObjectParameter("id_Cita", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Proc_listarCitaPorid_Cita_Result>("Proc_listarCitaPorid_Cita", id_CitaParameter);
-        }
-    
-        public virtual int Proc_eliminarCita(Nullable<int> id_Cita)
-        {
-            var id_CitaParameter = id_Cita.HasValue ?
-                new ObjectParameter("id_Cita", id_Cita) :
-                new ObjectParameter("id_Cita", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("Proc_eliminarCita", id_CitaParameter);
-        }
-    
-        public virtual ObjectResult<Proc_listarAdmin_Result> Proc_listarAdmin()
-        {
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Proc_listarAdmin_Result>("Proc_listarAdmin");
-        }
-    
-        public virtual ObjectResult<Proc_listarUsuario_Result> Proc_listarUsuario()
-        {
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Proc_listarUsuario_Result>("Proc_listarUsuario");
-        }
-    
-        public virtual ObjectResult<Proc_listarMascotaPorid_Usuario_Result> Proc_listarMascotaPorid_Usuario(Nullable<int> id_Usuario)
-        {
-            var id_UsuarioParameter = id_Usuario.HasValue ?
-                new ObjectParameter("id_Usuario", id_Usuario) :
-                new ObjectParameter("id_Usuario", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Proc_listarMascotaPorid_Usuario_Result>("Proc_listarMascotaPorid_Usuario", id_UsuarioParameter);
-        }
-    
-        public virtual ObjectResult<string> Proc_listarNombre_MascotaPorid_Usuario(Nullable<int> id_Usuario)
-        {
-            var id_UsuarioParameter = id_Usuario.HasValue ?
-                new ObjectParameter("id_Usuario", id_Usuario) :
-                new ObjectParameter("id_Usuario", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<string>("Proc_listarNombre_MascotaPorid_Usuario", id_UsuarioParameter);
-        }
-    
-        public virtual ObjectResult<Nullable<int>> Proc_listarid_MascotaPornombre_Completo(string nombre_Completo)
-        {
-            var nombre_CompletoParameter = nombre_Completo != null ?
-                new ObjectParameter("nombre_Completo", nombre_Completo) :
-                new ObjectParameter("nombre_Completo", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("Proc_listarid_MascotaPornombre_Completo", nombre_CompletoParameter);
-        }
-    
         public virtual int Proc_actualizarRol_Usuario(Nullable<int> id_Rol, Nullable<int> id_Usuario)
         {
             var id_RolParameter = id_Rol.HasValue ?
@@ -534,51 +299,6 @@ namespace Capa_Datos
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("Proc_eliminarServicio", id_ServicioParameter);
         }
     
-        public virtual int Proc_actualizarMascota(Nullable<int> id_Mascota, Nullable<int> id_Usuario, Nullable<int> id_Tipo, Nullable<int> id_Raza, string nombre_Completo, string sexo, string peso, byte[] foto, string fecha_Ingreso, string fecha_Modificacion)
-        {
-            var id_MascotaParameter = id_Mascota.HasValue ?
-                new ObjectParameter("id_Mascota", id_Mascota) :
-                new ObjectParameter("id_Mascota", typeof(int));
-    
-            var id_UsuarioParameter = id_Usuario.HasValue ?
-                new ObjectParameter("id_Usuario", id_Usuario) :
-                new ObjectParameter("id_Usuario", typeof(int));
-    
-            var id_TipoParameter = id_Tipo.HasValue ?
-                new ObjectParameter("id_Tipo", id_Tipo) :
-                new ObjectParameter("id_Tipo", typeof(int));
-    
-            var id_RazaParameter = id_Raza.HasValue ?
-                new ObjectParameter("id_Raza", id_Raza) :
-                new ObjectParameter("id_Raza", typeof(int));
-    
-            var nombre_CompletoParameter = nombre_Completo != null ?
-                new ObjectParameter("nombre_Completo", nombre_Completo) :
-                new ObjectParameter("nombre_Completo", typeof(string));
-    
-            var sexoParameter = sexo != null ?
-                new ObjectParameter("sexo", sexo) :
-                new ObjectParameter("sexo", typeof(string));
-    
-            var pesoParameter = peso != null ?
-                new ObjectParameter("peso", peso) :
-                new ObjectParameter("peso", typeof(string));
-    
-            var fotoParameter = foto != null ?
-                new ObjectParameter("foto", foto) :
-                new ObjectParameter("foto", typeof(byte[]));
-    
-            var fecha_IngresoParameter = fecha_Ingreso != null ?
-                new ObjectParameter("fecha_Ingreso", fecha_Ingreso) :
-                new ObjectParameter("fecha_Ingreso", typeof(string));
-    
-            var fecha_ModificacionParameter = fecha_Modificacion != null ?
-                new ObjectParameter("fecha_Modificacion", fecha_Modificacion) :
-                new ObjectParameter("fecha_Modificacion", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("Proc_actualizarMascota", id_MascotaParameter, id_UsuarioParameter, id_TipoParameter, id_RazaParameter, nombre_CompletoParameter, sexoParameter, pesoParameter, fotoParameter, fecha_IngresoParameter, fecha_ModificacionParameter);
-        }
-    
         public virtual int Proc_actualizarConsejo(Nullable<int> id_Consejo, Nullable<int> id_Tipo, Nullable<int> id_Raza, string descripcion)
         {
             var id_ConsejoParameter = id_Consejo.HasValue ?
@@ -640,24 +360,6 @@ namespace Capa_Datos
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Proc_listarConsejoPorid_Consejo_Result>("Proc_listarConsejoPorid_Consejo", id_ConsejoParameter);
         }
     
-        public virtual ObjectResult<string> Proc_listarservicioPorid_Usuario(Nullable<int> id_Usuario)
-        {
-            var id_UsuarioParameter = id_Usuario.HasValue ?
-                new ObjectParameter("id_Usuario", id_Usuario) :
-                new ObjectParameter("id_Usuario", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<string>("Proc_listarservicioPorid_Usuario", id_UsuarioParameter);
-        }
-    
-        public virtual ObjectResult<Proc_listarCitaPorid_Usuario_Result> Proc_listarCitaPorid_Usuario(Nullable<int> id_Usuario)
-        {
-            var id_UsuarioParameter = id_Usuario.HasValue ?
-                new ObjectParameter("id_Usuario", id_Usuario) :
-                new ObjectParameter("id_Usuario", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Proc_listarCitaPorid_Usuario_Result>("Proc_listarCitaPorid_Usuario", id_UsuarioParameter);
-        }
-    
         public virtual ObjectResult<string> Proc_listarnombre_CompletoPorid_Usuario(Nullable<int> id_Usuario)
         {
             var id_UsuarioParameter = id_Usuario.HasValue ?
@@ -667,28 +369,176 @@ namespace Capa_Datos
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<string>("Proc_listarnombre_CompletoPorid_Usuario", id_UsuarioParameter);
         }
     
-        public virtual ObjectResult<string> Proc_listarCitaPorfecha_Cita(string fecha_Cita)
+        public virtual ObjectResult<string> Proc_listarConsejoPorid_Tipo_id_Raza(Nullable<int> id_Tipo, Nullable<int> id_Raza)
         {
-            var fecha_CitaParameter = fecha_Cita != null ?
-                new ObjectParameter("fecha_Cita", fecha_Cita) :
-                new ObjectParameter("fecha_Cita", typeof(string));
+            var id_TipoParameter = id_Tipo.HasValue ?
+                new ObjectParameter("id_Tipo", id_Tipo) :
+                new ObjectParameter("id_Tipo", typeof(int));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<string>("Proc_listarCitaPorfecha_Cita", fecha_CitaParameter);
+            var id_RazaParameter = id_Raza.HasValue ?
+                new ObjectParameter("id_Raza", id_Raza) :
+                new ObjectParameter("id_Raza", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<string>("Proc_listarConsejoPorid_Tipo_id_Raza", id_TipoParameter, id_RazaParameter);
         }
     
-        public virtual int Proc_crearCita(Nullable<int> id_Usuario, Nullable<int> id_Mascota, Nullable<int> id_UsuarioVeterinario, string servicio, string fecha_Cita, string fecha_Creacion, string fecha_Modificacion, Nullable<bool> comprobar_Cita)
+        public virtual int Proc_actualizarUsuario(Nullable<int> id_Usuario, string nombre_Completo, string direccion, string ciudad, string telefono, byte[] foto, string email, string password)
         {
             var id_UsuarioParameter = id_Usuario.HasValue ?
                 new ObjectParameter("id_Usuario", id_Usuario) :
                 new ObjectParameter("id_Usuario", typeof(int));
     
-            var id_MascotaParameter = id_Mascota.HasValue ?
-                new ObjectParameter("id_Mascota", id_Mascota) :
-                new ObjectParameter("id_Mascota", typeof(int));
+            var nombre_CompletoParameter = nombre_Completo != null ?
+                new ObjectParameter("nombre_Completo", nombre_Completo) :
+                new ObjectParameter("nombre_Completo", typeof(string));
     
-            var id_UsuarioVeterinarioParameter = id_UsuarioVeterinario.HasValue ?
-                new ObjectParameter("id_UsuarioVeterinario", id_UsuarioVeterinario) :
-                new ObjectParameter("id_UsuarioVeterinario", typeof(int));
+            var direccionParameter = direccion != null ?
+                new ObjectParameter("direccion", direccion) :
+                new ObjectParameter("direccion", typeof(string));
+    
+            var ciudadParameter = ciudad != null ?
+                new ObjectParameter("ciudad", ciudad) :
+                new ObjectParameter("ciudad", typeof(string));
+    
+            var telefonoParameter = telefono != null ?
+                new ObjectParameter("telefono", telefono) :
+                new ObjectParameter("telefono", typeof(string));
+    
+            var fotoParameter = foto != null ?
+                new ObjectParameter("foto", foto) :
+                new ObjectParameter("foto", typeof(byte[]));
+    
+            var emailParameter = email != null ?
+                new ObjectParameter("email", email) :
+                new ObjectParameter("email", typeof(string));
+    
+            var passwordParameter = password != null ?
+                new ObjectParameter("password", password) :
+                new ObjectParameter("password", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("Proc_actualizarUsuario", id_UsuarioParameter, nombre_CompletoParameter, direccionParameter, ciudadParameter, telefonoParameter, fotoParameter, emailParameter, passwordParameter);
+        }
+    
+        public virtual int Proc_crearUsuario(string nombre_Completo, string direccion, string ciudad, string telefono, byte[] foto, string email, string password)
+        {
+            var nombre_CompletoParameter = nombre_Completo != null ?
+                new ObjectParameter("nombre_Completo", nombre_Completo) :
+                new ObjectParameter("nombre_Completo", typeof(string));
+    
+            var direccionParameter = direccion != null ?
+                new ObjectParameter("direccion", direccion) :
+                new ObjectParameter("direccion", typeof(string));
+    
+            var ciudadParameter = ciudad != null ?
+                new ObjectParameter("ciudad", ciudad) :
+                new ObjectParameter("ciudad", typeof(string));
+    
+            var telefonoParameter = telefono != null ?
+                new ObjectParameter("telefono", telefono) :
+                new ObjectParameter("telefono", typeof(string));
+    
+            var fotoParameter = foto != null ?
+                new ObjectParameter("foto", foto) :
+                new ObjectParameter("foto", typeof(byte[]));
+    
+            var emailParameter = email != null ?
+                new ObjectParameter("email", email) :
+                new ObjectParameter("email", typeof(string));
+    
+            var passwordParameter = password != null ?
+                new ObjectParameter("password", password) :
+                new ObjectParameter("password", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("Proc_crearUsuario", nombre_CompletoParameter, direccionParameter, ciudadParameter, telefonoParameter, fotoParameter, emailParameter, passwordParameter);
+        }
+    
+        public virtual ObjectResult<Proc_listarAdmin_Result> Proc_listarAdmin()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Proc_listarAdmin_Result>("Proc_listarAdmin");
+        }
+    
+        public virtual ObjectResult<string> Proc_listarEmailPorid_Usuario(Nullable<int> id_Usuario)
+        {
+            var id_UsuarioParameter = id_Usuario.HasValue ?
+                new ObjectParameter("id_Usuario", id_Usuario) :
+                new ObjectParameter("id_Usuario", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<string>("Proc_listarEmailPorid_Usuario", id_UsuarioParameter);
+        }
+    
+        public virtual ObjectResult<byte[]> Proc_listarFotoPorid_Usuario(Nullable<int> id_Usuario)
+        {
+            var id_UsuarioParameter = id_Usuario.HasValue ?
+                new ObjectParameter("id_Usuario", id_Usuario) :
+                new ObjectParameter("id_Usuario", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<byte[]>("Proc_listarFotoPorid_Usuario", id_UsuarioParameter);
+        }
+    
+        public virtual ObjectResult<Nullable<int>> Proc_listarid_UsuarioPorEmail(string email)
+        {
+            var emailParameter = email != null ?
+                new ObjectParameter("email", email) :
+                new ObjectParameter("email", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("Proc_listarid_UsuarioPorEmail", emailParameter);
+        }
+    
+        public virtual ObjectResult<Proc_listarUsuario_Result> Proc_listarUsuario()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Proc_listarUsuario_Result>("Proc_listarUsuario");
+        }
+    
+        public virtual ObjectResult<Proc_listarUsuarioPorid_Usuario_Result> Proc_listarUsuarioPorid_Usuario(Nullable<int> id_Usuario)
+        {
+            var id_UsuarioParameter = id_Usuario.HasValue ?
+                new ObjectParameter("id_Usuario", id_Usuario) :
+                new ObjectParameter("id_Usuario", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Proc_listarUsuarioPorid_Usuario_Result>("Proc_listarUsuarioPorid_Usuario", id_UsuarioParameter);
+        }
+    
+        public virtual ObjectResult<Proc_listarNombreCompletoAdmin_Result> Proc_listarNombreCompletoAdmin()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Proc_listarNombreCompletoAdmin_Result>("Proc_listarNombreCompletoAdmin");
+        }
+    
+        public virtual ObjectResult<string> Proc_listarservicioPorid_Usuario_id_UsuarioVeterinario(Nullable<int> id_Usuario)
+        {
+            var id_UsuarioParameter = id_Usuario.HasValue ?
+                new ObjectParameter("id_Usuario", id_Usuario) :
+                new ObjectParameter("id_Usuario", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<string>("Proc_listarservicioPorid_Usuario_id_UsuarioVeterinario", id_UsuarioParameter);
+        }
+    
+        public virtual ObjectResult<byte[]> Proc_listarFotoPorNombreUsuario(string nombre_Completo)
+        {
+            var nombre_CompletoParameter = nombre_Completo != null ?
+                new ObjectParameter("nombre_Completo", nombre_Completo) :
+                new ObjectParameter("nombre_Completo", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<byte[]>("Proc_listarFotoPorNombreUsuario", nombre_CompletoParameter);
+        }
+    
+        public virtual ObjectResult<Nullable<int>> Proc_comprobarCantidadCita(string fecha_Cita)
+        {
+            var fecha_CitaParameter = fecha_Cita != null ?
+                new ObjectParameter("fecha_Cita", fecha_Cita) :
+                new ObjectParameter("fecha_Cita", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("Proc_comprobarCantidadCita", fecha_CitaParameter);
+        }
+    
+        public virtual int Proc_actualizarCita(Nullable<int> id_Cita, string mascota, string servicio, string fecha_Cita, string fecha_Creacion, string fecha_Modificacion, Nullable<bool> comprobar_Cita)
+        {
+            var id_CitaParameter = id_Cita.HasValue ?
+                new ObjectParameter("id_Cita", id_Cita) :
+                new ObjectParameter("id_Cita", typeof(int));
+    
+            var mascotaParameter = mascota != null ?
+                new ObjectParameter("mascota", mascota) :
+                new ObjectParameter("mascota", typeof(string));
     
             var servicioParameter = servicio != null ?
                 new ObjectParameter("servicio", servicio) :
@@ -710,7 +560,310 @@ namespace Capa_Datos
                 new ObjectParameter("comprobar_Cita", comprobar_Cita) :
                 new ObjectParameter("comprobar_Cita", typeof(bool));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("Proc_crearCita", id_UsuarioParameter, id_MascotaParameter, id_UsuarioVeterinarioParameter, servicioParameter, fecha_CitaParameter, fecha_CreacionParameter, fecha_ModificacionParameter, comprobar_CitaParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("Proc_actualizarCita", id_CitaParameter, mascotaParameter, servicioParameter, fecha_CitaParameter, fecha_CreacionParameter, fecha_ModificacionParameter, comprobar_CitaParameter);
+        }
+    
+        public virtual int Proc_actualizarCita_Usuario(Nullable<int> id_Cita, Nullable<int> id_Usuario, Nullable<int> id_Mascota, Nullable<int> id_UsuarioVeterinario)
+        {
+            var id_CitaParameter = id_Cita.HasValue ?
+                new ObjectParameter("id_Cita", id_Cita) :
+                new ObjectParameter("id_Cita", typeof(int));
+    
+            var id_UsuarioParameter = id_Usuario.HasValue ?
+                new ObjectParameter("id_Usuario", id_Usuario) :
+                new ObjectParameter("id_Usuario", typeof(int));
+    
+            var id_MascotaParameter = id_Mascota.HasValue ?
+                new ObjectParameter("id_Mascota", id_Mascota) :
+                new ObjectParameter("id_Mascota", typeof(int));
+    
+            var id_UsuarioVeterinarioParameter = id_UsuarioVeterinario.HasValue ?
+                new ObjectParameter("id_UsuarioVeterinario", id_UsuarioVeterinario) :
+                new ObjectParameter("id_UsuarioVeterinario", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("Proc_actualizarCita_Usuario", id_CitaParameter, id_UsuarioParameter, id_MascotaParameter, id_UsuarioVeterinarioParameter);
+        }
+    
+        public virtual int Proc_actualizarMascota_Usuario(Nullable<int> id_Mascota, Nullable<int> id_Usuario, Nullable<int> id_Tipo, Nullable<int> id_Raza)
+        {
+            var id_MascotaParameter = id_Mascota.HasValue ?
+                new ObjectParameter("id_Mascota", id_Mascota) :
+                new ObjectParameter("id_Mascota", typeof(int));
+    
+            var id_UsuarioParameter = id_Usuario.HasValue ?
+                new ObjectParameter("id_Usuario", id_Usuario) :
+                new ObjectParameter("id_Usuario", typeof(int));
+    
+            var id_TipoParameter = id_Tipo.HasValue ?
+                new ObjectParameter("id_Tipo", id_Tipo) :
+                new ObjectParameter("id_Tipo", typeof(int));
+    
+            var id_RazaParameter = id_Raza.HasValue ?
+                new ObjectParameter("id_Raza", id_Raza) :
+                new ObjectParameter("id_Raza", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("Proc_actualizarMascota_Usuario", id_MascotaParameter, id_UsuarioParameter, id_TipoParameter, id_RazaParameter);
+        }
+    
+        public virtual int Proc_crearMascota_Usuario(Nullable<int> id_Mascota, Nullable<int> id_Usuario, Nullable<int> id_Tipo, Nullable<int> id_Raza)
+        {
+            var id_MascotaParameter = id_Mascota.HasValue ?
+                new ObjectParameter("id_Mascota", id_Mascota) :
+                new ObjectParameter("id_Mascota", typeof(int));
+    
+            var id_UsuarioParameter = id_Usuario.HasValue ?
+                new ObjectParameter("id_Usuario", id_Usuario) :
+                new ObjectParameter("id_Usuario", typeof(int));
+    
+            var id_TipoParameter = id_Tipo.HasValue ?
+                new ObjectParameter("id_Tipo", id_Tipo) :
+                new ObjectParameter("id_Tipo", typeof(int));
+    
+            var id_RazaParameter = id_Raza.HasValue ?
+                new ObjectParameter("id_Raza", id_Raza) :
+                new ObjectParameter("id_Raza", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("Proc_crearMascota_Usuario", id_MascotaParameter, id_UsuarioParameter, id_TipoParameter, id_RazaParameter);
+        }
+    
+        public virtual int Proc_eliminarCita_Usuario(Nullable<int> id_Cita)
+        {
+            var id_CitaParameter = id_Cita.HasValue ?
+                new ObjectParameter("id_Cita", id_Cita) :
+                new ObjectParameter("id_Cita", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("Proc_eliminarCita_Usuario", id_CitaParameter);
+        }
+    
+        public virtual int Proc_eliminarMascota_Usuario(Nullable<int> id_Mascota)
+        {
+            var id_MascotaParameter = id_Mascota.HasValue ?
+                new ObjectParameter("id_Mascota", id_Mascota) :
+                new ObjectParameter("id_Mascota", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("Proc_eliminarMascota_Usuario", id_MascotaParameter);
+        }
+    
+        public virtual ObjectResult<Nullable<int>> Proc_listarid_MascotaPornombre_Completo(string nombre_Completo)
+        {
+            var nombre_CompletoParameter = nombre_Completo != null ?
+                new ObjectParameter("nombre_Completo", nombre_Completo) :
+                new ObjectParameter("nombre_Completo", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("Proc_listarid_MascotaPornombre_Completo", nombre_CompletoParameter);
+        }
+    
+        public virtual ObjectResult<Proc_listarMascota_UsuarioPorid_Mascota_Result> Proc_listarMascota_UsuarioPorid_Mascota(Nullable<int> id_Mascota)
+        {
+            var id_MascotaParameter = id_Mascota.HasValue ?
+                new ObjectParameter("id_Mascota", id_Mascota) :
+                new ObjectParameter("id_Mascota", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Proc_listarMascota_UsuarioPorid_Mascota_Result>("Proc_listarMascota_UsuarioPorid_Mascota", id_MascotaParameter);
+        }
+    
+        public virtual ObjectResult<Proc_listarMascotaPorid_Mascota_Result> Proc_listarMascotaPorid_Mascota(Nullable<int> id_Mascota)
+        {
+            var id_MascotaParameter = id_Mascota.HasValue ?
+                new ObjectParameter("id_Mascota", id_Mascota) :
+                new ObjectParameter("id_Mascota", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Proc_listarMascotaPorid_Mascota_Result>("Proc_listarMascotaPorid_Mascota", id_MascotaParameter);
+        }
+    
+        public virtual int Proc_actualizarMascota(Nullable<int> id_Mascota, string nombre_Completo, string sexo, string peso, byte[] foto, string fecha_Ingreso, string fecha_Modificacion)
+        {
+            var id_MascotaParameter = id_Mascota.HasValue ?
+                new ObjectParameter("id_Mascota", id_Mascota) :
+                new ObjectParameter("id_Mascota", typeof(int));
+    
+            var nombre_CompletoParameter = nombre_Completo != null ?
+                new ObjectParameter("nombre_Completo", nombre_Completo) :
+                new ObjectParameter("nombre_Completo", typeof(string));
+    
+            var sexoParameter = sexo != null ?
+                new ObjectParameter("sexo", sexo) :
+                new ObjectParameter("sexo", typeof(string));
+    
+            var pesoParameter = peso != null ?
+                new ObjectParameter("peso", peso) :
+                new ObjectParameter("peso", typeof(string));
+    
+            var fotoParameter = foto != null ?
+                new ObjectParameter("foto", foto) :
+                new ObjectParameter("foto", typeof(byte[]));
+    
+            var fecha_IngresoParameter = fecha_Ingreso != null ?
+                new ObjectParameter("fecha_Ingreso", fecha_Ingreso) :
+                new ObjectParameter("fecha_Ingreso", typeof(string));
+    
+            var fecha_ModificacionParameter = fecha_Modificacion != null ?
+                new ObjectParameter("fecha_Modificacion", fecha_Modificacion) :
+                new ObjectParameter("fecha_Modificacion", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("Proc_actualizarMascota", id_MascotaParameter, nombre_CompletoParameter, sexoParameter, pesoParameter, fotoParameter, fecha_IngresoParameter, fecha_ModificacionParameter);
+        }
+    
+        public virtual int Proc_crearMascota(string nombre_Completo, string sexo, string peso, byte[] foto, string fecha_Ingreso, string fecha_Modificacion)
+        {
+            var nombre_CompletoParameter = nombre_Completo != null ?
+                new ObjectParameter("nombre_Completo", nombre_Completo) :
+                new ObjectParameter("nombre_Completo", typeof(string));
+    
+            var sexoParameter = sexo != null ?
+                new ObjectParameter("sexo", sexo) :
+                new ObjectParameter("sexo", typeof(string));
+    
+            var pesoParameter = peso != null ?
+                new ObjectParameter("peso", peso) :
+                new ObjectParameter("peso", typeof(string));
+    
+            var fotoParameter = foto != null ?
+                new ObjectParameter("foto", foto) :
+                new ObjectParameter("foto", typeof(byte[]));
+    
+            var fecha_IngresoParameter = fecha_Ingreso != null ?
+                new ObjectParameter("fecha_Ingreso", fecha_Ingreso) :
+                new ObjectParameter("fecha_Ingreso", typeof(string));
+    
+            var fecha_ModificacionParameter = fecha_Modificacion != null ?
+                new ObjectParameter("fecha_Modificacion", fecha_Modificacion) :
+                new ObjectParameter("fecha_Modificacion", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("Proc_crearMascota", nombre_CompletoParameter, sexoParameter, pesoParameter, fotoParameter, fecha_IngresoParameter, fecha_ModificacionParameter);
+        }
+    
+        public virtual ObjectResult<Proc_listarMascota_Usuario_Result> Proc_listarMascota_Usuario()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Proc_listarMascota_Usuario_Result>("Proc_listarMascota_Usuario");
+        }
+    
+        public virtual ObjectResult<Nullable<decimal>> Proc_listarUltimoId()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<decimal>>("Proc_listarUltimoId");
+        }
+    
+        public virtual ObjectResult<Nullable<int>> Proc_listarid_CitaPorMascota(string mascota)
+        {
+            var mascotaParameter = mascota != null ?
+                new ObjectParameter("mascota", mascota) :
+                new ObjectParameter("mascota", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("Proc_listarid_CitaPorMascota", mascotaParameter);
+        }
+    
+        public virtual ObjectResult<Proc_listarMascota_Result> Proc_listarMascota()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Proc_listarMascota_Result>("Proc_listarMascota");
+        }
+    
+        public virtual ObjectResult<Proc_listarMascotaPorid_Usuario_Result> Proc_listarMascotaPorid_Usuario(Nullable<int> id_Usuario)
+        {
+            var id_UsuarioParameter = id_Usuario.HasValue ?
+                new ObjectParameter("id_Usuario", id_Usuario) :
+                new ObjectParameter("id_Usuario", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Proc_listarMascotaPorid_Usuario_Result>("Proc_listarMascotaPorid_Usuario", id_UsuarioParameter);
+        }
+    
+        public virtual int Proc_crearCita(string mascota, string servicio, string fecha_Cita, string fecha_Creacion, string fecha_Modificacion, Nullable<bool> comprobar_Cita)
+        {
+            var mascotaParameter = mascota != null ?
+                new ObjectParameter("mascota", mascota) :
+                new ObjectParameter("mascota", typeof(string));
+    
+            var servicioParameter = servicio != null ?
+                new ObjectParameter("servicio", servicio) :
+                new ObjectParameter("servicio", typeof(string));
+    
+            var fecha_CitaParameter = fecha_Cita != null ?
+                new ObjectParameter("fecha_Cita", fecha_Cita) :
+                new ObjectParameter("fecha_Cita", typeof(string));
+    
+            var fecha_CreacionParameter = fecha_Creacion != null ?
+                new ObjectParameter("fecha_Creacion", fecha_Creacion) :
+                new ObjectParameter("fecha_Creacion", typeof(string));
+    
+            var fecha_ModificacionParameter = fecha_Modificacion != null ?
+                new ObjectParameter("fecha_Modificacion", fecha_Modificacion) :
+                new ObjectParameter("fecha_Modificacion", typeof(string));
+    
+            var comprobar_CitaParameter = comprobar_Cita.HasValue ?
+                new ObjectParameter("comprobar_Cita", comprobar_Cita) :
+                new ObjectParameter("comprobar_Cita", typeof(bool));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("Proc_crearCita", mascotaParameter, servicioParameter, fecha_CitaParameter, fecha_CreacionParameter, fecha_ModificacionParameter, comprobar_CitaParameter);
+        }
+    
+        public virtual int Proc_crearCita_Usuario(Nullable<int> id_Cita, Nullable<int> id_Usuario, Nullable<int> id_Mascota, Nullable<int> id_UsuarioVeterinario)
+        {
+            var id_CitaParameter = id_Cita.HasValue ?
+                new ObjectParameter("id_Cita", id_Cita) :
+                new ObjectParameter("id_Cita", typeof(int));
+    
+            var id_UsuarioParameter = id_Usuario.HasValue ?
+                new ObjectParameter("id_Usuario", id_Usuario) :
+                new ObjectParameter("id_Usuario", typeof(int));
+    
+            var id_MascotaParameter = id_Mascota.HasValue ?
+                new ObjectParameter("id_Mascota", id_Mascota) :
+                new ObjectParameter("id_Mascota", typeof(int));
+    
+            var id_UsuarioVeterinarioParameter = id_UsuarioVeterinario.HasValue ?
+                new ObjectParameter("id_UsuarioVeterinario", id_UsuarioVeterinario) :
+                new ObjectParameter("id_UsuarioVeterinario", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("Proc_crearCita_Usuario", id_CitaParameter, id_UsuarioParameter, id_MascotaParameter, id_UsuarioVeterinarioParameter);
+        }
+    
+        public virtual ObjectResult<string> Proc_listarNombre_MascotaPorid_Usuario(Nullable<int> id_Usuario)
+        {
+            var id_UsuarioParameter = id_Usuario.HasValue ?
+                new ObjectParameter("id_Usuario", id_Usuario) :
+                new ObjectParameter("id_Usuario", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<string>("Proc_listarNombre_MascotaPorid_Usuario", id_UsuarioParameter);
+        }
+    
+        public virtual ObjectResult<Proc_listarCita_Usuario_Result> Proc_listarCita_Usuario()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Proc_listarCita_Usuario_Result>("Proc_listarCita_Usuario");
+        }
+    
+        public virtual ObjectResult<Proc_listarCita_UsuarioPorid_Cita_Result> Proc_listarCita_UsuarioPorid_Cita(Nullable<int> id_Cita)
+        {
+            var id_CitaParameter = id_Cita.HasValue ?
+                new ObjectParameter("id_Cita", id_Cita) :
+                new ObjectParameter("id_Cita", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Proc_listarCita_UsuarioPorid_Cita_Result>("Proc_listarCita_UsuarioPorid_Cita", id_CitaParameter);
+        }
+    
+        public virtual ObjectResult<Proc_listarCitaPorid_Cita_Result> Proc_listarCitaPorid_Cita(Nullable<int> id_Cita)
+        {
+            var id_CitaParameter = id_Cita.HasValue ?
+                new ObjectParameter("id_Cita", id_Cita) :
+                new ObjectParameter("id_Cita", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Proc_listarCitaPorid_Cita_Result>("Proc_listarCitaPorid_Cita", id_CitaParameter);
+        }
+    
+        public virtual ObjectResult<Proc_listarCitaPorid_Usuario_Result> Proc_listarCitaPorid_Usuario(Nullable<int> id_Usuario)
+        {
+            var id_UsuarioParameter = id_Usuario.HasValue ?
+                new ObjectParameter("id_Usuario", id_Usuario) :
+                new ObjectParameter("id_Usuario", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Proc_listarCitaPorid_Usuario_Result>("Proc_listarCitaPorid_Usuario", id_UsuarioParameter);
+        }
+    
+        public virtual ObjectResult<string> Proc_listarservicioPorid_Usuario(Nullable<int> id_Usuario)
+        {
+            var id_UsuarioParameter = id_Usuario.HasValue ?
+                new ObjectParameter("id_Usuario", id_Usuario) :
+                new ObjectParameter("id_Usuario", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<string>("Proc_listarservicioPorid_Usuario", id_UsuarioParameter);
         }
     
         public virtual ObjectResult<Proc_listarTodaCitaPorfecha_Cita_Result> Proc_listarTodaCitaPorfecha_Cita(string fecha_Cita)
@@ -722,6 +875,15 @@ namespace Capa_Datos
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Proc_listarTodaCitaPorfecha_Cita_Result>("Proc_listarTodaCitaPorfecha_Cita", fecha_CitaParameter);
         }
     
+        public virtual ObjectResult<Proc_listarCitaPorid_Usuario_id_UsuarioVeterinario_Result> Proc_listarCitaPorid_Usuario_id_UsuarioVeterinario(Nullable<int> id_Usuario)
+        {
+            var id_UsuarioParameter = id_Usuario.HasValue ?
+                new ObjectParameter("id_Usuario", id_Usuario) :
+                new ObjectParameter("id_Usuario", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Proc_listarCitaPorid_Usuario_id_UsuarioVeterinario_Result>("Proc_listarCitaPorid_Usuario_id_UsuarioVeterinario", id_UsuarioParameter);
+        }
+    
         public virtual int Proc_actualizarCitaPorid_Cita(Nullable<int> id_Cita)
         {
             var id_CitaParameter = id_Cita.HasValue ?
@@ -731,65 +893,40 @@ namespace Capa_Datos
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("Proc_actualizarCitaPorid_Cita", id_CitaParameter);
         }
     
-        public virtual int Proc_crearChat(Nullable<int> id_Usuario, Nullable<int> id_UsuarioRespuesta, string comentario, string fecha_Creacion)
+        public virtual ObjectResult<string> Proc_listarCitaPorfecha_Cita(string fecha_Cita)
         {
+            var fecha_CitaParameter = fecha_Cita != null ?
+                new ObjectParameter("fecha_Cita", fecha_Cita) :
+                new ObjectParameter("fecha_Cita", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<string>("Proc_listarCitaPorfecha_Cita", fecha_CitaParameter);
+        }
+    
+        public virtual ObjectResult<Nullable<bool>> Proc_listarCitaPorfecha_Cita_id_Usuario(string fecha_Cita, Nullable<int> id_Usuario)
+        {
+            var fecha_CitaParameter = fecha_Cita != null ?
+                new ObjectParameter("fecha_Cita", fecha_Cita) :
+                new ObjectParameter("fecha_Cita", typeof(string));
+    
             var id_UsuarioParameter = id_Usuario.HasValue ?
                 new ObjectParameter("id_Usuario", id_Usuario) :
                 new ObjectParameter("id_Usuario", typeof(int));
     
-            var id_UsuarioRespuestaParameter = id_UsuarioRespuesta.HasValue ?
-                new ObjectParameter("id_UsuarioRespuesta", id_UsuarioRespuesta) :
-                new ObjectParameter("id_UsuarioRespuesta", typeof(int));
-    
-            var comentarioParameter = comentario != null ?
-                new ObjectParameter("comentario", comentario) :
-                new ObjectParameter("comentario", typeof(string));
-    
-            var fecha_CreacionParameter = fecha_Creacion != null ?
-                new ObjectParameter("fecha_Creacion", fecha_Creacion) :
-                new ObjectParameter("fecha_Creacion", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("Proc_crearChat", id_UsuarioParameter, id_UsuarioRespuestaParameter, comentarioParameter, fecha_CreacionParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<bool>>("Proc_listarCitaPorfecha_Cita_id_Usuario", fecha_CitaParameter, id_UsuarioParameter);
         }
     
-        public virtual ObjectResult<Proc_listarChat_Result> Proc_listarChat()
+        public virtual int Proc_eliminarCita(Nullable<int> id_Cita)
         {
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Proc_listarChat_Result>("Proc_listarChat");
+            var id_CitaParameter = id_Cita.HasValue ?
+                new ObjectParameter("id_Cita", id_Cita) :
+                new ObjectParameter("id_Cita", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("Proc_eliminarCita", id_CitaParameter);
         }
     
-        public virtual ObjectResult<string> Proc_listarcomentarioPorid_Usuario(Nullable<int> id_Usuario, Nullable<int> id_UsuarioRespuesta)
+        public virtual ObjectResult<Proc_listarCita_Result> Proc_listarCita()
         {
-            var id_UsuarioParameter = id_Usuario.HasValue ?
-                new ObjectParameter("id_Usuario", id_Usuario) :
-                new ObjectParameter("id_Usuario", typeof(int));
-    
-            var id_UsuarioRespuestaParameter = id_UsuarioRespuesta.HasValue ?
-                new ObjectParameter("id_UsuarioRespuesta", id_UsuarioRespuesta) :
-                new ObjectParameter("id_UsuarioRespuesta", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<string>("Proc_listarcomentarioPorid_Usuario", id_UsuarioParameter, id_UsuarioRespuestaParameter);
-        }
-    
-        public virtual ObjectResult<Proc_listarChatPorid_Usuario_Result> Proc_listarChatPorid_Usuario(Nullable<int> id_Usuario, Nullable<int> id_UsuarioRespuesta)
-        {
-            var id_UsuarioParameter = id_Usuario.HasValue ?
-                new ObjectParameter("id_Usuario", id_Usuario) :
-                new ObjectParameter("id_Usuario", typeof(int));
-    
-            var id_UsuarioRespuestaParameter = id_UsuarioRespuesta.HasValue ?
-                new ObjectParameter("id_UsuarioRespuesta", id_UsuarioRespuesta) :
-                new ObjectParameter("id_UsuarioRespuesta", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Proc_listarChatPorid_Usuario_Result>("Proc_listarChatPorid_Usuario", id_UsuarioParameter, id_UsuarioRespuestaParameter);
-        }
-    
-        public virtual ObjectResult<string> Proc_listarEmailPorid_Usuario(Nullable<int> id_Usuario)
-        {
-            var id_UsuarioParameter = id_Usuario.HasValue ?
-                new ObjectParameter("id_Usuario", id_Usuario) :
-                new ObjectParameter("id_Usuario", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<string>("Proc_listarEmailPorid_Usuario", id_UsuarioParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Proc_listarCita_Result>("Proc_listarCita");
         }
     }
 }

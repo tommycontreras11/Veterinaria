@@ -102,11 +102,84 @@ namespace Capa_Datos
         }
 
         /*----------Proc_listarnombre_CompletoPorid_Usuario----------*/
-        public string Proc_listarnombre_CompletoPorid_Usuario(int id)
+        public string Proc_listarNombre_CompletoPorid_Usuario(int id)
         {
             using (var db = new VeterinariaEntities())
             {
                 return db.Proc_listarnombre_CompletoPorid_Usuario(id).FirstOrDefault();
+            }
+        }
+
+        public List<byte[]> listarFotoUsuario = new List<byte[]>();
+        /*----------Proc_listarFotoPorid_Usuario----------*/
+        public List<byte[]> Proc_listarFotoPorid_Usuario(List<int> id)
+        {
+            using (var db = new VeterinariaEntities())
+            {
+                for (int i = 0; i < id.Count; i++)
+                {
+                    var existencia = db.Database.SqlQuery<byte[]>("EXEC Proc_listarFotoPorid_Usuario @id_Usuario", new SqlParameter("@id_Usuario", id[i])).ToList();
+
+                    if (existencia.Count == 0)
+                    {
+                        listarFotoUsuario.AddRange(existencia);
+                    }
+                    else
+                    {
+                        listarFotoUsuario.AddRange(existencia);
+                    }
+                }
+                return listarFotoUsuario;
+            }
+        }
+
+        /*----------Proc_listarUnaFotoPorid_Usuario----------*/
+        public List<byte[]> Proc_listarUnaFotoPorid_Usuario(int id)
+        {
+            using (var db = new VeterinariaEntities())
+            {
+                var existencia = db.Database.SqlQuery<byte[]>("EXEC Proc_listarFotoPorid_Usuario @id_Usuario", new SqlParameter("@id_Usuario", id)).ToList();
+
+                if (existencia.Count == 0)
+                {
+                    listarFotoUsuario.AddRange(existencia);
+                }
+                else
+                {
+                    listarFotoUsuario.AddRange(existencia);
+                }
+
+                return listarFotoUsuario;
+            }
+        }
+
+        
+        /*----------Proc_listarNombreCompletoAdmin----------*/
+        public List<Proc_listarNombreCompletoAdmin_Result> Proc_listarNombreCompletoAdmin()
+        {
+            using (var db = new VeterinariaEntities())
+            {
+                return db.Proc_listarNombreCompletoAdmin().ToList();
+            }
+        }
+
+        /*----------Proc_listarFotoPorNombreUsuario----------*/
+        public List<byte[]> Proc_listarFotoPorNombreUsuario(string nombre)
+        {
+            using (var db = new VeterinariaEntities())
+            {
+                var existencia = db.Database.SqlQuery<byte[]>("EXEC Proc_listarFotoPorNombreUsuario @nombre_Completo", new SqlParameter("@nombre_Completo", nombre)).ToList();
+
+                if (existencia.Count == 0)
+                {
+                    listarFotoUsuario.AddRange(existencia);
+                }
+                else
+                {
+                    listarFotoUsuario.AddRange(existencia);
+                }
+
+                return listarFotoUsuario;
             }
         }
 
@@ -115,7 +188,7 @@ namespace Capa_Datos
         {
             using (var db = new VeterinariaEntities()) 
             {
-                db.Proc_crearUsuario(usuario.nombre_Completo, usuario.direccion, usuario.ciudad, usuario.telefono, usuario.email, usuario.password);
+                db.Proc_crearUsuario(usuario.nombre_Completo, usuario.direccion, usuario.ciudad, usuario.telefono, usuario.foto, usuario.email, usuario.password);
                 db.SaveChanges();
             }
         }
@@ -125,7 +198,7 @@ namespace Capa_Datos
         {
             using (var db = new VeterinariaEntities()) 
             {
-                db.Proc_actualizarUsuario(usuario.id_Usuario, usuario.nombre_Completo, usuario.direccion, usuario.ciudad, usuario.telefono, usuario.email, usuario.password);
+                db.Proc_actualizarUsuario(usuario.id_Usuario, usuario.nombre_Completo, usuario.direccion, usuario.ciudad, usuario.telefono, usuario.foto, usuario.email, usuario.password);
                 db.SaveChanges();
             }
         }
@@ -365,7 +438,7 @@ namespace Capa_Datos
         {
             using (var db = new VeterinariaEntities()) 
             {
-                db.Proc_crearMascota(mascota.id_Usuario, mascota.id_Tipo, mascota.id_Raza, mascota.nombre_Completo, mascota.sexo, mascota.peso, mascota.foto, DateTime.Now.ToString("dd/MM/yyyy hh:mm tt"), DateTime.Now.ToString("dd/MM/yyyy hh:mm tt"));
+                db.Proc_crearMascota(mascota.nombre_Completo, mascota.sexo, mascota.peso, mascota.foto, mascota.fecha_Ingreso.Replace("-", "/"), mascota.fecha_Ingreso.Replace("-", "/"));
                 db.SaveChanges();
             }
         }
@@ -375,7 +448,7 @@ namespace Capa_Datos
         {
             using (var db = new VeterinariaEntities())
             {
-                db.Proc_actualizarMascota(mascota.id_Mascota, mascota.id_Usuario, mascota.id_Tipo, mascota.id_Raza, mascota.nombre_Completo, mascota.sexo, mascota.peso, mascota.foto, mascota.fecha_Ingreso, DateTime.Now.ToString("dd/MM/yyyy hh:mm tt"));
+                db.Proc_actualizarMascota(mascota.id_Mascota, mascota.nombre_Completo, mascota.sexo, mascota.peso, mascota.foto, mascota.fecha_Ingreso.Replace("-", "/"), mascota.fecha_Ingreso.Replace("-", "/"));
                 db.SaveChanges();
             }
         }
@@ -392,6 +465,62 @@ namespace Capa_Datos
 
 
         /*----------Fin de los procedimientos almacenados de la tabla Mascota----------*/
+
+
+        /*----------Tabla Mascota_Usuario----------*/
+
+
+        /*----------Procedimientos almacenados----------*/
+
+        /*----------Proc_listarMascota_Usuario----------*/
+        public List<Proc_listarMascota_Usuario_Result> Proc_listarMascota_Usuario() 
+        {
+            using (var db = new VeterinariaEntities()) 
+            {
+                return db.Proc_listarMascota_Usuario().ToList();
+            }
+        }
+
+        /*----------Proc_listarMascota_UsuarioPorid_Mascota----------*/
+        public Proc_listarMascota_UsuarioPorid_Mascota_Result Proc_listarMascota_UsuarioPorid_Mascota(int id)
+        {
+            using (var db = new VeterinariaEntities())
+            {
+                return db.Proc_listarMascota_UsuarioPorid_Mascota(id).FirstOrDefault();
+            }
+        }
+
+        /*----------Proc_crearMascota_Usuario----------*/
+        public void Proc_crearMascota_Usuario(Mascota_Usuario mascota_Usuario)
+        {
+            using (var db = new VeterinariaEntities())
+            {
+                db.Proc_crearMascota_Usuario(mascota_Usuario.id_Mascota, mascota_Usuario.id_Usuario, mascota_Usuario.id_Tipo, mascota_Usuario.id_Raza);
+                db.SaveChanges();
+            }
+        }
+
+        /*----------Proc_actualizarMascota_Usuario----------*/
+        public void Proc_actualizarMascota_Usuario(Mascota_Usuario mascota_Usuario)
+        {
+            using (var db = new VeterinariaEntities())
+            {
+                db.Proc_actualizarMascota_Usuario(mascota_Usuario.id_Mascota, mascota_Usuario.id_Usuario, mascota_Usuario.id_Tipo, mascota_Usuario.id_Raza);
+                db.SaveChanges();
+            }
+        }
+
+        /*----------Proc_eliminarMascota_Usuario----------*/
+        public void Proc_eliminarMascota_Usuario(int id)
+        {
+            using (var db = new VeterinariaEntities())
+            {
+                db.Proc_eliminarMascota_Usuario(id);
+                db.SaveChanges();
+            }
+        }
+
+        /*----------Fin de los procedimientos almacenados de la tabla Mascota_Usuario----------*/
 
 
         /*----------Tabla TipoMascota----------*/
@@ -600,9 +729,9 @@ namespace Capa_Datos
         }
 
         /*----------Proc_listarCitaPorid_Usuario----------*/
-        public List<Proc_listarCitaPorid_Usuario_Result> Proc_listarCitaPorid_Usuario(int id_Usuario) 
+        public List<Proc_listarCitaPorid_Usuario_Result> Proc_listarCitaPorid_Usuario(int id_Usuario)
         {
-            using (var db = new VeterinariaEntities()) 
+            using (var db = new VeterinariaEntities())
             {
                 return db.Proc_listarCitaPorid_Usuario(id_Usuario).ToList();
             }
@@ -614,6 +743,77 @@ namespace Capa_Datos
             using (var db = new VeterinariaEntities()) 
             {
                 return db.Proc_listarTodaCitaPorfecha_Cita(fecha).ToList();
+            }
+        }
+
+        /*----------Proc_listarCitaPorid_Usuario_id_UsuarioVeterinario----------*/
+        public List<Proc_listarCitaPorid_Usuario_id_UsuarioVeterinario_Result> Proc_listarCitaPorid_Usuario_id_UsuarioVeterinario(int id_Usuario)
+        {
+            using (var db = new VeterinariaEntities())
+            {
+                return db.Proc_listarCitaPorid_Usuario_id_UsuarioVeterinario(id_Usuario).ToList();
+            }
+        }
+
+        public List<string> servicio2 = new List<string>();
+        /*----------Proc_listarservicioPorid_Usuario_id_UsuarioVeterinario----------*/
+        public List<string> Proc_listarservicioPorid_Usuario_id_UsuarioVeterinario(int id_Usuario)
+        {
+            using (var db = new VeterinariaEntities())
+            {
+                var existencia = db.Database.SqlQuery<string>("EXEC Proc_listarservicioPorid_Usuario_id_UsuarioVeterinario @id_Usuario",
+                    new SqlParameter("@id_Usuario", id_Usuario)).ToList();
+
+                if (existencia.Count == 0)
+                {
+                    servicio2.Add("Aún no tienes una cita");
+                }
+                else
+                {
+                    servicio2.AddRange(existencia);
+                }
+                return servicio2;
+            }
+        }
+
+        /*----------Proc_comprobarCantidadCita----------*/
+        public int Proc_comprobarCantidadCita(string fecha_Cita) 
+        {
+            using (var db = new VeterinariaEntities()) 
+            {
+                return db.Database.SqlQuery<int>("EXEC Proc_comprobarCantidadCita @fecha_Cita",
+                    new SqlParameter("@fecha_Cita", fecha_Cita)).FirstOrDefault();
+            }
+        }
+
+        /*----------Proc_listarid_CitaPorMascota----------*/
+        public int Proc_listarid_CitaPorMascota(string mascota) 
+        {
+            using (var db = new VeterinariaEntities()) 
+            {
+                return db.Database.SqlQuery<int>("EXEC Proc_listarid_CitaPorMascota @mascota",
+                    new SqlParameter("@mascota", mascota)).FirstOrDefault();
+            }
+        }
+
+        public List<bool> comprobar_Cita = new List<bool>();
+        /*----------Proc_listarCitaPorfecha_Cita_id_Usuario----------*/
+        public List<bool> Proc_listarCitaPorfecha_Cita_id_Usuario(string fecha, int id_Usuario)
+        {
+            using (var db = new VeterinariaEntities())
+            {
+                var existencia = db.Database.SqlQuery<bool>("EXEC Proc_listarCitaPorfecha_Cita_id_Usuario @fecha_Cita, @id_Usuario",
+                    new SqlParameter("@fecha_Cita", fecha), new SqlParameter("@id_Usuario", id_Usuario)).ToList();
+
+                if (existencia.Contains(true))
+                {
+                    comprobar_Cita.Add(true);
+                }
+                else
+                {
+                    comprobar_Cita.Add(false);
+                }
+                return comprobar_Cita;
             }
         }
 
@@ -632,7 +832,7 @@ namespace Capa_Datos
         {
             using (var db = new VeterinariaEntities()) 
             {
-                db.Proc_crearCita(cita.id_Usuario, cita.id_Mascota, cita.id_UsuarioVeterinario, cita.servicio, DateTime.Now.ToString("dd/MM/yyyy HH:mm"), DateTime.Now.ToString("dd/MM/yyyy HH:mm"), DateTime.Now.ToString("dd/MM/yyyy HH:mm"), false);
+                db.Proc_crearCita(cita.mascota, cita.servicio, cita.fecha_Cita.Replace("-", "/"), cita.fecha_Cita.Replace("-", "/"), cita.fecha_Cita.Replace("-", "/"), cita.comprobar_Cita);
                 db.SaveChanges();
             }
         }
@@ -642,7 +842,7 @@ namespace Capa_Datos
         {
             using (var db = new VeterinariaEntities())
             {
-                db.Proc_actualizarCita(cita.id_Cita, cita.id_Cita, cita.id_Mascota, cita.id_UsuarioVeterinario, cita.servicio, cita.fecha_Cita, cita.fecha_Creacion, cita.fecha_Modificacion, cita.comprobar_Cita);
+                db.Proc_actualizarCita(cita.id_Cita, cita.mascota, cita.servicio, cita.fecha_Cita.Replace("-", "/"), cita.fecha_Cita.Replace("-", "/"), cita.fecha_Cita.Replace("-", "/"), cita.comprobar_Cita);
                 db.SaveChanges();
             }
         }
@@ -659,6 +859,62 @@ namespace Capa_Datos
 
 
         /*----------Fin de los procedimientos almacenados de la tabla Cita----------*/
+
+
+        /*----------Tabla Cita_Usuario----------*/
+
+
+        /*----------Procedimientos almacenados----------*/
+
+        /*----------Proc_listarCita_Usuario----------*/
+        public List<Proc_listarCita_Usuario_Result> Proc_listarCita_Usuario()
+        {
+            using (var db = new VeterinariaEntities())
+            {
+                return db.Proc_listarCita_Usuario().ToList();
+            }
+        }
+
+        /*----------Proc_listarCita_UsuarioPorid_Cita----------*/
+        public Proc_listarCita_UsuarioPorid_Cita_Result Proc_listarCita_UsuarioPorid_Cita(int id)
+        {
+            using (var db = new VeterinariaEntities())
+            {
+                return db.Proc_listarCita_UsuarioPorid_Cita(id).FirstOrDefault();
+            }
+        }
+
+        /*----------Proc_crearCita_Usuario----------*/
+        public void Proc_crearCita_Usuario(Cita_Usuario cita_Usuario)
+        {
+            using (var db = new VeterinariaEntities())
+            {
+                db.Proc_crearCita_Usuario(cita_Usuario.id_Cita, cita_Usuario.id_Usuario, cita_Usuario.id_Mascota, cita_Usuario.id_UsuarioVeterinario);
+                db.SaveChanges();
+            }
+        }
+
+        /*----------Proc_actualizarCita_Usuario----------*/
+        public void Proc_actualizarCita_Usuario(Cita_Usuario cita_Usuario)
+        {
+            using (var db = new VeterinariaEntities())
+            {
+                db.Proc_actualizarCita_Usuario(cita_Usuario.id_Cita, cita_Usuario.id_Usuario, cita_Usuario.id_Mascota, cita_Usuario.id_UsuarioVeterinario);
+                db.SaveChanges();
+            }
+        }
+
+        /*----------Proc_eliminarCita_Usuario----------*/
+        public void Proc_eliminarCita_Usuario(int id)
+        {
+            using (var db = new VeterinariaEntities())
+            {
+                db.Proc_eliminarCita_Usuario(id);
+                db.SaveChanges();
+            }
+        }
+
+        /*----------Fin de los procedimientos almacenados de la tabla Cita_Usuario----------*/
 
 
         /*----------Tabla Servicio----------*/
@@ -741,6 +997,16 @@ namespace Capa_Datos
             }
         }
 
+        /*----------Proc_listarConsejoPorid_Tipo_id_Raza----------*/
+        public List<string> Proc_listarConsejoPorid_Tipo_id_Raza(int id_Tipo, int id_Raza) 
+        {
+            using (var db = new VeterinariaEntities()) 
+            {
+                return db.Database.SqlQuery<string>("EXEC Proc_listarConsejoPorid_Tipo_id_Raza @id_Tipo, @id_Raza",
+                    new SqlParameter("@id_Tipo", id_Tipo), new SqlParameter("@id_Raza", id_Raza)).ToList();
+            }
+        }
+
         /*----------Proc_crearConsejo----------*/
         public void Proc_crearConsejo(Consejo consejo)
         {
@@ -773,81 +1039,5 @@ namespace Capa_Datos
 
 
         /*----------Fin de los procedimientos almacenados de la tabla Consejo----------*/
-
-
-        /*----------Tabla Chat----------*/
-
-
-        /*----------Procedimientos almacenados----------*/
-
-        /*----------Proc_listarChat----------*/
-        public List<Proc_listarChat_Result> Proc_listarChat()
-        {
-            using (var db = new VeterinariaEntities())
-            {
-                return db.Proc_listarChat().ToList();
-            }
-        }
-
-        /*----------Proc_listarChatPorid_Usuario----------*/
-        public List<Proc_listarChatPorid_Usuario_Result> Proc_listarChatPorid_Usuario(int id_Usuario, int id_UsuarioRespuesta)
-        {
-            using (var db = new VeterinariaEntities())
-            {
-                return db.Proc_listarChatPorid_Usuario(id_Usuario, id_UsuarioRespuesta).ToList();
-            }
-        }
-
-        public List<string> comentario = new List<string>();
-        /*----------Proc_listarcomentarioPorid_Usuario----------*/
-        public List<string> Proc_listarcomentarioPorid_Usuario(int id_Usuario, int id_UsuarioVeterinario) 
-        {
-            using (var db = new VeterinariaEntities()) 
-            {
-                var existencia = db.Database.SqlQuery<string>("EXEC Proc_listarcomentarioPorid_Usuario @id_Usuario, @id_UsuarioVeterinario",
-                    new SqlParameter("@id_Usuario", id_Usuario),
-                    new SqlParameter("@id_UsuarioVeterinario", id_UsuarioVeterinario)).ToList();
-
-                if (existencia.Count == 0) 
-                {
-                    comentario.Add("Aún no hay comentarios");
-                }
-                else 
-                {
-                    comentario.AddRange(existencia);
-                }
-                return comentario;
-            }
-        }
-
-        /*----------Proc_crearChat----------*/
-        public void Proc_crearChat(Chat chat)
-        {
-            using (var db = new VeterinariaEntities())
-            {
-                db.Proc_crearChat(chat.id_Usuario, chat.id_UsuarioRespuesta, chat.comentario, DateTime.Now.ToString("dd/MM/yyyy HH:mm tt"));
-                db.SaveChanges();
-            }
-        }
-
-        ///*----------Proc_actualizarConsejo----------*/
-        //public void Proc_actualizarConsejo_Mascota(Consejo_Mascota consejo_Mascota)
-        //{
-        //    using (var db = new VeterinariaEntities())
-        //    {
-        //        db.Proc_actualizarConsejo_Mascota(consejo_Mascota.id_Consejo_Mascota, consejo_Mascota.id_Consejo, consejo_Mascota.id_Tipo, consejo_Mascota.id_Raza);
-        //        db.SaveChanges();
-        //    }
-        //}
-
-        ///*----------Proc_eliminarConsejo----------*/
-        //public void Proc_eliminarConsejo_Mascota(int id_Consejo_Mascota)
-        //{
-        //    using (var db = new VeterinariaEntities())
-        //    {
-        //        db.Proc_eliminarConsejo_Mascota(id_Consejo_Mascota);
-        //        db.SaveChanges();
-        //    }
-        //}
     }
 }

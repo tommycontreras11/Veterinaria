@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using Capa_Negocio;
 using Capa_Entidad;
 using System.Web.Services.Description;
+using Capa_Presentacion.Extensions;
 
 namespace Capa_Presentacion.Controllers
 {
@@ -19,25 +20,36 @@ namespace Capa_Presentacion.Controllers
         // GET: Rol_Usuario
         public ActionResult Index()
         {
-            return View();
-        }
-
-        // GET: Rol_Usuario/Rol_Usuarios
-        public ActionResult Rol_Usuarios()
-        {
-            if (User.Identity.IsAuthenticated) 
+            if (User.Identity.IsAuthenticated)
             {
-                if (account.IsValid(User.Identity.Name) == 2) 
+                if (account.IsValid(User.Identity.Name) == 2)
                 {
                     return RedirectToAction("Index", "Home");
                 }
             }
-            else 
+            else
             {
                 return RedirectToAction("Login", "Account");
             }
             return View();
         }
+
+        // GET: Rol_Usuario/Rol_Usuarios
+        //public ActionResult Rol_Usuarios()
+        //{
+        //    if (User.Identity.IsAuthenticated) 
+        //    {
+        //        if (account.IsValid(User.Identity.Name) == 2) 
+        //        {
+        //            return RedirectToAction("Index", "Home");
+        //        }
+        //    }
+        //    else 
+        //    {
+        //        return RedirectToAction("Login", "Account");
+        //    }
+        //    return View();
+        //}
 
         public ActionResult listarRol_Usuario()
         {
@@ -104,7 +116,8 @@ namespace Capa_Presentacion.Controllers
             {
                 // TODO: Add update logic here
                 _Negocio.Proc_actualizarRol_Usuario(id_Rol, id_Usuario);
-                return RedirectToAction("Rol_Usuarios", "Rol_Usuario");
+                this.AddNotification("Se ha actualizado el rol de usuario exitosamente", NotificationType.SUCCESS);
+                return RedirectToAction("Index", "Rol_Usuario");
             }
             catch
             {
@@ -120,29 +133,23 @@ namespace Capa_Presentacion.Controllers
 
         // POST: Rol_Usuario/Delete/5
         //[HttpPost]
-        public ActionResult Delete(int id)
-        {
-            try
-            {
-                // TODO: Add delete logic here
-                if (User.Identity.IsAuthenticated)
-                {
-                    if (account.IsValid(User.Identity.Name) == 2)
-                    {
-                        return RedirectToAction("Index", "Home");
-                    }
-                }
-                else
-                {
-                    return RedirectToAction("Login", "Account");
-                }
-                _Negocio.Proc_eliminarRol_Usuario(id);
-                return RedirectToAction("Rol_Usuarios", "Rol_Usuario");
-            }
-            catch
-            {
-                return View();
-            }
-        }
+        //public ActionResult Delete(int id)
+        //{
+        //    // TODO: Add delete logic here
+        //    if (User.Identity.IsAuthenticated)
+        //    {
+        //        if (account.IsValid(User.Identity.Name) == 2)
+        //        {
+        //            return RedirectToAction("Index", "Home");
+        //        }
+        //    }
+        //    else
+        //    {
+        //        return RedirectToAction("Login", "Account");
+        //    }
+        //    _Negocio.Proc_eliminarRol_Usuario(id);
+        //    this.AddNotification("Se ha eliminado el rol de usuario exitosamente", NotificationType.SUCCESS);
+        //    return RedirectToAction("Rol_Usuarios", "Rol_Usuario");
+        //}
     }
 }

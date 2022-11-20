@@ -5,6 +5,8 @@ using System.Web;
 using System.Web.Mvc;
 using Capa_Negocio;
 using Capa_Entidad;
+using System.Web.Helpers;
+using Capa_Presentacion.Extensions;
 
 namespace Capa_Presentacion.Controllers
 {
@@ -43,6 +45,11 @@ namespace Capa_Presentacion.Controllers
             return Json(admin, JsonRequestBehavior.AllowGet);
         }
 
+        public ActionResult listarNombreCompletoAdmin()
+        {
+            var admin = _Negocio.Proc_listarNombreCompletoAdmin();
+            return Json(admin, JsonRequestBehavior.AllowGet);
+        }
 
         // GET: Admin/Create
         public ActionResult Create()
@@ -67,10 +74,41 @@ namespace Capa_Presentacion.Controllers
         {
             try
             {
-                // TODO: Add insert logic here
-                _Negocio.Proc_crearUsuario(usuario);
-                var id_Usuario = _Negocio.Proc_listarid_UsuarioPorEmail(usuario.email);
-                _Negocio.Proc_crearRol_Usuario(1, id_Usuario);
+                HttpPostedFileBase fileBase = Request.Files[0];
+
+                if (fileBase.ContentLength == 0)
+                {
+                    this.AddNotification("Es necesario elegir una imagen", NotificationType.WARNING);
+                }
+                else
+                {
+                    if (fileBase.ContentLength > 233472)
+                    {
+                        this.AddNotification("No se permite imagenes con más de 228 kilobytes", NotificationType.WARNING);
+                    }
+                    else
+                    {
+                        if (fileBase.FileName.EndsWith(".jpg"))
+                        {
+                            WebImage image = new WebImage(fileBase.InputStream);
+
+                            usuario.foto = image.GetBytes();
+
+                            // TODO: Add insert logic here
+                            // TODO: Add insert logic here
+                            _Negocio.Proc_crearUsuario(usuario);
+                            var id_Usuario = _Negocio.Proc_listarid_UsuarioPorEmail(usuario.email);
+                            _Negocio.Proc_crearRol_Usuario(1, id_Usuario);
+                            this.AddNotification("Se ha creado el usuario exitosamente", NotificationType.SUCCESS);
+                            return RedirectToAction("Admins", "Admin");
+                        }
+                        else
+                        {
+                            this.AddNotification("El sistema solo acepta fotos con formato JPG", NotificationType.WARNING);
+                        }
+
+                    }
+                }
 
                 return View();
             }
@@ -102,17 +140,57 @@ namespace Capa_Presentacion.Controllers
         [HttpPost]
         public ActionResult Edit(Usuario usuario)
         {
-            try
-            {
-                // TODO: Add update logic here
-                _Negocio.Proc_actualizarUsuario(usuario);
+            // TODO: Add update logic here
+            byte[] imagenActual = null;
 
+            HttpPostedFileBase fileBase = Request.Files[0];
+
+            if (fileBase.ContentLength == 0)
+            {
+                imagenActual = _Negocio.Proc_listarUnaFotoPorid_Usuario(usuario.id_Usuario).FirstOrDefault();
+                usuario.foto = imagenActual;
+                _Negocio.Proc_actualizarUsuario(usuario);
+                this.AddNotification("Se ha actualizado el usuario exitosamente", NotificationType.SUCCESS);
                 return RedirectToAction("Admins", "Admin");
             }
-            catch
+            else
             {
-                return View();
+                if (fileBase.ContentLength > 233472)
+                {
+                    this.AddNotification("No se permite imagenes con más de 228 kilobytes", NotificationType.WARNING);
+                }
+                else
+                {
+                    if (fileBase.FileName.EndsWith(".jpg"))
+                    {
+                        WebImage image = new WebImage(fileBase.InputStream);
+
+                        usuario.foto = image.GetBytes();
+
+
+                        // TODO: Add update logic here
+                        _Negocio.Proc_actualizarUsuario(usuario);
+                        this.AddNotification("Se ha actualizado el usuario exitosamente", NotificationType.SUCCESS);
+                        return RedirectToAction("Admins", "Admin");
+                    }
+                    else
+                    {
+                        this.AddNotification("El sistema solo acepta fotos con formato JPG", NotificationType.WARNING);
+                    }
+
+                }
             }
+
+            //if (ModelState.IsValid)
+            //{
+
+            //    // TODO: Add update logic here
+            //    _Negocio.Proc_actualizarUsuario(usuario);
+
+            //    return RedirectToAction("Usuarios", "Account");
+            //}
+            var usuario2 = _Negocio.Proc_listarUsuarioPorid_Usuario(usuario.id_Usuario);
+            return View(usuario2);
         }
 
         // GET: Admin/Delete/5
@@ -125,28 +203,22 @@ namespace Capa_Presentacion.Controllers
         //[HttpPost]
         public ActionResult Delete(int id)
         {
-            try
+            // TODO: Add delete logic here
+            if (User.Identity.IsAuthenticated)
             {
-                // TODO: Add delete logic here
-                if (User.Identity.IsAuthenticated)
+                if (account.IsValid(User.Identity.Name) == 2)
                 {
-                    if (account.IsValid(User.Identity.Name) == 2)
-                    {
-                        return RedirectToAction("Index", "Home");
-                    }
+                    return RedirectToAction("Index", "Home");
                 }
-                else
-                {
-                    return RedirectToAction("Login", "Account");
-                }
+            }
+            else
+            {
+                return RedirectToAction("Login", "Account");
+            }
 
-                _Negocio.Proc_eliminarUsuario(id);
-                return RedirectToAction("Admins", "Admin");
-            }
-            catch
-            {
-                return View();
-            }
+            _Negocio.Proc_eliminarUsuario(id);
+            this.AddNotification("Se ha eliminado el usuario exitosamente", NotificationType.SUCCESS);
+            return RedirectToAction("Admins", "Admin");
         }
     }
 }
