@@ -265,11 +265,11 @@ namespace Capa_Negocio
             return _Datos.Proc_listarMascota_Usuario();
         }
 
-        /*----------Proc_listarMascota_UsuarioPorid_Mascota----------*/
-        public Proc_listarMascota_UsuarioPorid_Mascota_Result Proc_listarMascota_UsuarioPorid_Mascota(int id)
-        {
-            return _Datos.Proc_listarMascota_UsuarioPorid_Mascota(id);
-        }
+        ///*----------Proc_listarMascota_UsuarioPorid_Mascota----------*/
+        //public Proc_listarMascota_UsuarioPorid_Mascota_Result Proc_listarMascota_UsuarioPorid_Mascota(int id)
+        //{
+        //    return _Datos.Proc_listarMascota_UsuarioPorid_Mascota(id);
+        //}
 
         /*----------Proc_crearMascota_Usuario----------*/
         public void Proc_crearMascota_Usuario(Mascota_Usuario mascota_Usuario)
@@ -277,17 +277,17 @@ namespace Capa_Negocio
             _Datos.Proc_crearMascota_Usuario(mascota_Usuario);
         }
 
-        /*----------Proc_actualizarMascota_Usuario----------*/
-        public void Proc_actualizarMascota_Usuario(Mascota_Usuario mascota_Usuario)
-        {
-            _Datos.Proc_actualizarMascota_Usuario(mascota_Usuario);
-        }
+        ///*----------Proc_actualizarMascota_Usuario----------*/
+        //public void Proc_actualizarMascota_Usuario(Mascota_Usuario mascota_Usuario)
+        //{
+        //    _Datos.Proc_actualizarMascota_Usuario(mascota_Usuario);
+        //}
 
-        /*----------Proc_eliminarMascota_Usuario----------*/
-        public void Proc_eliminarMascota_Usuario(int id)
-        {
-            _Datos.Proc_eliminarMascota_Usuario(id);
-        }
+        ///*----------Proc_eliminarMascota_Usuario----------*/
+        //public void Proc_eliminarMascota_Usuario(int id)
+        //{
+        //    _Datos.Proc_eliminarMascota_Usuario(id);
+        //}
 
         /*----------Fin de los procedimientos almacenados de la tabla Mascota_Usuario----------*/
 
@@ -484,11 +484,11 @@ namespace Capa_Negocio
             return _Datos.Proc_listarCita_Usuario();
         }
 
-        /*----------Proc_listarCita_UsuarioPorid_Cita----------*/
-        public Proc_listarCita_UsuarioPorid_Cita_Result Proc_listarCita_UsuarioPorid_Cita(int id)
-        {
-            return _Datos.Proc_listarCita_UsuarioPorid_Cita(id);
-        }
+        ///*----------Proc_listarCita_UsuarioPorid_Cita----------*/
+        //public Proc_listarCita_UsuarioPorid_Cita_Result Proc_listarCita_UsuarioPorid_Cita(int id)
+        //{
+        //    return _Datos.Proc_listarCita_UsuarioPorid_Cita(id);
+        //}
 
         /*----------Proc_crearCita_Usuario----------*/
         public void Proc_crearCita_Usuario(Cita_Usuario cita_Usuario)
@@ -496,17 +496,17 @@ namespace Capa_Negocio
             _Datos.Proc_crearCita_Usuario(cita_Usuario);
         }
 
-        /*----------Proc_actualizarCita_Usuario----------*/
-        public void Proc_actualizarCita_Usuario(Cita_Usuario cita_Usuario)
-        {
-            _Datos.Proc_actualizarCita_Usuario(cita_Usuario);
-        }
+        ///*----------Proc_actualizarCita_Usuario----------*/
+        //public void Proc_actualizarCita_Usuario(Cita_Usuario cita_Usuario)
+        //{
+        //    _Datos.Proc_actualizarCita_Usuario(cita_Usuario);
+        //}
 
-        /*----------Proc_eliminarCita_Usuario----------*/
-        public void Proc_eliminarCita_Usuario(int id)
-        {
-            _Datos.Proc_eliminarCita_Usuario(id);
-        }
+        ///*----------Proc_eliminarCita_Usuario----------*/
+        //public void Proc_eliminarCita_Usuario(int id)
+        //{
+        //    _Datos.Proc_eliminarCita_Usuario(id);
+        //}
 
         /*----------Fin de los procedimientos almacenados de la tabla Cita_Usuario----------*/
 

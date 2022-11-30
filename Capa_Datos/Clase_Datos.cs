@@ -481,14 +481,14 @@ namespace Capa_Datos
             }
         }
 
-        /*----------Proc_listarMascota_UsuarioPorid_Mascota----------*/
-        public Proc_listarMascota_UsuarioPorid_Mascota_Result Proc_listarMascota_UsuarioPorid_Mascota(int id)
-        {
-            using (var db = new VeterinariaEntities())
-            {
-                return db.Proc_listarMascota_UsuarioPorid_Mascota(id).FirstOrDefault();
-            }
-        }
+        ///*----------Proc_listarMascota_UsuarioPorid_Mascota----------*/
+        //public Proc_listarMascota_UsuarioPorid_Mascota_Result Proc_listarMascota_UsuarioPorid_Mascota(int id)
+        //{
+        //    using (var db = new VeterinariaEntities())
+        //    {
+        //        return db.Proc_listarMascota_UsuarioPorid_Mascota(id).FirstOrDefault();
+        //    }
+        //}
 
         /*----------Proc_crearMascota_Usuario----------*/
         public void Proc_crearMascota_Usuario(Mascota_Usuario mascota_Usuario)
@@ -500,25 +500,25 @@ namespace Capa_Datos
             }
         }
 
-        /*----------Proc_actualizarMascota_Usuario----------*/
-        public void Proc_actualizarMascota_Usuario(Mascota_Usuario mascota_Usuario)
-        {
-            using (var db = new VeterinariaEntities())
-            {
-                db.Proc_actualizarMascota_Usuario(mascota_Usuario.id_Mascota, mascota_Usuario.id_Usuario, mascota_Usuario.id_Tipo, mascota_Usuario.id_Raza);
-                db.SaveChanges();
-            }
-        }
+        ///*----------Proc_actualizarMascota_Usuario----------*/
+        //public void Proc_actualizarMascota_Usuario(Mascota_Usuario mascota_Usuario)
+        //{
+        //    using (var db = new VeterinariaEntities())
+        //    {
+        //        db.Proc_actualizarMascota_Usuario(mascota_Usuario.id_Mascota, mascota_Usuario.id_Usuario, mascota_Usuario.id_Tipo, mascota_Usuario.id_Raza);
+        //        db.SaveChanges();
+        //    }
+        //}
 
-        /*----------Proc_eliminarMascota_Usuario----------*/
-        public void Proc_eliminarMascota_Usuario(int id)
-        {
-            using (var db = new VeterinariaEntities())
-            {
-                db.Proc_eliminarMascota_Usuario(id);
-                db.SaveChanges();
-            }
-        }
+        ///*----------Proc_eliminarMascota_Usuario----------*/
+        //public void Proc_eliminarMascota_Usuario(int id)
+        //{
+        //    using (var db = new VeterinariaEntities())
+        //    {
+        //        db.Proc_eliminarMascota_Usuario(id);
+        //        db.SaveChanges();
+        //    }
+        //}
 
         /*----------Fin de los procedimientos almacenados de la tabla Mascota_Usuario----------*/
 
@@ -875,14 +875,14 @@ namespace Capa_Datos
             }
         }
 
-        /*----------Proc_listarCita_UsuarioPorid_Cita----------*/
-        public Proc_listarCita_UsuarioPorid_Cita_Result Proc_listarCita_UsuarioPorid_Cita(int id)
-        {
-            using (var db = new VeterinariaEntities())
-            {
-                return db.Proc_listarCita_UsuarioPorid_Cita(id).FirstOrDefault();
-            }
-        }
+        ///*----------Proc_listarCita_UsuarioPorid_Cita----------*/
+        //public Proc_listarCita_UsuarioPorid_Cita_Result Proc_listarCita_UsuarioPorid_Cita(int id)
+        //{
+        //    using (var db = new VeterinariaEntities())
+        //    {
+        //        return db.Proc_listarCita_UsuarioPorid_Cita(id).FirstOrDefault();
+        //    }
+        //}
 
         /*----------Proc_crearCita_Usuario----------*/
         public void Proc_crearCita_Usuario(Cita_Usuario cita_Usuario)
@@ -894,25 +894,25 @@ namespace Capa_Datos
             }
         }
 
-        /*----------Proc_actualizarCita_Usuario----------*/
-        public void Proc_actualizarCita_Usuario(Cita_Usuario cita_Usuario)
-        {
-            using (var db = new VeterinariaEntities())
-            {
-                db.Proc_actualizarCita_Usuario(cita_Usuario.id_Cita, cita_Usuario.id_Usuario, cita_Usuario.id_Mascota, cita_Usuario.id_UsuarioVeterinario);
-                db.SaveChanges();
-            }
-        }
+        ///*----------Proc_actualizarCita_Usuario----------*/
+        //public void Proc_actualizarCita_Usuario(Cita_Usuario cita_Usuario)
+        //{
+        //    using (var db = new VeterinariaEntities())
+        //    {
+        //        db.Proc_actualizarCita_Usuario(cita_Usuario.id_Cita, cita_Usuario.id_Usuario, cita_Usuario.id_Mascota, cita_Usuario.id_UsuarioVeterinario);
+        //        db.SaveChanges();
+        //    }
+        //}
 
-        /*----------Proc_eliminarCita_Usuario----------*/
-        public void Proc_eliminarCita_Usuario(int id)
-        {
-            using (var db = new VeterinariaEntities())
-            {
-                db.Proc_eliminarCita_Usuario(id);
-                db.SaveChanges();
-            }
-        }
+        ///*----------Proc_eliminarCita_Usuario----------*/
+        //public void Proc_eliminarCita_Usuario(int id)
+        //{
+        //    using (var db = new VeterinariaEntities())
+        //    {
+        //        db.Proc_eliminarCita_Usuario(id);
+        //        db.SaveChanges();
+        //    }
+        //}
 
         /*----------Fin de los procedimientos almacenados de la tabla Cita_Usuario----------*/
 

@@ -1,7 +1,6 @@
 CREATE DATABASE Veterinaria;
 USE Veterinaria;
 
-
 ----------Tabla Usuario----------
 
 CREATE TABLE Usuario(
@@ -26,13 +25,6 @@ AS
 BEGIN
 	SELECT email, password FROM Usuario WHERE email = @email AND password = @password
 END
-
-------------Proc_listarUsuario----------
---CREATE PROCEDURE Proc_listarUsuario
---AS
---BEGIN
---	SELECT * FROM Usuario
---END
 
 ----------Proc_listarUsuario----------
 CREATE PROCEDURE Proc_listarUsuario
@@ -383,7 +375,7 @@ AS
 BEGIN
 	DELETE FROM Cita WHERE id_Cita = @id_Cita
 END
-drop procedure Proc_eliminarCita
+
 
 ----------Fin de los procedimientos almacenados de la tabla Cita----------
 
@@ -409,13 +401,13 @@ BEGIN
 	SELECT * FROM Cita_Usuario
 END
 
-----------Proc_listarCita_UsuarioPorid_Cita----------
-CREATE PROCEDURE Proc_listarCita_UsuarioPorid_Cita
-	@id_Cita int
-AS
-BEGIN
-	SELECT * FROM Cita_Usuario WHERE id_Cita = @id_Cita
-END
+------------Proc_listarCita_UsuarioPorid_Cita----------
+--CREATE PROCEDURE Proc_listarCita_UsuarioPorid_Cita
+--	@id_Cita int
+--AS
+--BEGIN
+--	SELECT * FROM Cita_Usuario WHERE id_Cita = @id_Cita
+--END
 
 ----------Proc_crearCita_Usuario----------
 CREATE PROCEDURE Proc_crearCita_Usuario
@@ -428,24 +420,24 @@ BEGIN
 	INSERT INTO Cita_Usuario (id_Cita, id_Usuario, id_Mascota, id_UsuarioVeterinario) VALUES (@id_Cita, @id_Usuario, @id_Mascota, @id_UsuarioVeterinario)
 END
 
-----------Proc_actualizarCita_Usuario----------
-CREATE PROCEDURE Proc_actualizarCita_Usuario
-	@id_Cita int,
-	@id_Usuario int,
-	@id_Mascota int,
-	@id_UsuarioVeterinario int
-AS
-BEGIN
-	UPDATE Cita_Usuario SET id_Usuario = @id_Usuario, id_Mascota = @id_Mascota, id_UsuarioVeterinario = @id_UsuarioVeterinario WHERE id_Cita = @id_Cita
-END
+------------Proc_actualizarCita_Usuario----------
+--CREATE PROCEDURE Proc_actualizarCita_Usuario
+--	@id_Cita int,
+--	@id_Usuario int,
+--	@id_Mascota int,
+--	@id_UsuarioVeterinario int
+--AS
+--BEGIN
+--	UPDATE Cita_Usuario SET id_Usuario = @id_Usuario, id_Mascota = @id_Mascota, id_UsuarioVeterinario = @id_UsuarioVeterinario WHERE id_Cita = @id_Cita
+--END
 
-----------Proc_eliminarCita_Usuario----------
-CREATE PROCEDURE Proc_eliminarCita_Usuario
-	@id_Cita int
-AS
-BEGIN
-	DELETE FROM Cita_Usuario WHERE id_Cita = @id_Cita
-END
+------------Proc_eliminarCita_Usuario----------
+--CREATE PROCEDURE Proc_eliminarCita_Usuario
+--	@id_Cita int
+--AS
+--BEGIN
+--	DELETE FROM Cita_Usuario WHERE id_Cita = @id_Cita
+--END
 
 ----------Fin de los procedimientos almacenados de la tabla Cita_Usuario----------
 
@@ -574,13 +566,13 @@ BEGIN
 	SELECT * FROM Mascota_Usuario
 END
 
-----------Proc_listarMascota_UsuarioPorid_Mascota----------
-CREATE PROCEDURE Proc_listarMascota_UsuarioPorid_Mascota
-	@id_Mascota int
-AS
-BEGIN
-	SELECT * FROM Mascota_Usuario WHERE id_Mascota = @id_Mascota
-END
+------------Proc_listarMascota_UsuarioPorid_Mascota----------
+--CREATE PROCEDURE Proc_listarMascota_UsuarioPorid_Mascota
+--	@id_Mascota int
+--AS
+--BEGIN
+--	SELECT * FROM Mascota_Usuario WHERE id_Mascota = @id_Mascota
+--END
 
 ----------Proc_crearMascota_Usuario----------
 CREATE PROCEDURE Proc_crearMascota_Usuario
@@ -593,24 +585,24 @@ BEGIN
 	INSERT INTO Mascota_Usuario (id_Mascota, id_Usuario, id_Tipo, id_Raza) VALUES (@id_Mascota, @id_Usuario, @id_Tipo, @id_Raza)
 END
 
-----------Proc_actualizarMascota_Usuario----------
-CREATE PROCEDURE Proc_actualizarMascota_Usuario
-	@id_Mascota int,
-	@id_Usuario int,
-	@id_Tipo int,
-	@id_Raza int
-AS
-BEGIN
-	UPDATE Mascota_Usuario SET id_Usuario = @id_Usuario, id_Tipo = @id_Tipo, id_Raza = @id_Raza WHERE id_Mascota = @id_Mascota
-END
+------------Proc_actualizarMascota_Usuario----------
+--CREATE PROCEDURE Proc_actualizarMascota_Usuario
+--	@id_Mascota int,
+--	@id_Usuario int,
+--	@id_Tipo int,
+--	@id_Raza int
+--AS
+--BEGIN
+--	UPDATE Mascota_Usuario SET id_Usuario = @id_Usuario, id_Tipo = @id_Tipo, id_Raza = @id_Raza WHERE id_Mascota = @id_Mascota
+--END
 
-----------Proc_eliminarMascota_Usuario----------
-CREATE PROCEDURE Proc_eliminarMascota_Usuario
-	@id_Mascota int
-AS
-BEGIN
-	DELETE FROM Mascota_Usuario WHERE id_Mascota = @id_Mascota
-END
+------------Proc_eliminarMascota_Usuario----------
+--CREATE PROCEDURE Proc_eliminarMascota_Usuario
+--	@id_Mascota int
+--AS
+--BEGIN
+--	DELETE FROM Mascota_Usuario WHERE id_Mascota = @id_Mascota
+--END
 
 ----------Fin de los procedimientos almacenados de la tabla Mascota_Usuario----------
 
